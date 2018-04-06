@@ -538,7 +538,7 @@ adiff
 		{
 			/* a=0.5*pow(prop.dl[j],2.0)/prop.he[j]; */
 			a = 0.5*(prop.dl[j] * prop.dl[j]) / prop.he[j];
-			wa = pow(a*prop.wn, THIRD);
+			wa = pow(a*prop.wn, ONE_THIRD);
 			pk = qk / wa;
 			q = (1.607 - pk)*151.0*wa*prop.dl[j] / a;
 			xht += q;
@@ -556,7 +556,7 @@ adiff
 		q = 0.0795775*prop.wn*ds*th*th;
 		adiffv = aknfe(q*prop.dl[0] / (ds + prop.dl[0])) + aknfe(q*prop.dl[1] / (ds + prop.dl[1]));
 		a = ds / th;
-		wa = pow(a*prop.wn, THIRD);
+		wa = pow(a*prop.wn, ONE_THIRD);
 		pk = qk / wa;
 		q = (1.607 - pk)*151.0*wa*th + xht;
 		ar = 0.05751*q - 4.343*log(q) - aht;
@@ -615,7 +615,7 @@ adiff2
 		aht = 20.0;
 		xht = 0.0;
 		a = 0.5*(prop.dl[0] * prop.dl[0]) / prop.he[0];
-		wa = pow(a*prop.wn, THIRD);
+		wa = pow(a*prop.wn, ONE_THIRD);
 		pk = qk / wa;
 		q = (1.607 - pk)*151.0*wa*prop.dl[0] / a;
 		xht = q;
@@ -631,7 +631,7 @@ adiff2
 		else
 		{
 			a = 0.5*(prop.dl[1] * prop.dl[1]) / prop.he[1];
-			wa = pow(a*prop.wn, THIRD);
+			wa = pow(a*prop.wn, ONE_THIRD);
 			pk = qk / wa;
 			q = (1.607 - pk)*151.0*wa*prop.dl[1] / a;
 			xht += q;
@@ -647,7 +647,7 @@ adiff2
 		dsl = mymax(d - propa.dla, 0.0);
 		ds = d - propa.dla;
 		a = ds / th;
-		wa = pow(a*prop.wn, THIRD);
+		wa = pow(a*prop.wn, ONE_THIRD);
 		pk = qk / wa;
 		toh = prop.hht - (prop.rch[0] - prop.dl[0] * ((prop.rch[1] - prop.rch[0]) / prop.dist));
 		roh = prop.hhr - (prop.rch[0] - (prop.dist - prop.dl[1])*((prop.rch[1] - prop.rch[0]) / prop.dist));
@@ -1301,8 +1301,8 @@ lrprop
 
 		dmin = abs(prop.he[0] - prop.he[1]) / 200e-3;
 		q = adiff(0.0, prop, propa);
-		/* xae=pow(prop.wn*pow(prop.gme,2.),-THIRD); -- JDM made argument 2 a double */
-		xae = pow(prop.wn*(prop.gme*prop.gme), -THIRD);  /* No 2nd pow() */
+		/* xae=pow(prop.wn*pow(prop.gme,2.),-ONE_THIRD); -- JDM made argument 2 a double */
+		xae = pow(prop.wn*(prop.gme*prop.gme), -ONE_THIRD);  /* No 2nd pow() */
 		d3 = mymax(propa.dlsa, 1.3787*xae + propa.dla);
 		d4 = d3 + 2.7574*xae;
 		a3 = adiff(d3, prop, propa);
@@ -1507,7 +1507,7 @@ lrprop2
 
 		dmin = abs(prop.he[0] - prop.he[1]) / 200e-3;
 		q = adiff2(0.0, prop, propa);
-		xae = pow(prop.wn*(prop.gme*prop.gme), -THIRD);
+		xae = pow(prop.wn*(prop.gme*prop.gme), -ONE_THIRD);
 		d3 = mymax(propa.dlsa, 1.3787*xae + propa.dla);
 		d4 = d3 + 2.7574*xae;
 		a3 = adiff2(d3, prop, propa);
@@ -1849,7 +1849,7 @@ avar
 			gp = cfp1 + cfp2 / ((cfp3*q*cfp3*q) + 1.0);
 
 		case 2:
-			dexa = sqrt(18e6*prop.he[0]) + sqrt(18e6*prop.he[1]) + pow((575.7e12 / prop.wn), THIRD);
+			dexa = sqrt(18e6*prop.he[0]) + sqrt(18e6*prop.he[1]) + pow((575.7e12 / prop.wn), ONE_THIRD);
 
 		case 1:
 			if (prop.dist<dexa)

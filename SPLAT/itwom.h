@@ -8,7 +8,7 @@ using namespace std;
 
 //| Constants
 
-#define THIRD (1.0/3.0)
+#define ONE_THIRD (1.0/3.0)
 
 
 //| Global variables

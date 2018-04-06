@@ -4,11 +4,22 @@
 
 //| Global variables
 
-char	sdf_filename[30], sdf_path[255], replacement_flag, opened = 0,
-	hgt = 0, bil = 0;
+char SplatDataFileName[30];		//| OLD NAME: sdf_filename
+char SplatDataFilePath[255];	//| OLD NAME: sdf_path
+char ElevationProblem;			//| OLD NAME: replacement_flag
+char FileExtentionHgt = 0;		//| OLD NAME: hgt
+char FileExtentionBil = 0;		//| OLD NAME: bil
 
-int	srtm[3601][3601], usgs[1201][1201], max_north, max_west, n,
-	min_north, min_west, merge = 0, min_elevation, bzerror, ippd, mpi;
+int	SpaceShuttleRadarTopographyMissionData[3601][3601];	//| OLD NAME: srtm
+int UnitedStatesGeologicalSurveyData[1201][1201];		//| OLD NAME: usgs
+int MaximumLatitudeNorth;	//| OLD NAME: max_north
+int MaximumLongitudeWest;	//| OLD NAME: max_west
+int MinimumLatitudeNorth;	//| OLD NAME: min_north
+int MinimumLongitudeWest;	//| OLD NAME: min_west
+int MergeData = 0;			//| OLD NAME: merge
+int MinimumElevation;		//| OLD NAME: min_elevation
+int IntegerPixelsPerDegree;	//| OLD NAME: ippd
+int MaximumPixelIndexPerDegree;	//| OLD NAME: mpi
 
 
 //| Functions

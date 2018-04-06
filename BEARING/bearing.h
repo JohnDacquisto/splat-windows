@@ -4,10 +4,12 @@
 
 //| Global variables
 
-char 	BearingString[255];
+char BearingString[255];						//| OLD NAME: string
 
-double	TWOPI = 6.283185307179586, PI = 3.141592653589793,
-deg2rad = 1.74532925199e-02, KM_PER_MILE = 1.609344;
+double TWO_PI = 6.283185307179586;				//| OLD NAME: TWOPI
+double PI = 3.141592653589793;
+double DEGREES_TO_RADIANS = 1.74532925199e-02;	//| OLD NAME: deg2rad
+double KM_PER_MILE = 1.609344;
 
 struct site {
 	double lat;

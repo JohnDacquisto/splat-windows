@@ -4,8 +4,8 @@
 
 //| ------------------------------
 //| Pick these values for each build.
-#define HD_MODE 0
-#define MAXPAGES 4
+#define HD_MODE 0			//| OLD NAME: HDMODE
+#define MAXIMUM_PAGES 4		//| OLD NAME: MAXPAGES
 //| ------------------------------
 
 
@@ -14,71 +14,71 @@
 #define GAMMA 2.5
 
 #if HD_MODE==0
-	#if MAXPAGES==4
+	#if MAXIMUM_PAGES==4
 		#define ARRAY_SIZE 4950
 	#endif
-	#if MAXPAGES==9
+	#if MAXIMUM_PAGES==9
 		#define ARRAY_SIZE 10870
 	#endif
-	#if MAXPAGES==16
+	#if MAXIMUM_PAGES==16
 		#define ARRAY_SIZE 19240
 	#endif
-	#if MAXPAGES==25
+	#if MAXIMUM_PAGES==25
 		#define ARRAY_SIZE 30025
 	#endif
-	#if MAXPAGES==36
+	#if MAXIMUM_PAGES==36
 		#define ARRAY_SIZE 43217
 	#endif
-	#if MAXPAGES==49
+	#if MAXIMUM_PAGES==49
 		#define ARRAY_SIZE 58813
 	#endif
-	#if MAXPAGES==64
+	#if MAXIMUM_PAGES==64
 		#define ARRAY_SIZE 76810
 	#endif
-	#define IPPD 1200
+	#define INTEGER_PIXELS_PER_DEGREE 1200	//| OLD NAME: IPPD
 #endif
 #if HD_MODE==1
-	#if MAXPAGES==1
+	#if MAXIMUM_PAGES==1
 		#define ARRAY_SIZE 5092 
 	#endif
-	#if MAXPAGES==4
+	#if MAXIMUM_PAGES==4
 		#define ARRAY_SIZE 14844 
 	#endif
-	#if MAXPAGES==9
+	#if MAXIMUM_PAGES==9
 		#define ARRAY_SIZE 32600
 	#endif
-	#if MAXPAGES==16
+	#if MAXIMUM_PAGES==16
 		#define ARRAY_SIZE 57713
 	#endif
-	#if MAXPAGES==25
+	#if MAXIMUM_PAGES==25
 		#define ARRAY_SIZE 90072
 	#endif
-	#if MAXPAGES==36
+	#if MAXIMUM_PAGES==36
 		#define ARRAY_SIZE 129650
 	#endif
-	#if MAXPAGES==49 
+	#if MAXIMUM_PAGES==49 
 		#define ARRAY_SIZE 176437
 	#endif
-	#if MAXPAGES==64
+	#if MAXIMUM_PAGES==64
 		#define ARRAY_SIZE 230430
 	#endif
-	#define IPPD 3600
+	#define INTEGER_PIXELS_PER_DEGREE 3600
 #endif
 
 #ifndef PI
 	#define PI 3.141592653589793
 #endif
 
-#ifndef TWOPI
-	#define TWOPI 6.283185307179586
+#ifndef TWO_PI
+	#define TWO_PI 6.283185307179586	//| OLD NAME: TWOPI
 #endif
 
-#ifndef HALFPI
-	#define HALFPI 1.570796326794896
+#ifndef HALF_PI
+	#define HALF_PI 1.570796326794896	//| OLD NAME: HALFPI
 #endif
 
-#define DEG2RAD 1.74532925199e-02
-#define EARTHRADIUS 20902230.97
+#define DEGREES_TO_RADIANS 1.74532925199e-02	//| OLD NAME: DEG2RAD
+#define EARTH_RADIUS 20902230.97				//| OLD NAME: EARTHRADIUS
 #define	METERS_PER_MILE 1609.344
 #define METERS_PER_FOOT 0.3048
 #define	KM_PER_MILE 1.609344
@@ -89,23 +89,39 @@
 
 char SplatString[255];				//| OLD NAME: string
 char SplatDataFilePath[255];		//| OLD NAME: sdf_path 
-char opened = 0;					//| OLD NAME: 
-char gpsav = 0;						//| OLD NAME: 
+char SaveGnuPlotWorkingFiles = 0;	//| OLD NAME: gpsav
 char SplatName[10];					//| OLD NAME: splat_name
 char SplatVersion[6];				//| OLD NAME: splat_version
-char dashes[80];					//| OLD NAME: 
-char olditm;						//| OLD NAME: olditm
+char LineOfDashes[80];				//| OLD NAME: dashes
+char UseOldLongleyRiceModel;		//| OLD NAME: olditm
 char SiteAnalysisReportPath[255];
 
-double	earthradius, max_range = 0.0, forced_erp = -1.0, dpp, ppd,
-	fzone_clearance = 0.6, forced_freq, clutter;
+double SphereRadius;					//| OLD NAME: earthradius
+double MaximumAnalysisDistance = 0.0;	//| OLD NAME: max_range
+double EffectiveRadiatedPower = -1.0;	//| OLD NAME: forced_erp
+double DegreesPerPixel;					//| OLD NAME: dpp
+double PixelsPerDegree;					//| OLD NAME: ppd
+double FresnelZoneClearanceRatio = 0.6;	//| OLD NAME: fzone_clearance
+double FresnelZoneFrequency;			//| OLD NAME: forced_freq
+double GroundClutterHeight;				//| OLD NAME: clutter
 
-int	min_north = 90, max_north = -90, min_west = 360, max_west = -1, ippd, mpi,
-	max_elevation = -32768, min_elevation = 32768, bzerror, contour_threshold;
+int	MinimumLatitudeNorth = 90;	//| OLD NAME: min_north
+int MaximumLatitudeNorth = -90;	//| OLD NAME: max_north
+int MinimumLongitudeWest = 360;	//| OLD NAME: min_west
+int MaximumLongitudeWest = -1;	//| OLD NAME: max_west
+int IntegerPixelsPerDegree;		//| OLD NAME: ippd
+int MaximumPixelIndexPerDegree;	//| OLD NAME: mpi
+int MaximumElevation = -32768;	//| OLD NAME: max_elevation
+int MinimumElevation = 32768;	//| OLD NAME: min_elevation
+int ContourDisplayThreshold;	//| OLD NAME: contour_threshold
 
-unsigned char got_elevation_pattern, got_azimuth_pattern, metric = 0, dbm = 0, smooth_contours = 0;
+unsigned char GotAntennaElevationAnglePattern;	//| OLD NAME: got_elevation_pattern
+unsigned char GotAntennaAzimuthAnglePattern;	//| OLD NAME: got_azimuth_pattern
+unsigned char UseMetricUnits = 0;				//| OLD NAME: metric
+unsigned char PlotSignalPowerLevelContours = 0;	//| OLD NAME: dbm
+unsigned char DisplaySmoothContourLevels = 0;	//| OLD NAME: smooth_contours
 
-double elev[ARRAY_SIZE + 10];
+double PathElevation[ARRAY_SIZE + 10];	//| OLD NAME: elev
 
 struct site {
 	double lat;
@@ -113,7 +129,7 @@ struct site {
 	float alt;
 	char name[50];
 	char filename[255];
-} 	site;
+} site;
 
 struct path {
 	double lat[ARRAY_SIZE];
@@ -121,7 +137,7 @@ struct path {
 	double elevation[ARRAY_SIZE];
 	double distance[ARRAY_SIZE];
 	int length;
-}	path;
+} path;
 
 struct dem {
 	int min_north;
@@ -130,10 +146,10 @@ struct dem {
 	int max_west;
 	int max_el;
 	int min_el;
-	short data[IPPD][IPPD];
-	unsigned char mask[IPPD][IPPD];
-	unsigned char signal[IPPD][IPPD];
-}	dem[MAXPAGES];
+	short data[INTEGER_PIXELS_PER_DEGREE][INTEGER_PIXELS_PER_DEGREE];
+	unsigned char mask[INTEGER_PIXELS_PER_DEGREE][INTEGER_PIXELS_PER_DEGREE];
+	unsigned char signal[INTEGER_PIXELS_PER_DEGREE][INTEGER_PIXELS_PER_DEGREE];
+} dem[MAXIMUM_PAGES];
 
 struct LR {
 	double eps_dielect;
@@ -146,13 +162,13 @@ struct LR {
 	int radio_climate;
 	int pol;
 	float antenna_pattern[361][1001];
-}	LR;
+} LR;
 
 struct region {
 	unsigned char color[32][3];
 	int level[32];
 	int levels;
-}	region;
+} region;
 
 
 //| Functions
