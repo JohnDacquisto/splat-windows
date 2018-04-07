@@ -21,16 +21,16 @@ struct site {
 
 //| Functions
 
-double arccos(double x, double y);
+double ArcCosine(double x, double y);
 
-char *dec2dms(double decimal);
+char *ConvertDecimalToDegreesMinutesSeconds(double decimal);
 
-double Distance(struct site site1, struct site site2);
+double GreatCircleDistanceBetweenSiteLocations(struct site site1, struct site site2);
 
-double Azimuth(struct site source, struct site destination);
+double AzimuthAngleBetweenSites(struct site source, struct site destination);
 
-double ReadBearing(char *input);
+double BearingStringToDecimalDegrees(char *input);
 
-struct site LoadQTH(char *filename);
+struct site LoadSplatSiteLocationFile(char *filename);
 
 int main(int argc, char *argv[]);

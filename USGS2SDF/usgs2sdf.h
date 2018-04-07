@@ -4,6 +4,6 @@
 
 //| Functions
 
-char *d2e(char *UsgsString);
+char *ConvertExponentialNotation(char *UsgsString);
 
 int main(int argc, char *argv[]);

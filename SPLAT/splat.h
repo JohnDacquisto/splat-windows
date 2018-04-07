@@ -5,7 +5,7 @@
 //| ------------------------------
 //| Pick these values for each build.
 #define HD_MODE 0			//| OLD NAME: HDMODE
-#define MAXIMUM_PAGES 4		//| OLD NAME: MAXPAGES
+#define MAXIMUM_PAGES 9		//| OLD NAME: MAXPAGES
 //| ------------------------------
 
 
@@ -173,102 +173,102 @@ struct region {
 
 //| Functions
 
-int interpolate(int y0, int y1, int x0, int x1, int n);
+int LinearInterpolation(int y0, int y1, int x0, int x1, int n);
 
-double arccos(double x, double y);
+double ArcCosine(double x, double y);
 
-int ReduceAngle(double angle);
+int ConvertToNormalizedAngle(double angle);
 
-double LonDiff(double lon1, double lon2);
+double LongitudeDifference(double lon1, double lon2);
 
-char *dec2dms(double decimal);
+char *ConvertDecimalToDegreesMinutesSeconds(double decimal);
 
-int PutMask(double lat, double lon, int value);
+int SetValueInDigitalElevationModelMask(double lat, double lon, int value);
 
-int OrMask(double lat, double lon, int value);
+int SetOrValueInDigitalElevationModelMask(double lat, double lon, int value);
 
-int GetMask(double lat, double lon);
+int GetValueInDigitalElevationModelMask(double lat, double lon);
 
-int PutSignal(double lat, double lon, unsigned char signal);
+int SetValueInDigitalElevationModelSignal(double lat, double lon, unsigned char signal);
 
-unsigned char GetSignal(double lat, double lon);
+unsigned char GetValueInDigitalElevationModelSignal(double lat, double lon);
 
-double GetElevation(struct site location);
+double GetSiteLocationElevation(struct site location);
 
-int AddElevation(double lat, double lon, double height);
+int AddUserDefinedTerrainToDigitalElevationModelData(double lat, double lon, double height);
 
-double Distance(struct site site1, struct site site2);
+double GreatCircleDistanceBetweenSiteLocations(struct site site1, struct site site2);
 
-double Azimuth(struct site source, struct site destination);
+double AzimuthAngleBetweenSites(struct site source, struct site destination);
 
-double ElevationAngle(struct site source, struct site destination);
+double ObstructedElevationAngleBetweenSites(struct site source, struct site destination);
 
-void ReadPath(struct site source, struct site destination);
+void GeneratePathBetweenSites(struct site source, struct site destination);
 
-double ElevationAngle2(struct site source, struct site destination, double er);
+double ObstructedElevationAngleBetweenSites(struct site source, struct site destination, double er);
 
-double AverageTerrain(struct site source, double azimuthx, double start_distance, double end_distance);
+double AverageTerrainOverDistanceAtAzimuthFromSite(struct site source, double azimuthx, double start_distance, double end_distance);
 
-double haat(struct site antenna);
+double AntennaHeightAboveAverageTerrain(struct site antenna);
 
-void PlaceMarker(struct site location);
+void PlaceTextAndMarkerDataInMaskArrayForMaps(struct site location);
 
-double ReadBearing(char *input);
+double BearingStringToDecimalDegrees(char *input);
 
-struct site LoadQTH(char *filename);
+struct site LoadSplatSiteLocationFile(char *filename);
 
-void LoadPAT(char *filename);
+void LoadAntennaAzimuthElevationPatternFiles(char *filename);
 
-int LoadSDF_SDF(char *name);
+int LoadUncompressedSplatDataFile(char *name);
 
-char LoadSDF(char *name);
+char LoadSplatDataFile(char *name);
 
-void LoadCities(char *filename);
+void LoadAndPlotCitiesAndSitesOnMaps(char *filename);
 
-void LoadUDT(char *filename);
+void LoadUserDefinedTerrainFile(char *filename);
 
-void LoadBoundaries(char *filename);
+void LoadCartographicBoundaryFiles(char *filename);
 
-char ReadLRParm(struct site txsite, char forced_read);
+char ReadLongleyRiceParameterDataForSite(struct site txsite, char forced_read);
 
-void PlotPath(struct site source, struct site destination, char mask_value);
+void AnalyzeAndPlotPathBetweenSites(struct site source, struct site destination, char mask_value);
 
-void PlotLRPath(struct site source, struct site destination, unsigned char mask_value, FILE *fd);
+void AnalyzeAndPlotPathLossBetweenSites(struct site source, struct site destination, unsigned char mask_value, FILE *fd);
 
-void PlotLOSMap(struct site source, double altitude);
+void PlotLineOfSightCoverageFromSiteAtAltitude(struct site source, double altitude);
 
-void PlotLRMap(struct site source, double altitude, char *plo_filename);
+void PlotAttenuationFromSiteAtAltitude(struct site source, double altitude, char *plo_filename);
 
-void LoadSignalColors(struct site xmtr);
+void LoadSplatSignalColorsForSite(struct site xmtr);
 
-void LoadLossColors(struct site xmtr);
+void LoadSplatLossColorsForSite(struct site xmtr);
 
-void LoadDBMColors(struct site xmtr);
+void LoadSplatPowerColorsForSite(struct site xmtr);
 
-void WritePPM(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, struct site *xmtr, unsigned char txsites);
+void WritePortablePixMapLineOfSightCoverageFile(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, struct site *xmtr, unsigned char txsites);
 
-void WritePPMLR(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, struct site *xmtr, unsigned char txsites);
+void WritePortablePixMapAttenuationFile(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, struct site *xmtr, unsigned char txsites);
 
-void WritePPMSS(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, struct site *xmtr, unsigned char txsites);
+void WritePortablePixMapSignalStrengthFile(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, struct site *xmtr, unsigned char txsites);
 
-void WritePPMDBM(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, struct site *xmtr, unsigned char txsites);
+void WritePortablePixMapPowerLevelFile(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, struct site *xmtr, unsigned char txsites);
 
-void GraphTerrain(struct site source, struct site destination, char *name);
+void GenerateGnuPlotTerrainProfileBetweenSites(struct site source, struct site destination, char *name);
 
-void GraphElevation(struct site source, struct site destination, char *name);
+void GenerateGnuPlotElevationProfileBetweenSites(struct site source, struct site destination, char *name);
 
-void GraphHeight(struct site source, struct site destination, char *name, unsigned char fresnel_plot, unsigned char normalized);
+void GenerateGnuPlotHeightProfileBetweenSites(struct site source, struct site destination, char *name, unsigned char fresnel_plot, unsigned char normalized);
 
-void ObstructionAnalysis(struct site xmtr, struct site rcvr, double f, FILE *outfile);
+void PerformObstructionAnalysisBetweenSites(struct site xmtr, struct site rcvr, double f, FILE *outfile);
 
-void PathReport(struct site source, struct site destination, char *name, char graph_it);
+void WriteSplatPathReport(struct site source, struct site destination, char *name, char graph_it);
 
-void SiteReport(struct site xmtr);
+void WriteSplatSiteReport(struct site xmtr);
 
-void LoadTopoData(int max_lon, int min_lon, int max_lat, int min_lat);
+void LoadSplatDataFilesForRegion(int max_lon, int min_lon, int max_lat, int min_lat);
 
-int LoadANO(char *filename);
+int LoadSplatAlphanumericOutputFile(char *filename);
 
-void WriteKML(struct site source, struct site destination);
+void WriteKeyholeMarkupLanguageFile(struct site source, struct site destination);
 
 int main(int argc, char *argv[]);

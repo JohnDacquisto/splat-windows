@@ -24,16 +24,16 @@ int MaximumPixelIndexPerDegree;	//| OLD NAME: mpi
 
 //| Functions
 
-int ReadSRTM(char *filename);
+int ReadSpaceShuttleRadarTopographyMissionDataFile(char *filename);
 
-int LoadSDF_SDF(char *name);
+int LoadUncompressedSplatDataFile(char *name);
 
-char LoadSDF(char *name);
+char LoadSplatDataFile(char *name);
 
-int ReadUSGS();
+int ReadUnitedStatesGeologicalSurveyDataFile();
 
-void average_terrain(int y, int x, int z);
+void AverageTerrain(int y, int x, int z);
 
-void WriteSDF(char *filename);
+void WriteSplatDataFile(char *filename);
 
 int main(int argc, char *argv[]);
