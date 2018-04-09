@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-t C:\SPLAT\Regression_Test_2\wnju-dt.qth -L 40 -gc 10 -R 100 -o C:\SPLAT\Regression_Test_2\map.ppm -d C:\SPLAT\Regression_Test_2\DEM_Data\ -sar C:\SPLAT\Regression_Test_2\ -geo -olditm -erp -dbm -ngs</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-t C:\SPLAT\Regression_Test_12\wnju-dt.qth -d C:\SPLAT\Regression_Test_12\DEM_Data\ -ani C:\SPLAT\Regression_Test_12\test_12_input.txt -s C:\SPLAT\Regression_Test_12\sites.dat -b C:\SPLAT\Regression_Test_5\nj_counties.dat C:\SPLAT\Regression_Test_5\ny_counties.dat C:\SPLAT\Regression_Test_5\pa_counties.dat -metric</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

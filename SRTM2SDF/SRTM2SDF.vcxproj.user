@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-d C:\SPLAT\Regression_Test_2\DEM_Data\ C:\SPLAT\Regression_Test_2\DEM_Data\N41W073.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N41W074.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N41W075.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N41W076.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N41W077.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N41W078.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N41W079.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N42W073.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N42W074.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N42W075.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N42W076.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N42W077.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N42W078.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N42W079.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N43W073.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N43W074.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N43W075.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N43W076.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N43W077.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N43W078.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N43W079.hgt</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-d C:\SPLAT\Regression_Test_2\DEM_Data\ C:\SPLAT\Regression_Test_2\DEM_Data\N41W073.hgt C:\SPLAT\Regression_Test_2\DEM_Data\N41W074.hgt</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

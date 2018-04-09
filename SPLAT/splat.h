@@ -5,7 +5,7 @@
 //| ------------------------------
 //| Pick these values for each build.
 #define HD_MODE 0			//| OLD NAME: HDMODE
-#define MAXIMUM_PAGES 9		//| OLD NAME: MAXPAGES
+#define MAXIMUM_PAGES 4		//| OLD NAME: MAXPAGES
 //| ------------------------------
 
 
@@ -94,7 +94,7 @@ char SplatName[10];					//| OLD NAME: splat_name
 char SplatVersion[6];				//| OLD NAME: splat_version
 char LineOfDashes[80];				//| OLD NAME: dashes
 char UseOldLongleyRiceModel;		//| OLD NAME: olditm
-char SiteAnalysisReportPath[255];
+char ReportSavePath[255];
 
 double SphereRadius;					//| OLD NAME: earthradius
 double MaximumAnalysisDistance = 0.0;	//| OLD NAME: max_range
@@ -231,11 +231,11 @@ void LoadCartographicBoundaryFiles(char *filename);
 
 char ReadLongleyRiceParameterDataForSite(struct site txsite, char forced_read);
 
-void AnalyzeAndPlotPathBetweenSites(struct site source, struct site destination, char mask_value);
+void AnalyzeAndPlotLineOfSightCoverageBetweenSites(struct site source, struct site destination, char mask_value, FILE *fd);
 
 void AnalyzeAndPlotPathLossBetweenSites(struct site source, struct site destination, unsigned char mask_value, FILE *fd);
 
-void PlotLineOfSightCoverageFromSiteAtAltitude(struct site source, double altitude);
+void PlotLineOfSightCoverageFromSiteAtAltitude(struct site source, double altitude, char *plo_filename);
 
 void PlotAttenuationFromSiteAtAltitude(struct site source, double altitude, char *plo_filename);
 
