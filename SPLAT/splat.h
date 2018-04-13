@@ -123,23 +123,28 @@ unsigned char DisplaySmoothContourLevels = 0;	//| OLD NAME: smooth_contours
 
 double PathElevation[ARRAY_SIZE + 10];	//| OLD NAME: elev
 
-struct site {
+struct site 
+{
 	double lat;
 	double lon;
 	float alt;
 	char name[50];
 	char filename[255];
-} site;
+} 
+site;
 
-struct path {
+struct path 
+{
 	double lat[ARRAY_SIZE];
 	double lon[ARRAY_SIZE];
 	double elevation[ARRAY_SIZE];
 	double distance[ARRAY_SIZE];
 	int length;
-} path;
+} 
+path;
 
-struct dem {
+struct dem 
+{
 	int min_north;
 	int max_north;
 	int min_west;
@@ -149,9 +154,11 @@ struct dem {
 	short data[INTEGER_PIXELS_PER_DEGREE][INTEGER_PIXELS_PER_DEGREE];
 	unsigned char mask[INTEGER_PIXELS_PER_DEGREE][INTEGER_PIXELS_PER_DEGREE];
 	unsigned char signal[INTEGER_PIXELS_PER_DEGREE][INTEGER_PIXELS_PER_DEGREE];
-} dem[MAXIMUM_PAGES];
+} 
+dem[MAXIMUM_PAGES];
 
-struct LR {
+struct LR 
+{
 	double eps_dielect;
 	double sgm_conductivity;
 	double eno_ns_surfref;
@@ -162,13 +169,16 @@ struct LR {
 	int radio_climate;
 	int pol;
 	float antenna_pattern[361][1001];
-} LR;
+} 
+LR;
 
-struct region {
+struct region 
+{
 	unsigned char color[32][3];
 	int level[32];
 	int levels;
-} region;
+} 
+region;
 
 
 //| Functions

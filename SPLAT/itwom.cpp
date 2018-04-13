@@ -61,10 +61,14 @@ MinimumInteger
    (const int &i, 
 	const int &j)
 {
-	if (i<j)
+	if (i < j)
+	{
 		return i;
+	}
 	else
+	{
 		return j;
+	}
 }
 
 
@@ -82,10 +86,14 @@ MaximumInteger
    (const int &i, 
 	const int &j)
 {
-	if (i>j)
+	if (i > j)
+	{
 		return i;
+	}
 	else
+	{
 		return j;
+	}
 }
 
 
@@ -103,10 +111,14 @@ MinimumDouble
    (const double &a, 
 	const double &b)
 {
-	if (a<b)
+	if (a < b)
+	{
 		return a;
+	}
 	else
+	{
 		return b;
+	}
 }
 
 
@@ -124,10 +136,14 @@ MaximumDouble
    (const double &a, 
 	const double &b)
 {
-	if (a>b)
+	if (a > b)
+	{
 		return a;
+	}
 	else
+	{
 		return b;
+	}
 }
 
 
@@ -147,10 +163,14 @@ PositiveDifferenceOrZero
    (const double &x, 
 	const double &y)
 {
-	if (x>y)
+	if (x > y)
+	{
 		return x - y;
+	}
 	else
+	{
 		return 0.0;
+	}
 }
 
 
@@ -172,10 +192,15 @@ AttenuationFromSingleKnifeEdge
 {
 	double a;
 
-	if (v2<5.76)
+	if (v2 < 5.76)
+	{
 		a = 6.02 + 9.11*sqrt(v2) - 1.27*v2;
+	}
 	else
-		a = 12.953 + 10 * log10(v2);
+	{
+		a = 12.953 + 10*log10(v2);
+	}
+
 	return a;
 }
 
@@ -199,29 +224,32 @@ HeightGainOverSmoothSphere
 {
 	double w, fhtv;
 
-	if (x<200.0)
+	if (x < 200.0)
 	{
 		w = -log(pk);
 
-		if (pk<1.0e-5 || x * w*w*w > 5495.0)
+		if ((pk < 1.0e-5) || (x * w*w*w > 5495.0))
 		{
 			fhtv = -117.0;
 
-			if (x>1.0)
+			if (x > 1.0)
+			{
 				fhtv = 40.0*log10(x) + fhtv;
+			}
 		}
 		else
+		{
 			fhtv = 2.5e-5*x*x / pk - 8.686*w - 15.0;
+		}
 	}
-
 	else
 	{
 		fhtv = 0.05751*x - 10.0*log10(x);
 
-		if (x<2000.0)
+		if (x < 2000.0)
 		{
-			w = 0.0134*x*exp(-0.005*x);
-			fhtv = (1.0 - w)*fhtv + w * (40.0*log10(x) - 117.0);
+			w = 0.0134 * x * exp(-0.005 * x);
+			fhtv = (1.0 - w)*fhtv + w*(40.0*log10(x) - 117.0);
 		}
 	}
 	return fhtv;
@@ -256,25 +284,26 @@ H01ScatterFields
 		it = 1;
 		q = 0.0;
 	}
-
 	else if (it >= 5)
 	{
 		it = 5;
 		q = 0.0;
 	}
-
 	else
+	{
 		q = et - it;
+	}
 
 	//x = pow(1.0/r, 2.0);
-
 	temp = 1.0 / r;
 	x = temp * temp;
 
 	h0fv = 4.343*log((a[it - 1] * x + b[it - 1])*x + 1.0);
 
 	if (q != 0.0)
+	{
 		h0fv = (1.0 - q)*h0fv + q * 4.343*log((a[it] * x + b[it])*x + 1.0);
+	}
 
 	return h0fv;
 }
@@ -300,13 +329,17 @@ FThetaDScatterFields
 	double c[3] = { -4.343,   -1.086,    2.171 };
 
 	if (td <= 10e3)
+	{
 		i = 0;
-
+	}
 	else if (td <= 70e3)
+	{
 		i = 1;
-
+	}
 	else
+	{
 		i = 2;
+	}
 
 	return a[i] + b[i] * td + c[i] * log(td);
 }
@@ -372,13 +405,13 @@ CalculateClutterLoss
 		//| relative to receive site ground level.
 		hone = prop.tgh + prop.tsgh - (prop.rch[1] - prop.hg[1]);
 
-		if (prop.tgh>prop.cch)  //| for TX ant above all clutter height
+		if (prop.tgh > prop.cch)  //| for TX ant above all clutter height
 		{
 			ensa = 1 + prop.ens*0.000001;
 			encca = 1 + prop.encc*0.000001;
 			dp = pd;
 
-			for (int j = 0; j<5; ++j)
+			for (int j = 0; j < 5; ++j)
 			{
 				tde = dp / 6378137.0;
 				hc = (prop.cch + 6378137.0)*(1 - cos(tde));
@@ -401,7 +434,6 @@ CalculateClutterLoss
 				ssnps = (3.1415926535897 / 2) - tic;
 				d1a = (crpc*sin(ttc)) / (1 - 1 / 6378137.0);
 				dp = pd - d1a;
-
 			}
 
 			ctic = cos(tic);
@@ -424,7 +456,6 @@ CalculateClutterLoss
 			}
 			else
 			{
-
 				if (prop.ptx >= 1)  //| polarity ptx is vertical or circular
 				{
 					q = ((ensa*cttc - encca * ctic) / (ensa*cttc + encca * ctic));
@@ -449,17 +480,15 @@ CalculateClutterLoss
 			//| tvsr is defined as tx ant height above receiver ant height
 			tvsr = MaximumDouble(0.0, prop.tgh + prop.tsgh - prop.rch[1]);
 
-			if (d1a<50.0)
+			if (d1a < 50.0)
 			{
 				arte = 0.0195*crpc - 20 * log10(tsp);
 			}
-
 			else
 			{
-				if (d1a<225.0)
+				if (d1a < 225.0)
 				{
-
-					if (tvsr>1000.0)
+					if (tvsr > 1000.0)
 					{
 						q = d1a * (0.03*exp(-0.14*pdk));
 					}
@@ -470,7 +499,6 @@ CalculateClutterLoss
 
 					arte = q + (0.7*pdk - MaximumDouble(0.01, log10(prop.wn*47.7) - 2))*(prop.hg[1] / hone);
 				}
-
 				else
 				{
 					q = 0.00055*(pdk)+log10(pdk)*(0.041 - 0.0017*sqrt(hone) + 0.019);
@@ -479,7 +507,7 @@ CalculateClutterLoss
 
 					zi = 1.5*sqrt(hone - prop.cch);
 
-					if (pdk>zi)
+					if (pdk > zi)
 					{
 						q = (pdk - zi)*10.2*((sqrt(MaximumDouble(0.01, log10(prop.wn*47.7) - 2.0))) / (100 - zi));
 					}
@@ -487,8 +515,8 @@ CalculateClutterLoss
 					{
 						q = ((zi - pdk) / zi)*(-20.0*MaximumDouble(0.01, log10(prop.wn*47.7) - 2.0)) / sqrt(hone);
 					}
-					arte = arte + q;
 
+					arte = arte + q;
 				}
 			}
 		}
@@ -533,8 +561,10 @@ CalculateDiffractionAttenuation
 		q = prop.hg[0] * prop.hg[1];
 		qk = prop.he[0] * prop.he[1] - q;
 
-		if (prop.mdp<0.0)
+		if (prop.mdp < 0.0)
+		{
 			q += 10.0;
+		}
 
 		wd1 = sqrt(1.0 + qk / q);
 		xd1 = propa.dla + propa.tha / prop.gme;
@@ -545,7 +575,7 @@ CalculateDiffractionAttenuation
 		aht = 20.0;
 		xht = 0.0;
 
-		for (int j = 0; j<2; ++j)
+		for (int j = 0; j < 2; ++j)
 		{
 			//a = 0.5*pow(prop.dl[j],2.0)/prop.he[j];
 			a = 0.5*(prop.dl[j] * prop.dl[j]) / prop.he[j];
@@ -558,7 +588,6 @@ CalculateDiffractionAttenuation
 
 		adiffv = 0.0;
 	}
-
 	else
 	{
 		th = propa.tha + d * prop.gme;
@@ -616,8 +645,10 @@ CalculateDiffractionAttenuationV2
 		qk = prop.he[0] * prop.he[1] - q;
 		//dhec = 2.73;
 
-		if (prop.mdp<0.0)
+		if (prop.mdp < 0.0)
+		{
 			q += 10.0;
+		}
 
 		//| coefficients for a standard four radii, rounded earth computation are prepared
 		wd1 = sqrt(1.0 + qk / q);
@@ -634,13 +665,11 @@ CalculateDiffractionAttenuationV2
 		xht = q;
 		aht += HeightGainOverSmoothSphere(q, pk);
 
-
-		if ((int(prop.dl[1]) == 0.0) || (prop.the[1]>0.2))
+		if ((int(prop.dl[1]) == 0.0) || (prop.the[1] > 0.2))
 		{
 			xht += xht;
 			aht += (aht - 20.0);
 		}
-
 		else
 		{
 			a = 0.5*(prop.dl[1] * prop.dl[1]) / prop.he[1];
@@ -652,7 +681,6 @@ CalculateDiffractionAttenuationV2
 		}
 		adiffv2 = 0.0;
 	}
-
 	else
 	{
 		th = propa.tha + d * prop.gme;
@@ -701,9 +729,9 @@ CalculateDiffractionAttenuationV2
 		rd = prop.dl[1];
 
 		//| two obstacle diffraction calculation
-		if (int(ds)>0)	//| there are 2 obstacles
+		if (int(ds) > 0)	//| there are 2 obstacles
 		{
-			if (int(prop.dl[1])>0.0)	//| receive site past 2nd peak
+			if (int(prop.dl[1]) > 0.0)	//| receive site past 2nd peak
 			{
 				//| rounding attenuation
 				q = (1.607 - pk)*151.0*wa*th + xht;
@@ -716,7 +744,7 @@ CalculateDiffractionAttenuationV2
 
 				q = 0.6365*prop.wn;
 
-				if (prop.the[1]<0.2)  //| receive grazing angle below 0.2 rad
+				if (prop.the[1] < 0.2)  //| receive grazing angle below 0.2 rad
 				{
 					//| knife edge attenuation for two obstructions
 
@@ -741,10 +769,10 @@ CalculateDiffractionAttenuationV2
 						vv = q * abs(dro2 + dhh2 - drto);
 						adiffv2 += AttenuationFromSingleKnifeEdge(vv);
 					}
+
 					//| finally, add clutter loss
 					closs = CalculateClutterLoss(rd, prop, propa);
 					adiffv2 += MinimumDouble(22.0, closs);
-
 				}
 				else	//| rcvr site too close to 2nd obs
 				{
@@ -765,11 +793,11 @@ CalculateDiffractionAttenuationV2
 					//adiffv2 = ar*wd + (1.0 - wd)*adiffv2;
 
 					//| clutter path loss past 2nd peak
-					if (prop.the[1]<1.22)
+					if (prop.the[1] < 1.22)
 					{
 						rd = prop.dl[1];
 
-						if (prop.the[1]>0.6)	//| through foliage downhill
+						if (prop.the[1] > 0.6)	//| through foliage downhill
 						{
 							prop.tgh = prop.cch;
 						}
@@ -795,11 +823,9 @@ CalculateDiffractionAttenuationV2
 		}
 		else	//| for single obstacle
 		{
-
-			if (int(prop.dl[1])>0.0)	//| receive site past 1st peak
+			if (int(prop.dl[1]) > 0.0)	//| receive site past 1st peak
 			{
-
-				if (prop.the[1]<0.2)	//| receive grazing angle less than .2 radians
+				if (prop.the[1] < 0.2)	//| receive grazing angle less than .2 radians
 				{
 					vv = 0.6365*prop.wn*abs(dto + dro - dtr);
 
@@ -903,7 +929,7 @@ CalculateScatterAttenuation
 		ad = prop.dl[0] - prop.dl[1];
 		rr = prop.he[1] / prop.rch[0];
 
-		if (ad<0.0)
+		if (ad < 0.0)
 		{
 			ad = -ad;
 			rr = 1.0 / rr;
@@ -913,11 +939,12 @@ CalculateScatterAttenuation
 		h0s = -15.0;
 		ascatv = 0.0;
 	}
-
 	else
 	{
-		if (h0s>15.0)
+		if (h0s > 15.0)
+		{
 			h0 = h0s;
+		}
 		else
 		{
 			th = prop.the[0] + prop.the[1] + d * prop.gme;
@@ -925,8 +952,10 @@ CalculateScatterAttenuation
 			r1 = r2 * prop.he[0];
 			r2 *= prop.he[1];
 
-			if (r1<0.2 && r2<0.2)
+			if ((r1 < 0.2) && (r2 < 0.2))
+			{
 				return 1001.0;
+			}
 
 			ss = (d - ad) / (d + ad);
 			q = rr / ss;
@@ -944,16 +973,17 @@ CalculateScatterAttenuation
 			h0 += MinimumDouble(h0, (1.38 - log(ett))*log(ss)*log(q)*0.49);
 			h0 = PositiveDifferenceOrZero(h0, 0.0);
 
-			if (et<1.0)
+			if (et < 1.0)
 			{
 				//h0 = et*h0 + (1.0 - et)*4.343*log(pow((1.0 + 1.4142/r1)*(1.0 + 1.4142/r2), 2.0)*(r1+r2)/(r1+r2+2.8284));
-
 				temp = ((1.0 + 1.4142 / r1)*(1.0 + 1.4142 / r2));
 				h0 = et * h0 + (1.0 - et)*4.343*log((temp*temp)*(r1 + r2) / (r1 + r2 + 2.8284));
 			}
 
-			if (h0>15.0 && h0s >= 0.0)
+			if ((h0 > 15.0) && (h0s >= 0.0))
+			{
 				h0 = h0s;
+			}
 		}
 
 		h0s = h0;
@@ -996,8 +1026,10 @@ StandardNormalTailDistributionFunctionInverse
 	t = sqrt(-2.0*log(t));
 	v = t - ((c2*t + c1)*t + c0) / (((d3*t + d2)*t + d1)*t + 1.0);
 
-	if (x<0.0)
+	if (x < 0.0)
+	{
 		v = -v;
+	}
 
 	return v;
 }
@@ -1042,7 +1074,9 @@ Qlrps
 	prop.ens = en0;
 
 	if (zsys != 0.0)
+	{
 		prop.ens *= exp(-zsys / 9460.0);
+	}
 
 	prop.gme = gma * (1.0 - 0.04665*exp(prop.ens / 179.3));
 	complex<double> zq, prop_zgnd(prop.zgndreal, prop.zgndimag);
@@ -1050,11 +1084,12 @@ Qlrps
 	prop_zgnd = sqrt(zq - 1.0);
 
 	if (ipol != 0.0)
+	{
 		prop_zgnd = prop_zgnd / zq;
+	}
 
 	prop.zgndreal = prop_zgnd.real();
 	prop.zgndimag = prop_zgnd.imag();
-
 }
 
 
@@ -1087,7 +1122,6 @@ CalculateLineOfSightAttenuation
 		wls = 0.021 / (0.021 + prop.wn*prop.dh / MaximumDouble(10e3, propa.dlsa));
 		alosv = 0.0;
 	}
-
 	else
 	{
 		q = (1.0 - 0.8*exp(-d / 50e3))*prop.dh;
@@ -1097,18 +1131,22 @@ CalculateLineOfSightAttenuation
 		r = (sps - prop_zgnd) / (sps + prop_zgnd)*exp(-MinimumDouble(10.0, prop.wn*s*sps));
 		q = AbsoluteValueOfComplexNumber(r);
 
-		if (q<0.25 || q<sps)
+		if ((q < 0.25) || (q < sps))
+		{
 			r = r * sqrt(sps / q);
+		}
 
 		alosv = propa.emd*d + propa.aed;
 		q = prop.wn*prop.he[0] * prop.he[1] * 2.0 / d;
 
-		if (q>1.57)
+		if (q > 1.57)
+		{
 			q = 3.14 - 2.4649 / q;
+		}
 
 		alosv = (-4.343*log(AbsoluteValueOfComplexNumber(complex<double>(cos(q), -sin(q)) + r)) - alosv)*wls + alosv;
-
 	}
+
 	return alosv;
 }
 
@@ -1148,18 +1186,17 @@ CalculateLineOfSightAttenuationV2
 	{
 		alosv = 0.0;
 	}
-
 	else
 	{
 		q = prop.he[0] + prop.he[1];
 		sps = q / sqrt(pd*pd + q * q);
 		q = (1.0 - 0.8*exp(-pd / 50e3))*prop.dh;
 
-		if (prop.mdp<0)
+		if (prop.mdp < 0)
 		{
 			dr = pd / (1 + hrg / htg);
 
-			if (dr<(0.5*pd))
+			if (dr < (0.5 * pd))
 			{
 				drh = 6378137.0 - sqrt(-(0.5*pd)*(0.5*pd) + 6378137.0*6378137.0 + (0.5*pd - dr)*(0.5*pd - dr));
 			}
@@ -1168,7 +1205,7 @@ CalculateLineOfSightAttenuationV2
 				drh = 6378137.0 - sqrt(-(0.5*pd)*(0.5*pd) + 6378137.0*6378137.0 + (dr - 0.5*pd)*(dr - 0.5*pd));
 			}
 
-			if ((sps<0.05) && (prop.cch>hrg) && (prop.dist< prop.dl[0]))	//| if far from transmitter and receiver below canopy
+			if ((sps < 0.05) && (prop.cch > hrg) && (prop.dist < prop.dl[0]))	//| if far from transmitter and receiver below canopy
 			{
 				cd = MaximumDouble(0.01, pd*(prop.cch - hrg) / (htg - hrg));
 				cr = MaximumDouble(0.01, pd - dr + dr * (prop.cch - drh) / htg);
@@ -1182,27 +1219,27 @@ CalculateLineOfSightAttenuationV2
 		q = AbsoluteValueOfComplexNumber(r);
 		q = MinimumDouble(q, 1.0);
 
-		if (q<0.25 || q<sps)
+		if ((q < 0.25) || (q < sps))
 		{
 			r = r * sqrt(sps / q);
 		}
 		q = prop.wn*prop.he[0] * prop.he[1] / (pd*3.1415926535897);
 
-		if (prop.mdp<0)
+		if (prop.mdp < 0)
 		{
 			q = prop.wn*((ht - hrp)*(hr - hrp)) / (pd*3.1415926535897);
 		}
 		q -= floor(q);
 
-		if (q<0.5)
+		if (q < 0.5)
 		{
 			q *= 3.1415926535897;
 		}
-
 		else
 		{
 			q = (1 - q)*3.1415926535897;
 		}
+
 		//| no longer valid complex conjugate removed
 		//| by removing minus sign from in front of sin function
 		re = AbsoluteValueOfComplexNumber(complex<double>(cos(q), sin(q)) + r);
@@ -1210,9 +1247,9 @@ CalculateLineOfSightAttenuationV2
 		prop.tgh = prop.hg[0];	//| tx above gnd hgt set to antenna height AGL
 		prop.tsgh = prop.rch[0] - prop.hg[0];	//| tsgh set to tx site gl AMSL
 
-		if ((prop.hg[1]<prop.cch) && (prop.thera<0.785) && (prop.thenr<0.785))
+		if ((prop.hg[1] < prop.cch) && (prop.thera < 0.785) && (prop.thenr < 0.785))
 		{
-			if (sps<0.05)
+			if (sps < 0.05)
 			{
 				alosv = alosv + CalculateClutterLoss(pd, prop, propa);
 			}
@@ -1246,19 +1283,25 @@ Qlra
 {
 	double q;
 
-	for (int j = 0; j<2; ++j)
+	for (int j = 0; j < 2; ++j)
 	{
 		if (kst[j] <= 0)
+		{
 			prop.he[j] = prop.hg[j];
+		}
 		else
 		{
 			q = 4.0;
 
 			if (kst[j] != 1)
+			{
 				q = 9.0;
+			}
 
-			if (prop.hg[j]<5.0)
+			if (prop.hg[j] < 5.0)
+			{
 				q *= sin(0.3141593*prop.hg[j]);
+			}
 
 			prop.he[j] = prop.hg[j] + (1.0 + q)*exp(-MinimumDouble(20.0, 2.0*prop.hg[j] / MaximumDouble(1e-3, prop.dh)));
 		}
@@ -1277,7 +1320,7 @@ Qlra
 		propv.lvar = MaximumInteger(propv.lvar, 4);
 	}
 
-	if (klimx>0)
+	if (klimx > 0)
 	{
 		propv.klim = klimx;
 		propv.lvar = 5;
@@ -1317,8 +1360,10 @@ CalculateLongleyRicePropagation
 
 	if (prop.mdp != 0)
 	{
-		for (j = 0; j<2; j++)
+		for (j = 0; j < 2; j++)
+		{
 			propa.dls[j] = sqrt(2.0*prop.he[j] / prop.gme);
+		}
 
 		propa.dlsa = propa.dls[0] + propa.dls[1];
 		propa.dla = prop.dl[0] + prop.dl[1];
@@ -1326,23 +1371,39 @@ CalculateLongleyRicePropagation
 		wlos = false;
 		wscat = false;
 
-		if (prop.wn<0.838 || prop.wn>210.0)
+		if ((prop.wn < 0.838) || (prop.wn > 210.0))
+		{
 			prop.kwx = MaximumInteger(prop.kwx, 1);
+		}
 
-		for (j = 0; j<2; j++)
-			if (prop.hg[j]<1.0 || prop.hg[j]>1000.0)
+		for (j = 0; j < 2; j++)
+		{
+			if ((prop.hg[j] < 1.0) || (prop.hg[j] > 1000.0))
+			{
 				prop.kwx = MaximumInteger(prop.kwx, 1);
+			}
+		}
 
-		for (j = 0; j<2; j++)
-			if (abs(prop.the[j]) >200e-3 || prop.dl[j]<0.1*propa.dls[j] || prop.dl[j]>3.0*propa.dls[j])
+		for (j = 0; j < 2; j++)
+		{
+			if ((abs(prop.the[j]) > 200e-3) || (prop.dl[j] < (0.1 * propa.dls[j])) || (prop.dl[j] > (3.0 * propa.dls[j])))
+			{
 				prop.kwx = MaximumInteger(prop.kwx, 3);
+			}
+		}
 
-		if (prop.ens < 250.0 || prop.ens > 400.0 || prop.gme < 75e-9 || prop.gme > 250e-9 || prop_zgnd.real() <= abs(prop_zgnd.imag()) || prop.wn < 0.419 || prop.wn > 420.0)
+		if ((prop.ens < 250.0) || (prop.ens > 400.0) || (prop.gme < 75e-9) || (prop.gme > 250e-9) || (prop_zgnd.real() <= abs(prop_zgnd.imag())) || (prop.wn < 0.419) || (prop.wn > 420.0))
+		{
 			prop.kwx = 4;
+		}
 
-		for (j = 0; j<2; j++)
-			if (prop.hg[j]<0.5 || prop.hg[j]>3000.0)
+		for (j = 0; j < 2; j++)
+		{
+			if ((prop.hg[j] < 0.5) || (prop.hg[j] > 3000.0))
+			{
 				prop.kwx = 4;
+			}
+		}
 
 		dmin = abs(prop.he[0] - prop.he[1]) / 200e-3;
 		q = CalculateDiffractionAttenuation(0.0, prop, propa);
@@ -1362,19 +1423,25 @@ CalculateLongleyRicePropagation
 		prop.dist = d;
 	}
 
-	if (prop.dist>0.0)
+	if (prop.dist > 0.0)
 	{
-		if (prop.dist>1000e3)
+		if (prop.dist > 1000e3)
+		{
 			prop.kwx = MaximumInteger(prop.kwx, 1);
+		}
 
-		if (prop.dist<dmin)
+		if (prop.dist < dmin)
+		{
 			prop.kwx = MaximumInteger(prop.kwx, 3);
+		}
 
-		if (prop.dist<1e3 || prop.dist>2000e3)
+		if ((prop.dist < 1e3) || (prop.dist > 2000e3))
+		{
 			prop.kwx = 4;
+		}
 	}
 
-	if (prop.dist<propa.dlsa)
+	if (prop.dist < propa.dlsa)
 	{
 		if (!wlos)
 		{
@@ -1388,14 +1455,15 @@ CalculateLongleyRicePropagation
 				d0 = MinimumDouble(d0, 0.5*propa.dla);
 				d1 = d0 + 0.25*(propa.dla - d0);
 			}
-
 			else
+			{
 				d1 = MaximumDouble(-propa.aed / propa.emd, 0.25*propa.dla);
+			}
 
 			a1 = CalculateLineOfSightAttenuation(d1, prop, propa);
 			wq = false;
 
-			if (d0<d1)
+			if (d0 < d1)
 			{
 				a0 = CalculateLineOfSightAttenuation(d0, prop, propa);
 				q = log(d2 / d0);
@@ -1406,45 +1474,50 @@ CalculateLongleyRicePropagation
 				{
 					propa.ak1 = (a2 - a0 - propa.ak2*q) / (d2 - d0);
 
-					if (propa.ak1<0.0)
+					if (propa.ak1 < 0.0)
 					{
 						propa.ak1 = 0.0;
 						propa.ak2 = PositiveDifferenceOrZero(a2, a0) / q;
 
 						if (propa.ak2 == 0.0)
+						{
 							propa.ak1 = propa.emd;
+						}
 					}
 				}
-
 				else
 				{
 					propa.ak2 = 0.0;
 					propa.ak1 = (a2 - a1) / (d2 - d1);
 
 					if (propa.ak1 <= 0.0)
+					{
 						propa.ak1 = propa.emd;
+					}
 				}
 			}
-
 			else
 			{
 				propa.ak1 = (a2 - a1) / (d2 - d1);
 				propa.ak2 = 0.0;
 
 				if (propa.ak1 <= 0.0)
+				{
 					propa.ak1 = propa.emd;
+				}
 			}
 
 			propa.ael = a2 - propa.ak1*d2 - propa.ak2*log(d2);
 			wlos = true;
 		}
 
-		if (prop.dist>0.0)
+		if (prop.dist > 0.0)
+		{
 			prop.aref = propa.ael + propa.ak1*prop.dist + propa.ak2*log(prop.dist);
-
+		}
 	}
 
-	if (prop.dist <= 0.0 || prop.dist >= propa.dlsa)
+	if ((prop.dist <= 0.0) || (prop.dist >= propa.dlsa))
 	{
 		if (!wscat)
 		{
@@ -1454,13 +1527,12 @@ CalculateLongleyRicePropagation
 			a6 = CalculateScatterAttenuation(d6, prop, propa);
 			a5 = CalculateScatterAttenuation(d5, prop, propa);
 
-			if (a5<1000.0)
+			if (a5 < 1000.0)
 			{
 				propa.ems = (a6 - a5) / 200e3;
 				propa.dx = MaximumDouble(propa.dlsa, MaximumDouble(propa.dla + 0.3*xae*log(47.7*prop.wn), (a5 - propa.aed - propa.ems*d5) / (propa.emd - propa.ems)));
 				propa.aes = (propa.emd - propa.ems)*propa.dx + propa.aed;
 			}
-
 			else
 			{
 				propa.ems = propa.emd;
@@ -1471,10 +1543,14 @@ CalculateLongleyRicePropagation
 			wscat = true;
 		}
 
-		if (prop.dist>propa.dx)
+		if (prop.dist > propa.dx)
+		{
 			prop.aref = propa.aes + propa.ems*prop.dist;
+		}
 		else
+		{
 			prop.aref = propa.aed + propa.emd*prop.dist;
+		}
 	}
 
 	prop.aref = MaximumDouble(prop.aref, 0.0);
@@ -1513,8 +1589,10 @@ CalculateLongleyRicePropagationV2
 
 	if (prop.mdp != 0)	//| if oper. mode is not 0, i.e. not area mode ongoing
 	{
-		for (j = 0; j<2; j++)
+		for (j = 0; j < 2; j++)
+		{
 			propa.dls[j] = sqrt(2.0*prop.he[j] / prop.gme);
+		}
 
 		propa.dlsa = propa.dls[0] + propa.dls[1];
 		propa.dlsa = MinimumDouble(propa.dlsa, 1000000.0);
@@ -1525,30 +1603,49 @@ CalculateLongleyRicePropagationV2
 
 		//| checking for parameters-in-range, error codes set if not
 
-		if (prop.wn<0.838 || prop.wn>210.0)
+		if ((prop.wn < 0.838) || (prop.wn > 210.0))
+		{
 			prop.kwx = MaximumInteger(prop.kwx, 1);
+		}
 
-		for (j = 0; j<2; j++)
-			if (prop.hg[j]<1.0 || prop.hg[j]>1000.0)
+		for (j = 0; j < 2; j++)
+		{
+			if ((prop.hg[j] < 1.0) || (prop.hg[j] > 1000.0))
+			{
 				prop.kwx = MaximumInteger(prop.kwx, 1);
+			}
+		}
 
-		if (abs(prop.the[0])>200e-3)
+		if (abs(prop.the[0]) > 200e-3)
+		{
 			prop.kwx = MaximumInteger(prop.kwx, 3);
+		}
 
-		if (abs(prop.the[1])>1.220)
+		if (abs(prop.the[1]) > 1.220)
+		{
 			prop.kwx = MaximumInteger(prop.kwx, 3);
+		}
 
-		//for (j=0; j<2; j++)
-		//	if (prop.dl[j]<0.1*propa.dls[j] || prop.dl[j]>3.0*propa.dls[j])
-		//		prop.kwx=mymax(prop.kwx,3);
+		//for (j = 0; j < 2; j++)
+		//{
+		//	if ((prop.dl[j] < (0.1 * propa.dls[j])) || (prop.dl[j] > (3.0 * propa.dls[j])))
+		//	{
+		//		prop.kwx = mymax(prop.kwx, 3);
+		//	}
+		//}
 
-		if (prop.ens<250.0 || prop.ens>400.0 || prop.gme<75e-9 || prop.gme>250e-9 || prop_zgnd.real() <= abs(prop_zgnd.imag()) || prop.wn<0.419 || prop.wn>420.0)
+		if ((prop.ens < 250.0) || (prop.ens > 400.0) || (prop.gme < 75e-9) || (prop.gme > 250e-9) || (prop_zgnd.real() <= abs(prop_zgnd.imag())) || (prop.wn < 0.419) || (prop.wn > 420.0))
+		{
 			prop.kwx = 4;
+		}
 
-		for (j = 0; j<2; j++)
-
-			if (prop.hg[j]<0.5 || prop.hg[j]>3000.0)
+		for (j = 0; j < 2; j++)
+		{
+			if ((prop.hg[j] < 0.5) || (prop.hg[j] > 3000.0))
+			{
 				prop.kwx = 4;
+			}
+		}
 
 		dmin = abs(prop.he[0] - prop.he[1]) / 200e-3;
 		q = CalculateDiffractionAttenuationV2(0.0, prop, propa);
@@ -1567,24 +1664,28 @@ CalculateLongleyRicePropagationV2
 		prop.dist = d;
 	}
 
-	if (prop.dist>0.0)
+	if (prop.dist > 0.0)
 	{
-		if (prop.dist>1000e3)	//| prop.dist being in meters, if greater than 1000 km, kwx = 1
+		if (prop.dist > 1000e3)	//| prop.dist being in meters, if greater than 1000 km, kwx = 1
+		{
 			prop.kwx = MaximumInteger(prop.kwx, 1);
+		}
 
-		if (prop.dist<dmin)
+		if (prop.dist < dmin)
+		{
 			prop.kwx = MaximumInteger(prop.kwx, 3);
+		}
 
-		if (prop.dist<1e3 || prop.dist>2000e3)
+		if ((prop.dist < 1e3) || (prop.dist > 2000e3))
+		{
 			prop.kwx = 4;
+		}
 	}
 
-	if (prop.dist<propa.dlsa)
+	if (prop.dist < propa.dlsa)
 	{
-
 		if (iw <= 0.0)	//| if interval width is zero or less, used for area mode
 		{
-
 			if (!wlos)
 			{
 				q = CalculateLineOfSightAttenuationV2(0.0, prop, propa);
@@ -1592,7 +1693,7 @@ CalculateLongleyRicePropagationV2
 				a2 = propa.aed + d2 * propa.emd;
 				d0 = 1.908*prop.wn*prop.he[0] * prop.he[1];
 
-				if (propa.aed>0.0)
+				if (propa.aed > 0.0)
 				{
 					prop.aref = propa.aed + propa.emd*prop.dist;
 				}
@@ -1610,7 +1711,7 @@ CalculateLongleyRicePropagationV2
 					a1 = CalculateLineOfSightAttenuationV2(d1, prop, propa);
 					wq = false;
 
-					if (d0<d1)
+					if (d0 < d1)
 					{
 						a0 = CalculateLineOfSightAttenuationV2(d0, prop, propa);
 						a2 = MinimumDouble(a2, CalculateLineOfSightAttenuationV2(d2, prop, propa));
@@ -1622,13 +1723,15 @@ CalculateLongleyRicePropagationV2
 						{
 							propa.ak1 = (a2 - a0 - propa.ak2*q) / (d2 - d0);
 
-							if (propa.ak1<0.0)
+							if (propa.ak1 < 0.0)
 							{
 								propa.ak1 = 0.0;
 								propa.ak2 = PositiveDifferenceOrZero(a2, a0) / q;
 
 								if (propa.ak2 == 0.0)
+								{
 									propa.ak1 = propa.emd;
+								}
 							}
 						}
 					}
@@ -1639,8 +1742,9 @@ CalculateLongleyRicePropagationV2
 						propa.ak2 = 0.0;
 
 						if (propa.ak1 == 0.0)
+						{
 							propa.ak1 = propa.emd;
-
+						}
 					}
 					propa.ael = a2 - propa.ak1*d2 - propa.ak2*log(d2);
 					wlos = true;
@@ -1649,7 +1753,6 @@ CalculateLongleyRicePropagationV2
 		}
 		else	//| for ITWOM point-to-point mode
 		{
-
 			if (!wlos)
 			{
 				q = CalculateLineOfSightAttenuationV2(0.0, prop, propa);	//| coefficient setup
@@ -1666,7 +1769,7 @@ CalculateLongleyRicePropagationV2
 				{
 					prop.aref = 5.8 + CalculateLineOfSightAttenuationV2(pd1, prop, propa);
 				}
-				else if (int(prop.dist - prop.dl[0])>0.0)	//| if past 1st horiz
+				else if (int(prop.dist - prop.dl[0]) > 0.0)	//| if past 1st horiz
 				{
 					q = CalculateDiffractionAttenuationV2(0.0, prop, propa);
 					prop.aref = CalculateDiffractionAttenuationV2(pd1, prop, propa);
@@ -1675,13 +1778,12 @@ CalculateLongleyRicePropagationV2
 				{
 					prop.aref = 1.0;
 				}
-
 			}
 		}
 	}
 
 	//| los and diff. range coefficents done. Starting troposcatter
-	if (prop.dist <= 0.0 || prop.dist >= propa.dlsa)
+	if ((prop.dist <= 0.0) || (prop.dist >= propa.dlsa))
 	{
 		if (iw == 0.0)	//| area mode
 		{
@@ -1693,14 +1795,12 @@ CalculateLongleyRicePropagationV2
 				a6 = CalculateScatterAttenuation(d6, prop, propa);
 				a5 = CalculateScatterAttenuation(d5, prop, propa);
 
-				if (a5<1000.0)
+				if (a5 < 1000.0)
 				{
 					propa.ems = (a6 - a5) / 200e3;
 					propa.dx = MaximumDouble(propa.dlsa, MaximumDouble(propa.dla + 0.3*xae*log(47.7*prop.wn), (a5 - propa.aed - propa.ems*d5) / (propa.emd - propa.ems)));
-
 					propa.aes = (propa.emd - propa.ems)*propa.dx + propa.aed;
 				}
-
 				else
 				{
 					propa.ems = propa.emd;
@@ -1710,7 +1810,7 @@ CalculateLongleyRicePropagationV2
 				wscat = true;
 			}
 
-			if (prop.dist>propa.dx)
+			if (prop.dist > propa.dx)
 			{
 				prop.aref = propa.aes + propa.ems*prop.dist;
 			}
@@ -1809,8 +1909,8 @@ CalculateLongleyRiceVariability
 	prop_type &prop, 
 	propv_type &propv)
 {
-	static	int kdv;
-	static	double dexa, de, vmd, vs0, sgl, sgtm, sgtp, sgtd, tgtd,
+	static int kdv;
+	static double dexa, de, vmd, vs0, sgl, sgtm, sgtp, sgtd, tgtd,
 		gm, gp, cv1, cv2, yv1, yv2, yv3, csm1, csm2, ysm1, ysm2,
 		ysm3, csp1, csp2, ysp1, ysp2, ysp3, csd1, zd, cfm1, cfm2,
 		cfm3, cfp1, cfp2, cfp3;
@@ -1843,12 +1943,12 @@ CalculateLongleyRiceVariability
 	double sgt, yr, temp1, temp2;
 	int temp_klim = propv.klim - 1;
 
-	if (propv.lvar>0)
+	if (propv.lvar > 0)
 	{
 		switch (propv.lvar)
 		{
 		default:
-			if (propv.klim <= 0 || propv.klim>7)
+			if ((propv.klim <= 0) || (propv.klim > 7))
 			{
 				propv.klim = 5;
 				temp_klim = 4;
@@ -1884,14 +1984,18 @@ CalculateLongleyRiceVariability
 			ws = kdv >= 20;
 
 			if (ws)
+			{
 				kdv -= 20;
+			}
 
 			w1 = kdv >= 10;
 
 			if (w1)
+			{
 				kdv -= 10;
+			}
 
-			if (kdv<0 || kdv>3)
+			if ((kdv < 0) || (kdv > 3))
 			{
 				kdv = 0;
 				prop.kwx = MaximumInteger(prop.kwx, 2);
@@ -1910,10 +2014,14 @@ CalculateLongleyRiceVariability
 			dexa = sqrt(18e6*prop.he[0]) + sqrt(18e6*prop.he[1]) + pow((575.7e12 / prop.wn), ONE_THIRD);
 
 		case 1:
-			if (prop.dist<dexa)
+			if (prop.dist < dexa)
+			{
 				de = 130e3*prop.dist / dexa;
+			}
 			else
+			{
 				de = 130e3 + prop.dist - dexa;
+			}
 		}
 
 		vmd = Curve(cv1, cv2, yv1, yv2, yv3, de);
@@ -1923,7 +2031,9 @@ CalculateLongleyRiceVariability
 		tgtd = (sgtp - sgtd)*zd;
 
 		if (w1)
+		{
 			sgl = 0.0;
+		}
 		else
 		{
 			q = (1.0 - 0.8*exp(-prop.dist / 50e3))*prop.dh*prop.wn;
@@ -1931,7 +2041,9 @@ CalculateLongleyRiceVariability
 		}
 
 		if (ws)
+		{
 			vs0 = 0.0;
+		}
 		else
 		{
 			//vs0 = pow(5.0+3.0*exp(-de/100e3), 2.0);
@@ -1962,17 +2074,23 @@ CalculateLongleyRiceVariability
 		zl = zt;
 	}
 
-	if (fabs(zt)>3.1 || fabs(zl)>3.1 || fabs(zc)>3.1)
+	if ((fabs(zt) > 3.1) || (fabs(zl) > 3.1) || (fabs(zc) > 3.1))
+	{
 		prop.kwx = MaximumInteger(prop.kwx, 1);
+	}
 
-	if (zt<0.0)
+	if (zt < 0.0)
+	{
 		sgt = sgtm;
-
+	}
 	else if (zt <= zd)
+	{
 		sgt = sgtp;
-
+	}
 	else
+	{
 		sgt = sgtd + tgtd / zt;
+	}
 
 	//vs = vs0 + pow(sgt*zt,2.0)/(rt+zc*zc) + pow(sgl*zl,2.0)/(rl+zc*zc);
 
@@ -1986,19 +2104,16 @@ CalculateLongleyRiceVariability
 		yr = 0.0;
 		propv.sgc = sqrt(sgt*sgt + sgl * sgl + vs);
 	}
-
 	else if (kdv == 1)
 	{
 		yr = sgt * zt;
 		propv.sgc = sqrt(sgl*sgl + vs);
 	}
-
 	else if (kdv == 2)
 	{
 		yr = sqrt(sgt*sgt + sgl * sgl)*zt;
 		propv.sgc = sqrt(vs);
 	}
-
 	else
 	{
 		yr = sgt * zt + sgl * zl;
@@ -2007,8 +2122,10 @@ CalculateLongleyRiceVariability
 
 	avarv = prop.aref - vmd - yr - propv.sgc*zc;
 
-	if (avarv<0.0)
+	if (avarv < 0.0)
+	{
 		avarv = avarv * (29.0 - avarv) / (29.0 - 10.0*avarv);
+	}
 
 	return avarv;
 }
@@ -2054,13 +2171,13 @@ CalculateHorizonDistances
 		sb = prop.dist;
 		wq = true;
 
-		for (int i = 1; i<np; i++)
+		for (int i = 1; i < np; i++)
 		{
 			sa += xi;
 			sb -= xi;
 			q = pfl[i + 2] - (qc*sa + prop.the[0])*sa - za;
 
-			if (q>0.0)
+			if (q > 0.0)
 			{
 				prop.the[0] += q / sa;
 				prop.dl[0] = sa;
@@ -2071,7 +2188,7 @@ CalculateHorizonDistances
 			{
 				q = pfl[i + 2] - (qc*sb + prop.the[1])*sb - zb;
 
-				if (q>0.0)
+				if (q > 0.0)
 				{
 					prop.the[1] += q / sb;
 					prop.dl[1] = sb;
@@ -2125,12 +2242,12 @@ CalculateHorizonDistancesV2
 		sb = prop.dist;
 		wq = true;
 
-		for (j = 1; j<np; j++)
+		for (j = 1; j < np; j++)
 		{
 			sa += xi;
 			q = pfl[j + 2] - (qc*sa + prop.the[0])*sa - za;
 
-			if (q>0.0)
+			if (q > 0.0)
 			{
 				prop.los = 0;
 				prop.the[0] += q / sa;
@@ -2143,11 +2260,11 @@ CalculateHorizonDistancesV2
 
 		if (!wq)
 		{
-			for (i = 1; i<np; i++)
+			for (i = 1; i < np; i++)
 			{
 				sb -= xi;
 				q = pfl[np + 2 - i] - (qc*(prop.dist - sb) + prop.the[1])*(prop.dist - sb) - zb;
-				if (q>0.0)
+				if (q > 0.0)
 				{
 					prop.the[1] += q / (prop.dist - sb);
 					prop.the[1] = MinimumDouble(prop.the[1], 1.57);
@@ -2161,7 +2278,7 @@ CalculateHorizonDistancesV2
 		}
 	}
 
-	if ((prop.dl[1])<(prop.dist))
+	if (prop.dl[1] < prop.dist)
 	{
 		dshh = prop.dist - prop.dl[0] - prop.dl[1];
 
@@ -2341,20 +2458,28 @@ CreateQuantile
 		i = i0;
 
 		while (i <= n && a[i] >= q)
+		{
 			i++;
+		}
 
-		if (i>n)
+		if (i > n)
+		{
 			i = n;
+		}
 
 		j = j1;
 
-		while (j >= m && a[j] <= q)
+		while ((j >= m) && (a[j] <= q))
+		{
 			j--;
+		}
 
-		if (j<m)
+		if (j < m)
+		{
 			j = m;
+		}
 
-		if (i<j)
+		if (i < j)
 		{
 			r = a[i];
 			a[i] = a[j];
@@ -2363,25 +2488,24 @@ CreateQuantile
 			j1 = j - 1;
 			goto10 = false;
 		}
-
-		else if (i<k)
+		else if (i < k)
 		{
 			a[k] = a[i];
 			a[i] = q;
 			m = i + 1;
 			goto10 = true;
 		}
-
-		else if (j>k)
+		else if (j > k)
 		{
 			a[k] = a[j];
 			a[j] = q;
 			n = j - 1;
 			goto10 = true;
 		}
-
 		else
+		{
 			done = true;
+		}
 	}
 
 	return q;
@@ -2412,15 +2536,19 @@ StandardNormalTailDistributionFunction
 	t = fabs(x);
 
 	if (t >= 10.0)
+	{
 		qerfv = 0.0;
+	}
 	else
 	{
 		t = rp / (t + rp);
 		qerfv = exp(-0.5*x*x)*rrt2pi*((((b5*t + b4)*t + b3)*t + b2)*t + b1)*t;
 	}
 
-	if (x<0.0)
+	if (x < 0.0)
+	{
 		qerfv = 1.0 - qerfv;
+	}
 
 	return qerfv;
 }
@@ -2453,8 +2581,10 @@ CalculateTerrainInterdecileRangeDelta
 	xb = x2 / pfl[1];
 	d1thxv = 0.0;
 
-	if (xb - xa<2.0)
+	if ((xb - xa) < 2.0)
+	{
 		return d1thxv;
+	}
 
 	ka = (int)(0.1*(xb - xa + 8.0));
 	ka = MinimumInteger(MaximumInteger(4, ka), 25);
@@ -2468,9 +2598,9 @@ CalculateTerrainInterdecileRangeDelta
 	k = (int)(xa + 1.0);
 	xa -= (double)k;
 
-	for (j = 0; j<n; j++)
+	for (j = 0; j < n; j++)
 	{
-		while (xa>0.0 && k<np)
+		while ((xa > 0.0) && (k < np))
 		{
 			xa -= 1.0;
 			++k;
@@ -2483,7 +2613,7 @@ CalculateTerrainInterdecileRangeDelta
 	CalculateLinearLeastSquaresFit(s, 0.0, sn, xa, xb);
 	xb = (xb - xa) / sn;
 
-	for (j = 0; j<n; j++)
+	for (j = 0; j < n; j++)
 	{
 		s[j + 2] -= xa;
 		xa = xa + xb;
@@ -2522,8 +2652,10 @@ CalculateTerrainInterdecileRangeDeltaV2
 	xb = x2 / pfl[1];
 	d1thx2v = 0.0;
 
-	if (xb - xa<2.0)
+	if ((xb - xa) < 2.0)
+	{
 		return d1thx2v;
+	}
 
 	ka = (int)(0.1*(xb - xa + 8.0));
 	kmx = MaximumInteger(25, (int)(83350 / (pfl[1])));
@@ -2540,7 +2672,7 @@ CalculateTerrainInterdecileRangeDeltaV2
 
 	for (j = 0; j<n; j++)
 	{
-		while (xc>0.0 && k<np)
+		while ((xc > 0.0) && (k < np))
 		{
 			xc -= 1.0;
 			++k;
@@ -2553,7 +2685,7 @@ CalculateTerrainInterdecileRangeDeltaV2
 	CalculateLinearLeastSquaresFitV2(s, 0.0, sn, xa, xb);
 	xb = (xb - xa) / sn;
 
-	for (j = 0; j<n; j++)
+	for (j = 0; j < n; j++)
 	{
 		s[j + 2] -= xa;
 		xa = xa + xb;
@@ -2603,20 +2735,24 @@ PrepareForPointToPointModeAnalysis
 	np = (int)pfl[0];
 	CalculateHorizonDistances(pfl, prop);
 
-	for (j = 0; j<2; j++)
+	for (j = 0; j < 2; j++)
+	{
 		xl[j] = MinimumDouble(15.0*prop.hg[j], 0.1*prop.dl[j]);
+	}
 
 	xl[1] = prop.dist - xl[1];
 	prop.dh = CalculateTerrainInterdecileRangeDelta(pfl, xl[0], xl[1]);
 
-	if (prop.dl[0] + prop.dl[1]>1.5*prop.dist)
+	if ((prop.dl[0] + prop.dl[1]) > (1.5 * prop.dist))
 	{
 		CalculateLinearLeastSquaresFit(pfl, xl[0], xl[1], za, zb);
 		prop.he[0] = prop.hg[0] + PositiveDifferenceOrZero(pfl[2], za);
 		prop.he[1] = prop.hg[1] + PositiveDifferenceOrZero(pfl[np + 2], zb);
 
-		for (j = 0; j<2; j++)
+		for (j = 0; j < 2; j++)
+		{
 			prop.dl[j] = sqrt(2.0*prop.he[j] / prop.gme)*exp(-0.07*sqrt(prop.dh / MaximumDouble(prop.he[j], 5.0)));
+		}
 
 		q = prop.dl[0] + prop.dl[1];
 
@@ -2626,20 +2762,19 @@ PrepareForPointToPointModeAnalysis
 			temp = prop.dist / q;
 			q = temp * temp;
 
-			for (j = 0; j<2; j++)
+			for (j = 0; j < 2; j++)
 			{
 				prop.he[j] *= q;	//| tx effective height set to be path dist/distance between obstacles
 				prop.dl[j] = sqrt(2.0*prop.he[j] / prop.gme)*exp(-0.07*sqrt(prop.dh / MaximumDouble(prop.he[j], 5.0)));
 			}
 		}
 
-		for (j = 0; j<2; j++)	//| original empirical adjustment? uses delta-h to adjust grazing angles
+		for (j = 0; j < 2; j++)	//| original empirical adjustment? uses delta-h to adjust grazing angles
 		{
 			q = sqrt(2.0*prop.he[j] / prop.gme);
 			prop.the[j] = (0.65*prop.dh*(q / prop.dl[j] - 1.0) - 2.0*prop.he[j]) / q;
 		}
 	}
-
 	else
 	{
 		CalculateLinearLeastSquaresFit(pfl, xl[0], 0.9*prop.dl[0], za, q);
@@ -2657,7 +2792,7 @@ PrepareForPointToPointModeAnalysis
 		propv.lvar = MaximumInteger(propv.lvar, 4);
 	}
 
-	if (klimx>0)
+	if (klimx > 0)
 	{
 		propv.klim = klimx;
 		propv.lvar = 5;
@@ -2695,23 +2830,24 @@ PrepareForPointToPointModeAnalysisV2
 	prop.rch[0] = prop.hg[0] + pfl[2];
 	prop.rch[1] = prop.hg[1] + pfl[np + 2];
 
-	for (j = 0; j<2; j++)
+	for (j = 0; j < 2; j++)
+	{
 		xl[j] = MinimumDouble(15.0*prop.hg[j], 0.1*prop.dl[j]);
+	}
 
 	xl[1] = prop.dist - xl[1];
 	prop.dh = CalculateTerrainInterdecileRangeDeltaV2(pfl, xl[0], xl[1], propa);
 
-	if ((np<1) || (pfl[1]>150.0))
+	if ((np < 1) || (pfl[1] > 150.0))
 	{
 		//| for TRANSHORIZON; diffraction over a mutual horizon, or for one or more obstructions
-		if (dlb<1.5*prop.dist)
+		if (dlb < (1.5 * prop.dist))
 		{
 			CalculateLinearLeastSquaresFitV2(pfl, xl[0], 0.9*prop.dl[0], za, q);
 			CalculateLinearLeastSquaresFitV2(pfl, prop.dist - 0.9*prop.dl[1], xl[1], q, zb);
 			prop.he[0] = prop.hg[0] + PositiveDifferenceOrZero(pfl[2], za);
 			prop.he[1] = prop.hg[1] + PositiveDifferenceOrZero(pfl[np + 2], zb);
 		}
-
 		//| for a Line-of-Sight path
 		else
 		{
@@ -2719,8 +2855,10 @@ PrepareForPointToPointModeAnalysisV2
 			prop.he[0] = prop.hg[0] + PositiveDifferenceOrZero(pfl[2], za);
 			prop.he[1] = prop.hg[1] + PositiveDifferenceOrZero(pfl[np + 2], zb);
 
-			for (j = 0; j<2; j++)
+			for (j = 0; j < 2; j++)
+			{
 				prop.dl[j] = sqrt(2.0*prop.he[j] / prop.gme)*exp(-0.07*sqrt(prop.dh / MaximumDouble(prop.he[j], 5.0)));
+			}
 
 			//| for one or more obstructions only NOTE buried as in ITM FORTRAN and DLL, not functional
 			if ((prop.dl[0] + prop.dl[1]) <= prop.dist)
@@ -2730,21 +2868,20 @@ PrepareForPointToPointModeAnalysisV2
 				q = temp * temp;
 			}
 
-			for (j = 0; j<2; j++)
+			for (j = 0; j < 2; j++)
 			{
 				prop.he[j] *= q;
 				prop.dl[j] = sqrt(2.0*prop.he[j] / prop.gme)*exp(-0.07*sqrt(prop.dh / MaximumDouble(prop.he[j], 5.0)));
 			}
 
 			//| this sets (or resets) prop.the, and is not in The Guide FORTRAN QLRPFL
-			for (j = 0; j<2; j++)
+			for (j = 0; j < 2; j++)
 			{
 				q = sqrt(2.0*prop.he[j] / prop.gme);
 				prop.the[j] = (0.65*prop.dh*(q / prop.dl[j] - 1.0) - 2.0*prop.he[j]) / q;
 			}
 		}
 	}
-
 	else	//| for ITWOM, computes he for tx, rcvr, and the receiver approach angles for use in CalculateClutterLoss
 	{
 		prop.he[0] = prop.hg[0] + (pfl[2]);
@@ -2752,7 +2889,7 @@ PrepareForPointToPointModeAnalysisV2
 
 		rad = (prop.dist - 500.0);
 
-		if (prop.dist>550.0)
+		if (prop.dist > 550.0)
 		{
 			CalculateLinearLeastSquaresFitV2(pfl, rad, prop.dist, rae1, rae2);
 		}
@@ -2764,13 +2901,12 @@ PrepareForPointToPointModeAnalysisV2
 
 		prop.thera = atan(abs(rae2 - rae1) / prop.dist);
 
-		if (rae2<rae1)
+		if (rae2 < rae1)
 		{
 			prop.thera = -prop.thera;
 		}
 
 		prop.thenr = atan(MaximumDouble(0.0, (pfl[np + 2] - pfl[np + 1])) / pfl[1]);
-
 	}
 
 	prop.mdp = -1;
@@ -2782,7 +2918,7 @@ PrepareForPointToPointModeAnalysisV2
 		propv.lvar = MaximumInteger(propv.lvar, 4);
 	}
 
-	if (klimx>0)
+	if (klimx > 0)
 	{
 		propv.klim = klimx;
 		propv.lvar = 5;
@@ -2876,7 +3012,6 @@ PointToPointCalculationLegacy
 	long ja, jb, i, np;
 	//double dkm, xkm;
 	double fs;
-
 	errno_t err;
 
 	prop.hg[0] = tht_m;
@@ -2899,8 +3034,10 @@ PointToPointCalculationLegacy
 		ja = (long)(3.0 + 0.1*elev[0]);	//| added (long) to correct
 		jb = np - ja + 6;
 
-		for (i = ja - 1; i<jb; ++i)
+		for (i = ja - 1; i < jb; ++i)
+		{
 			zsys += elev[i];
+		}
 
 		zsys /= (jb - ja + 1);
 		q = eno;
@@ -2912,21 +3049,29 @@ PointToPointCalculationLegacy
 	fs = 32.45 + 20.0*log10(frq_mhz) + 20.0*log10(prop.dist / 1000.0);
 	q = prop.dist - propa.dla;
 
-	if (int(q)<0.0)
+	if (int(q) < 0.0)
+	{
 		err = strcpy_s(strmode, strmodeLen, "Line-Of-Sight Mode");
+	}
 	else
 	{
 		if (int(q) == 0.0)
+		{
 			err = strcpy_s(strmode, strmodeLen, "Single Horizon");
-
-		else if (int(q)>0.0)
+		}
+		else if (int(q) > 0.0)
+		{
 			err = strcpy_s(strmode, strmodeLen, "Double Horizon");
+		}
 
-		if (prop.dist <= propa.dlsa || prop.dist <= propa.dx)
+		if ((prop.dist <= propa.dlsa) || (prop.dist <= propa.dx))
+		{
 			err = strcat_s(strmode, strmodeLen, ", Diffraction Dominant");
-
-		else if (prop.dist>propa.dx)
+		}
+		else if (prop.dist > propa.dx)
+		{
 			err = strcat_s(strmode, strmodeLen, ", Troposcatter Dominant");
+		}
 	}
 
 	dbloss = CalculateLongleyRiceVariability(zr, 0.0, zc, prop, propv) + fs;
@@ -3007,7 +3152,6 @@ PointToPointCalculation
 	long ja, jb, i, np;
 	//double dkm, xkm;
 	double tpd, fs;
-
 	errno_t err;
 
 	prop.hg[0] = tht_m;
@@ -3043,8 +3187,10 @@ PointToPointCalculation
 		ja = (long)(3.0 + 0.1*elev[0]);
 		jb = np - ja + 6;
 
-		for (i = ja - 1; i<jb; ++i)
+		for (i = ja - 1; i < jb; ++i)
+		{
 			zsys += elev[i];
+		}
 
 		zsys /= (jb - ja + 1);
 		q = eno;
@@ -3057,26 +3203,36 @@ PointToPointCalculation
 	fs = 32.45 + 20.0*log10(frq_mhz) + 20.0*log10(tpd / 1000.0);
 	q = prop.dist - propa.dla;
 
-	if (int(q)<0.0)
+	if (int(q) < 0.0)
+	{
 		err = strcpy_s(strmode, strmodeLen, "L-o-S");
+	}
 	else
 	{
 		if (int(q) == 0.0)
+		{
 			err = strcpy_s(strmode, strmodeLen, "1_Hrzn");
-
-		else if (int(q)>0.0)
+		}
+		else if (int(q) > 0.0)
+		{
 			err = strcpy_s(strmode, strmodeLen, "2_Hrzn");
+		}
 
-		if (prop.dist <= propa.dlsa || prop.dist <= propa.dx)
-
+		if ((prop.dist <= propa.dlsa) || (prop.dist <= propa.dx))
+		{
 			if (int(prop.dl[1]) == 0.0)
+			{
 				err = strcat_s(strmode, strmodeLen, "_Peak");
-
+			}
 			else
+			{
 				err = strcat_s(strmode, strmodeLen, "_Diff");
-
-		else if (prop.dist>propa.dx)
+			}
+		}
+		else if (prop.dist > propa.dx)
+		{
 			err = strcat_s(strmode, strmodeLen, "_Tropo");
+		}
 	}
 
 	dbloss = CalculateLongleyRiceVariability(zr, 0.0, zc, prop, propv) + fs;
@@ -3183,8 +3339,10 @@ PointToPointCalculationMdhTwo
 	{
 		ja = (long)(3.0 + 0.1 * elev[0]); //| to match addition of (long)
 		jb = np - ja + 6;
-		for (i = ja - 1;i<jb;++i)
+		for (i = ja - 1; i < jb; ++i)
+		{
 			zsys += elev[i];
+		}
 		zsys /= (jb - ja + 1);
 		q = eno;
 	}
@@ -3195,18 +3353,29 @@ PointToPointCalculationMdhTwo
 
 	deltaH = prop.dh;
 	q = prop.dist - propa.dla;
-	if (int(q)<0.0)
+	if (int(q) < 0.0)
+	{
 		propmode = 0;	//| L-of-S 
+	}
 	else
 	{
 		if (int(q) == 0.0)
+		{
 			propmode = 4;	//| 1-Hrzn
-		else if (int(q)>0.0)
+		}
+		else if (int(q) > 0.0)
+		{
 			propmode = 8;	//| 2-Hrzn
-		if (prop.dist <= propa.dlsa || prop.dist <= propa.dx)
+		}
+
+		if ((prop.dist <= propa.dlsa) || (prop.dist <= propa.dx))
+		{
 			propmode += 1;	//| Diff
-		else if (prop.dist>propa.dx)
+		}
+		else if (prop.dist > propa.dx)
+		{
 			propmode += 2;	//| Tropo
+		}
 	}
 	dbloss = CalculateLongleyRiceVariability(ztime, zloc, zconf, prop, propv) + fs;	
 	//dbloss = CalculateLongleyRiceVariability(time, location, confidence);
@@ -3271,7 +3440,6 @@ PointToPointCalculationDh
 	long ja, jb, i, np;
 	//double dkm, xkm;
 	double fs;
-
 	errno_t err;
 
 	prop.hg[0] = tht_m;
@@ -3306,8 +3474,10 @@ PointToPointCalculationDh
 	{
 		ja = (long)(3.0 + 0.1 * elev[0]);	//| to match KD2BD addition of (long)
 		jb = np - ja + 6;
-		for (i = ja - 1; i<jb; ++i)
+		for (i = ja - 1; i < jb; ++i)
+		{
 			zsys += elev[i];
+		}
 		zsys /= (jb - ja + 1);
 		q = eno;
 	}
@@ -3317,18 +3487,29 @@ PointToPointCalculationDh
 	fs = 32.45 + 20.0*log10(frq_mhz) + 20.0*log10(prop.dist / 1000.0);
 	deltaH = prop.dh;
 	q = prop.dist - propa.dla;
-	if (int(q)<0.0)
+	if (int(q) < 0.0)
+	{
 		err = strcpy_s(strmode, strmodeLen, "Line-Of-Sight Mode");
+	}
 	else
 	{
 		if (int(q) == 0.0)
+		{
 			err = strcpy_s(strmode, strmodeLen, "Single Horizon");
-		else if (int(q)>0.0)
+		}
+		else if (int(q) > 0.0)
+		{
 			err = strcpy_s(strmode, strmodeLen, "Double Horizon");
-		if (prop.dist <= propa.dlsa || prop.dist <= propa.dx)
+		}
+
+		if ((prop.dist <= propa.dlsa) || (prop.dist <= propa.dx))
+		{
 			err = strcat_s(strmode, strmodeLen, ", Diffraction Dominant");
-		else if (prop.dist>propa.dx)
+		}
+		else if (prop.dist > propa.dx)
+		{
 			err = strcat_s(strmode, strmodeLen, ", Troposcatter Dominant");
+		}
 	}
 	dbloss = CalculateLongleyRiceVariability(zr, 0.0, zc, prop, propv) + fs;
 	//dbloss = CalculateLongleyRiceVariability(time, location, confidence);
@@ -3430,17 +3611,23 @@ AreaCalculation
 	Qlrps(frq_mhz, 0.0, eno, ipol, eps, sgm, prop);
 	Qlra(kst, propv.klim, ivar, prop, propv);
 
-	if (propv.lvar<1)
+	if (propv.lvar < 1)
+	{
 		propv.lvar = 1;
+	}
 
 	CalculateLongleyRicePropagationV2(dist_km*1000.0, prop, propa);
 	fs = 32.45 + 20.0*log10(frq_mhz) + 20.0*log10(prop.dist / 1000.0);
 	xlb = fs + CalculateLongleyRiceVariability(zt, zl, zc, prop, propv);
 	dbloss = xlb;
 	if (prop.kwx == 0)
+	{
 		errnum = 0;
+	}
 	else
+	{
 		errnum = prop.kwx;
+	}
 }
 
 

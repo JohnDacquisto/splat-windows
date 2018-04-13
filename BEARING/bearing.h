@@ -11,12 +11,14 @@ double PI = 3.141592653589793;
 double DEGREES_TO_RADIANS = 1.74532925199e-02;	//| OLD NAME: deg2rad
 double KM_PER_MILE = 1.609344;
 
-struct site {
+struct site 
+{
 	double lat;
 	double lon;
 	double azimuth;
 	char name[50];
-} 	site;
+}
+site;
 
 
 //| Functions
