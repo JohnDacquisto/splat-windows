@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "USGS2SDF", "USGS2SDF\USGS2S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SRTM2SDF", "SRTM2SDF\SRTM2SDF.vcxproj", "{F0FBFEF6-2DAB-4BEB-8665-E550A515F6CA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{F60693C4-018D-4012-A27F-952245FF6CD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{F0FBFEF6-2DAB-4BEB-8665-E550A515F6CA}.Release|x64.Build.0 = Release|x64
 		{F0FBFEF6-2DAB-4BEB-8665-E550A515F6CA}.Release|x86.ActiveCfg = Release|Win32
 		{F0FBFEF6-2DAB-4BEB-8665-E550A515F6CA}.Release|x86.Build.0 = Release|Win32
+		{F60693C4-018D-4012-A27F-952245FF6CD5}.Debug|x64.ActiveCfg = Debug|x64
+		{F60693C4-018D-4012-A27F-952245FF6CD5}.Debug|x64.Build.0 = Debug|x64
+		{F60693C4-018D-4012-A27F-952245FF6CD5}.Debug|x86.ActiveCfg = Debug|Win32
+		{F60693C4-018D-4012-A27F-952245FF6CD5}.Debug|x86.Build.0 = Debug|Win32
+		{F60693C4-018D-4012-A27F-952245FF6CD5}.Release|x64.ActiveCfg = Release|x64
+		{F60693C4-018D-4012-A27F-952245FF6CD5}.Release|x64.Build.0 = Release|x64
+		{F60693C4-018D-4012-A27F-952245FF6CD5}.Release|x86.ActiveCfg = Release|Win32
+		{F60693C4-018D-4012-A27F-952245FF6CD5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

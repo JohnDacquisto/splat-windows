@@ -47,6 +47,46 @@
 using namespace std;
 
 
+tcomplex::tcomplex()
+{
+}
+
+
+tcomplex::~tcomplex()
+{
+}
+
+
+prop_type::prop_type()
+{
+}
+
+
+prop_type::~prop_type()
+{
+}
+
+
+propv_type::propv_type()
+{
+}
+
+
+propv_type::~propv_type()
+{
+}
+
+
+propa_type::propa_type()
+{
+}
+
+
+propa_type::~propa_type()
+{
+}
+
+
 //| ------------------------------
 //| 
 //| FUNCTION: MinimumInteger

@@ -2,25 +2,30 @@
 #include "stdafx.h"
 #include <complex>
 
+//| JAD FIX
+#include "C:/DEV/SPLAT/Common/constants.h"
+
 
 using namespace std;
 
 
-//| Constants
-
-#define ONE_THIRD (1.0/3.0)
-
-
-//| Global variables
-
-struct tcomplex
+class tcomplex
 {
+public:
+	tcomplex();
+	~tcomplex();
+
 	double tcreal;
 	double tcimag;
 };
 
-struct prop_type
+
+class prop_type
 {
+public:
+	prop_type();
+	~prop_type();
+
 	double aref;
 	double dist;
 	double hg[2];
@@ -55,16 +60,26 @@ struct prop_type
 	int los;
 };
 
-struct propv_type
+
+class propv_type
 {
+public:
+	propv_type();
+	~propv_type();
+
 	double sgc;
 	int lvar;
 	int mdvar;
 	int klim;
 };
 
-struct propa_type
+
+class propa_type
 {
+public:
+	propa_type();
+	~propa_type();
+
 	double dlsa;
 	double dx;
 	double ael;
