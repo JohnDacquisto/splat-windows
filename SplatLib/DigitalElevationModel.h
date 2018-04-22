@@ -1,10 +1,13 @@
+/****************************************************************************
+*						Class: DigitalElevationModel		                *
+****************************************************************************/
+
 #pragma once
+#include "stdafx.h"
+#include "../Common/constants.h"
 
-//| JAD FIX
-#include "C:/DEV/SPLAT/Common/constants.h"
 
-
-class DigitalElevationModel
+class _declspec(dllexport) DigitalElevationModel
 {
 public:
 	DigitalElevationModel();

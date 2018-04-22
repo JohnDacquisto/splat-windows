@@ -1,9 +1,11 @@
+/********************************************************************************
+*							ITWOM version 3.0a							        *
+********************************************************************************/
+
 #pragma once
 #include "stdafx.h"
 #include <complex>
-
-//| JAD FIX
-#include "C:/DEV/SPLAT/Common/constants.h"
+#include "../Common/constants.h"
 
 
 using namespace std;
@@ -93,6 +95,11 @@ public:
 	double dla;
 	double tha;
 };
+
+
+//| Export functions
+
+double _declspec(dllexport) IrregularTerrainModelVersion();
 
 
 //| Functions
@@ -199,5 +206,3 @@ double IrregularTerrainModelAreaCalculationDbLoss(long ModVar, double deltaH, do
 	double enc_ncc_clcref, double clutter_height, double clutter_density,
 	double delta_h_diff, double frq_mhz, int radio_climate, int pol,
 	int mode_var, double pctTime, double pctLoc, double pctConf);
-
-double IrregularTerrainModelVersion();

@@ -1,14 +1,12 @@
+/****************************************************************************
+*            Usgs2Sdf: USGS to SPLAT Data File Converter Utility            *
+****************************************************************************/
+
 #pragma once
 #include "stdafx.h"
-
-
-//| Global variables
-
-char SplatDataFilePath[255];
+#include "..\Usgs2SdfLib\usgs2sdfLib.h"
 
 
 //| Functions
-
-char *ConvertExponentialNotation(char *UsgsString);
 
 int main(int argc, char *argv[]);

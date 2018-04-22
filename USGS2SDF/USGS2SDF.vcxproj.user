@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-d C:\SPLAT\Regression_Test_3\DEM_Data C:\SPLAT\Regression_Test_3\DEM_Data\baltimore-e C:\SPLAT\Regression_Test_3\DEM_Data\baltimore-w</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-d C:\SPLAT\USGS2SDF_Test_1\ C:\SPLAT\USGS2SDF_Test_1\baltimore-e C:\SPLAT\USGS2SDF_Test_1\baltimore-w</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>
