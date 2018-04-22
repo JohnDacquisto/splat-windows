@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-t C:\SPLAT\Regression_Test_1\wnju-dt.qth -L 20 -o C:\SPLAT\Regression_Test_1\map.ppm -d C:\SPLAT\Regression_Test_1\DEM_Data\ -rsp C:\SPLAT\Regression_Test_1\ -ano C:\SPLAT\Regression_Test_1\test_1_trace.txt -time C:\SPLAT\Regression_Test_1\test_1_time.txt -metric</LocalDebuggerCommandArguments>
-    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-  </PropertyGroup>
-</Project>
