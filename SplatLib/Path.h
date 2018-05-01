@@ -4,18 +4,21 @@
 
 #pragma once
 #include "stdafx.h"
-#include "../Common/constants.h"
 
 
 class _declspec(dllexport) Path
 {
 public:
 	Path();
+	Path(long arraySize);
 	~Path();
 
-	double lat[ARRAY_SIZE];
-	double lon[ARRAY_SIZE];
-	double elevation[ARRAY_SIZE];
-	double distance[ARRAY_SIZE];
+	double *lat;
+	double *lon;
+	double *elevation;
+	double *distance;
+
+	long pathArraySize;
+
 	int length;
 };

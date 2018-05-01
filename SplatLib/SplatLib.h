@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include <stdio.h>
 #include "DigitalElevationModel.h"
+#include "DigitalElevationModelWrapper.h"
 #include "Path.h"
 #include "IrregularTerrainModelParameters.h"
 #include "ColorRegion.h"
@@ -18,75 +19,75 @@ double _declspec(dllexport) LongitudeDifference(double lon1, double lon2);
 
 Site _declspec(dllexport) LoadSplatSiteLocationFile(char *filename);
 
-double _declspec(dllexport) GetSiteLocationElevation(Site location, DigitalElevationModel *digitalElevationModel);
+double _declspec(dllexport) GetSiteLocationElevation(Site location, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-void _declspec(dllexport) PlaceTextAndMarkerDataInMaskArrayForMaps(Site location, DigitalElevationModel *digitalElevationModel, int minimumLatitudeNorth, int maximumLatitudeNorth,
+void _declspec(dllexport) PlaceTextAndMarkerDataInMaskArrayForMaps(Site location, DigitalElevationModelWrapper *digitalElevationModelWrapper, int minimumLatitudeNorth, int maximumLatitudeNorth,
 	int minimumLongitudeWest, int maximumLongitudeWest);
 
-void _declspec(dllexport) LoadAndPlotCitiesAndSitesOnMaps(char *filename, DigitalElevationModel *digitalElevationModel, int minimumLatitudeNorth, int maximumLatitudeNorth,
+void _declspec(dllexport) LoadAndPlotCitiesAndSitesOnMaps(char *filename, DigitalElevationModelWrapper *digitalElevationModelWrapper, int minimumLatitudeNorth, int maximumLatitudeNorth,
 	int minimumLongitudeWest, int maximumLongitudeWest);
 
-void _declspec(dllexport) LoadUserDefinedTerrainFile(char *filename, DigitalElevationModel *digitalElevationModel);
+void _declspec(dllexport) LoadUserDefinedTerrainFile(char *filename, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-void _declspec(dllexport) LoadCartographicBoundaryFiles(char *filename, DigitalElevationModel *digitalElevationModel, Path *path);
+void _declspec(dllexport) LoadCartographicBoundaryFiles(char *filename, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path);
 
 char _declspec(dllexport) ReadLongleyRiceParameterDataForSite(Site txsite, char forced_read, IrregularTerrainModelParameters *itmParameters, unsigned char *gotAntennaElevationAnglePattern,
 	unsigned char *gotAntennaAzimuthAnglePattern, double fresnelZoneFrequency, double effectiveRadiatedPower);
 
-void _declspec(dllexport) AnalyzeAndPlotLineOfSightCoverageBetweenSites(Site source, Site destination, char mask_value, FILE *fd, DigitalElevationModel *digitalElevationModel, Path *path,
+void _declspec(dllexport) AnalyzeAndPlotLineOfSightCoverageBetweenSites(Site source, Site destination, char mask_value, FILE *fd, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path,
 	double groundClutterHeight, double sphereRadius);
 
-void _declspec(dllexport) PlotLineOfSightCoverageFromSiteAtAltitude(Site source, double altitude, char *plo_filename, DigitalElevationModel *digitalElevationModel, Path *path,
+void _declspec(dllexport) PlotLineOfSightCoverageFromSiteAtAltitude(Site source, double altitude, char *plo_filename, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path,
 	unsigned char useMetricUnits, int minimumLatitudeNorth, int maximumLatitudeNorth, int minimumLongitudeWest, int maximumLongitudeWest, double groundClutterHeight, double sphereRadius);
 
-void _declspec(dllexport) PlotAttenuationFromSiteAtAltitude(Site source, double altitude, char *plo_filename, DigitalElevationModel *digitalElevationModel, Path *path,
+void _declspec(dllexport) PlotAttenuationFromSiteAtAltitude(Site source, double altitude, char *plo_filename, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path,
 	IrregularTerrainModelParameters *itmParameters, double *pathElevation, char useOldLongleyRiceModel, unsigned char plotSignalPowerLevelContours, unsigned char gotAntennaElevationAnglePattern,
 	unsigned char useMetricUnits, int minimumLatitudeNorth, int maximumLatitudeNorth, int minimumLongitudeWest, int maximumLongitudeWest,
 	double maximumAnalysisDistance, double groundClutterHeight);
 
 void _declspec(dllexport) WritePortablePixMapLineOfSightCoverageFile(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, Site *xmtr, unsigned char txsites,
-	DigitalElevationModel *digitalElevationModel, int maximumElevation, int minimumElevation, int minimumLatitudeNorth, int maximumLatitudeNorth,
+	DigitalElevationModelWrapper *digitalElevationModelWrapper, int maximumElevation, int minimumElevation, int minimumLatitudeNorth, int maximumLatitudeNorth,
 	int minimumLongitudeWest, int maximumLongitudeWest);
 
 void _declspec(dllexport) WritePortablePixMapAttenuationFile(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, Site *xmtr, unsigned char txsites,
-	DigitalElevationModel *digitalElevationModel, ColorRegion *region, unsigned char displaySmoothContourLevels, int contourDisplayThreshold,
+	DigitalElevationModelWrapper *digitalElevationModelWrapper, ColorRegion *region, unsigned char displaySmoothContourLevels, int contourDisplayThreshold,
 	int maximumElevation, int minimumElevation, int minimumLatitudeNorth, int maximumLatitudeNorth, int minimumLongitudeWest, int maximumLongitudeWest);
 
 void _declspec(dllexport) WritePortablePixMapSignalStrengthFile(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, Site *xmtr, unsigned char txsites,
-	DigitalElevationModel *digitalElevationModel, ColorRegion *region, unsigned char displaySmoothContourLevels, int contourDisplayThreshold,
+	DigitalElevationModelWrapper *digitalElevationModelWrapper, ColorRegion *region, unsigned char displaySmoothContourLevels, int contourDisplayThreshold,
 	int maximumElevation, int minimumElevation, int minimumLatitudeNorth, int maximumLatitudeNorth, int minimumLongitudeWest, int maximumLongitudeWest);
 
 void _declspec(dllexport) WritePortablePixMapPowerLevelFile(char *filename, unsigned char geo, unsigned char kml, unsigned char ngs, Site *xmtr, unsigned char txsites,
-	DigitalElevationModel *digitalElevationModel, ColorRegion *region, unsigned char displaySmoothContourLevels, int contourDisplayThreshold,
+	DigitalElevationModelWrapper *digitalElevationModelWrapper, ColorRegion *region, unsigned char displaySmoothContourLevels, int contourDisplayThreshold,
 	int maximumElevation, int minimumElevation, int minimumLatitudeNorth, int maximumLatitudeNorth, int minimumLongitudeWest, int maximumLongitudeWest);
 
-void _declspec(dllexport) GenerateGnuPlotTerrainProfileBetweenSites(Site source, Site destination, char *name, DigitalElevationModel *digitalElevationModel, Path *path,
+void _declspec(dllexport) GenerateGnuPlotTerrainProfileBetweenSites(Site source, Site destination, char *name, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path,
 	char saveGnuPlotWorkingFiles, unsigned char useMetricUnits, double groundClutterHeight, char *reportSavePath);
 
-void _declspec(dllexport) GenerateGnuPlotElevationProfileBetweenSites(Site source, Site destination, char *name, DigitalElevationModel *digitalElevationModel, Path *path,
+void _declspec(dllexport) GenerateGnuPlotElevationProfileBetweenSites(Site source, Site destination, char *name, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path,
 	char saveGnuPlotWorkingFiles, unsigned char useMetricUnits, double groundClutterHeight, double sphereRadius, char *reportSavePath);
 
 void _declspec(dllexport) GenerateGnuPlotHeightProfileBetweenSites(Site source, Site destination, char *name, unsigned char fresnel_plot, unsigned char normalized,
-	DigitalElevationModel *digitalElevationModel, Path *path, IrregularTerrainModelParameters *itmParameters, char saveGnuPlotWorkingFiles,
+	DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path, IrregularTerrainModelParameters *itmParameters, char saveGnuPlotWorkingFiles,
 	unsigned char useMetricUnits, double groundClutterHeight, double fresnelZoneClearanceRatio, double sphereRadius, char *reportSavePath);
 
-void _declspec(dllexport) WriteSplatPathReport(Site source, Site destination, char *name, char graph_it, DigitalElevationModel *digitalElevationModel, Path *path,
+void _declspec(dllexport) WriteSplatPathReport(Site source, Site destination, char *name, char graph_it, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path,
 	IrregularTerrainModelParameters *itmParameters, double *pathElevation, char useOldLongleyRiceModel, char saveGnuPlotWorkingFiles,
 	unsigned char gotAntennaElevationAnglePattern, unsigned char gotAntennaAzimuthAnglePattern, unsigned char useMetricUnits,
 	double groundClutterHeight, double fresnelZoneClearanceRatio, double sphereRadius, char *reportSavePath);
 
-void _declspec(dllexport) WriteSplatSiteReport(Site xmtr, DigitalElevationModel *digitalElevationModel, Path *path, unsigned char useMetricUnits,
+void _declspec(dllexport) WriteSplatSiteReport(Site xmtr, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path, unsigned char useMetricUnits,
 	double groundClutterHeight, char *reportSavePath);
 
-void _declspec(dllexport) LoadSplatDataFilesForRegion(int max_lon, int min_lon, int max_lat, int min_lat, DigitalElevationModel *digitalElevationModel,
+void _declspec(dllexport) LoadSplatDataFilesForRegion(int max_lon, int min_lon, int max_lat, int min_lat, DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	int *maximumElevation, int *minimumElevation, int *minimumLatitudeNorth, int *maximumLatitudeNorth,
 	int *minimumLongitudeWest, int *maximumLongitudeWest, char *splatDataFilePath);
 
-int _declspec(dllexport) LoadSplatAlphanumericOutputFile(char *filename, DigitalElevationModel *digitalElevationModel, IrregularTerrainModelParameters *itmParameters,
+int _declspec(dllexport) LoadSplatAlphanumericOutputFile(char *filename, DigitalElevationModelWrapper *digitalElevationModelWrapper, IrregularTerrainModelParameters *itmParameters,
 	unsigned char plotSignalPowerLevelContours, int contourDisplayThreshold, int *maximumElevation, int *minimumElevation,
 	int *minimumLatitudeNorth, int *maximumLatitudeNorth, int *minimumLongitudeWest, int *maximumLongitudeWest, char *splatDataFilePath);
 
-void _declspec(dllexport) WriteKeyholeMarkupLanguageFile(Site source, Site destination, DigitalElevationModel *digitalElevationModel, Path *path,
+void _declspec(dllexport) WriteKeyholeMarkupLanguageFile(Site source, Site destination, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path,
 	unsigned char useMetricUnits, double sphereRadius);
 
 
@@ -106,40 +107,40 @@ double AzimuthAngleBetweenSites(Site source, Site destination);
 
 double BearingStringToDecimalDegrees(char *input);
 
-int SetValueInDigitalElevationModelMask(double lat, double lon, int value, DigitalElevationModel *digitalElevationModel);
+int SetValueInDigitalElevationModelMask(double lat, double lon, int value, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-int SetOrValueInDigitalElevationModelMask(double lat, double lon, int value, DigitalElevationModel *digitalElevationModel);
+int SetOrValueInDigitalElevationModelMask(double lat, double lon, int value, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-int GetValueInDigitalElevationModelMask(double lat, double lon, DigitalElevationModel *digitalElevationModel);
+int GetValueInDigitalElevationModelMask(double lat, double lon, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-int SetValueInDigitalElevationModelSignal(double lat, double lon, unsigned char signal, DigitalElevationModel *digitalElevationModel);
+int SetValueInDigitalElevationModelSignal(double lat, double lon, unsigned char signal, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-unsigned char GetValueInDigitalElevationModelSignal(double lat, double lon, DigitalElevationModel* digitalElevationModel);
+unsigned char GetValueInDigitalElevationModelSignal(double lat, double lon, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-int AddUserDefinedTerrainToDigitalElevationModelData(double lat, double lon, double height, DigitalElevationModel *digitalElevationModel);
+int AddUserDefinedTerrainToDigitalElevationModelData(double lat, double lon, double height, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-double ElevationAngleBetweenSites(Site source, Site destination, DigitalElevationModel *digitalElevationModel, double sphereRadius);
+double ElevationAngleBetweenSites(Site source, Site destination, DigitalElevationModelWrapper *digitalElevationModelWrapper, double sphereRadius);
 
-void GeneratePathBetweenSites(Site source, Site destination, DigitalElevationModel *digitalElevationModel, Path *path);
+void GeneratePathBetweenSites(Site source, Site destination, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path);
 
-double ObstructedElevationAngleBetweenSites(Site source, Site destination, double er, DigitalElevationModel *digitalElevationModel, Path *path,
+double ObstructedElevationAngleBetweenSites(Site source, Site destination, double er, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path,
 	double groundClutterHeight, double sphereRadius);
 
 double AverageTerrainOverDistanceAtAzimuthFromSite(Site source, double azimuthx, double start_distance, double end_distance,
-	DigitalElevationModel *digitalElevationModel, Path *path, double groundClutterHeight);
+	DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path, double groundClutterHeight);
 
-double AntennaHeightAboveAverageTerrain(Site antenna, DigitalElevationModel *digitalElevationModel, Path *path, double groundClutterHeight);
+double AntennaHeightAboveAverageTerrain(Site antenna, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path, double groundClutterHeight);
 
 void LoadAntennaAzimuthElevationPatternFiles(char *filename, IrregularTerrainModelParameters *itmParameters, unsigned char *gotAntennaElevationAnglePattern,
 	unsigned char *gotAntennaAzimuthAnglePattern);
 
-int LoadUncompressedSplatDataFile(char *name, DigitalElevationModel *digitalElevationModel, int *maximumElevation, int *minimumElevation,
+int LoadUncompressedSplatDataFile(char *name, DigitalElevationModelWrapper *digitalElevationModelWrapper, int *maximumElevation, int *minimumElevation,
 	int *minimumLatitudeNorth, int *maximumLatitudeNorth, int *minimumLongitudeWest, int *maximumLongitudeWest, char *splatDataFilePath);
 
-char LoadSplatDataFile(char *name, DigitalElevationModel *digitalElevationModel, int *maximumElevation, int *minimumElevation,
+char LoadSplatDataFile(char *name, DigitalElevationModelWrapper *digitalElevationModelWrapper, int *maximumElevation, int *minimumElevation,
 	int *minimumLatitudeNorth, int *maximumLatitudeNorth, int *minimumLongitudeWest, int *maximumLongitudeWest, char *splatDataFilePath);
 
-void AnalyzeAndPlotPathLossBetweenSites(Site source, Site destination, unsigned char mask_value, FILE *fd, DigitalElevationModel *digitalElevationModel,
+void AnalyzeAndPlotPathLossBetweenSites(Site source, Site destination, unsigned char mask_value, FILE *fd, DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	Path *path, IrregularTerrainModelParameters *itmParameters, double *pathElevation, char useOldLongleyRiceModel, unsigned char plotSignalPowerLevelContours, unsigned char gotAntennaElevationAnglePattern,
 	double maximumAnalysisDistance, double groundClutterHeight);
 
@@ -149,5 +150,5 @@ void LoadSplatLossColorsForSite(Site xmtr, ColorRegion *region);
 
 void LoadSplatPowerColorsForSite(Site xmtr, ColorRegion *region);
 
-void PerformObstructionAnalysisBetweenSites(Site xmtr, Site rcvr, double f, FILE *outfile, DigitalElevationModel *digitalElevationModel, Path *path,
+void PerformObstructionAnalysisBetweenSites(Site xmtr, Site rcvr, double f, FILE *outfile, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path,
 	unsigned char useMetricUnits, double groundClutterHeight, double fresnelZoneClearanceRatio, double sphereRadius);

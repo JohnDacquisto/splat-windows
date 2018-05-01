@@ -123,6 +123,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="DigitalElevationModelWrapper.cpp" />
     <ClCompile Include="IrregularTerrainModelParameters.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -147,6 +148,7 @@
   <ItemGroup>
     <ClInclude Include="ColorRegion.h" />
     <ClInclude Include="DigitalElevationModel.h" />
+    <ClInclude Include="DigitalElevationModelWrapper.h" />
     <ClInclude Include="fontdata.h" />
     <ClInclude Include="IrregularTerrainModelParameters.h" />
     <ClInclude Include="itwom.h" />
