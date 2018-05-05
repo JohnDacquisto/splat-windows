@@ -32,7 +32,7 @@ void _declspec(dllexport) LoadUserDefinedTerrainFile(char *filename, DigitalElev
 void _declspec(dllexport) LoadCartographicBoundaryFiles(char *filename, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path);
 
 char _declspec(dllexport) ReadLongleyRiceParameterDataForSite(Site txsite, char forced_read, IrregularTerrainModelParameters *itmParameters, unsigned char *gotAntennaElevationAnglePattern,
-	unsigned char *gotAntennaAzimuthAnglePattern, double fresnelZoneFrequency, double effectiveRadiatedPower);
+	unsigned char *gotAntennaAzimuthAnglePattern, double fresnelZoneFrequency, double effectiveRadiatedPower, char *lrpFilePath);
 
 void _declspec(dllexport) AnalyzeAndPlotLineOfSightCoverageBetweenSites(Site source, Site destination, char mask_value, FILE *fd, DigitalElevationModelWrapper *digitalElevationModelWrapper, Path *path,
 	double groundClutterHeight, double sphereRadius);

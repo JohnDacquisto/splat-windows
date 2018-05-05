@@ -2764,10 +2764,10 @@ LoadCartographicBoundaryFiles
 //|   This function reads ITM parameter data for the transmitter
 //|   site. The file name is the same as the txsite, except the
 //|   filename extension is .lrp. If the needed file is not found,
-//|   then the file "splat.lrp" is read from the current working
+//|   then the .lrp file is read from the current working
 //|   directory. Failure to load this file under a forced_read
 //|   condition will result in the default parameters hard coded
-//|   into this function to be used and written to "splat.lrp".
+//|   into this function to be used and written to a .lrp file for the txsite.
 //| 
 //| ------------------------------
 char
@@ -2778,7 +2778,8 @@ ReadLongleyRiceParameterDataForSite
 	unsigned char *gotAntennaElevationAnglePattern,
 	unsigned char *gotAntennaAzimuthAnglePattern,
 	double fresnelZoneFrequency,
-	double effectiveRadiatedPower)
+	double effectiveRadiatedPower,
+	char *lrpFilePath)
 {
 	double din;
 	char filename[255], LrString[80], *pointer = NULL, return_value = 0;
@@ -2816,7 +2817,14 @@ ReadLongleyRiceParameterDataForSite
 	if (fd == NULL)
 	{
 		//| Load default "splat.lrp" file
-		err = strncpy_s(filename, _countof(filename), "splat.lrp\0", 10);
+		if (lrpFilePath != NULL)
+		{
+			ok = snprintf(filename, 253, "%s%s", lrpFilePath, "splat.lrp\0");
+		}
+		else
+		{
+			err = strncpy_s(filename, _countof(filename), "splat.lrp\0", 10);
+		}
 		err = fopen_s(&fd, filename, "r");
 	}
 
@@ -3011,9 +3019,9 @@ ReadLongleyRiceParameterDataForSite
 		itmParameters->rel = 0.50;
 		itmParameters->erp = 0.0;
 
-		//| Write them to a "splat.lrp" file.
+		//| Write them to a .lrp file.
 
-		err = fopen_s(&outfile, "splat.lrp", "w");
+		err = fopen_s(&outfile, filename, "w");
 
 		fprintf(outfile, "%.3f\t; Earth Dielectric Constant (Relative permittivity)\n", itmParameters->eps_dielect);
 		fprintf(outfile, "%.3f\t; Earth Conductivity (Siemens per meter)\n", itmParameters->sgm_conductivity);
@@ -3030,7 +3038,7 @@ ReadLongleyRiceParameterDataForSite
 
 		return_value = 1;
 
-		fprintf(stderr, "\n\n%c*** There were problems reading your \"%s\" file ***\nA \"splat.lrp\" file was written to your directory with default data.\n", 7, filename);
+		fprintf(stderr, "\n\n%c*** There were problems reading your \"%s\" file ***\nSPLAT will create and use an .lrp file with default data.\n", 7, filename);
 	}
 	else if (forced_read == 0)
 	{
