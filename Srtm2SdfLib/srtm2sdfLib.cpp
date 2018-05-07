@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <io.h>
 #include "srtm2sdfLib.h"
+#include "..\Common\constants.h"
 
 
 //| ------------------------------
@@ -201,7 +202,7 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 
 	_lseek(infile, 0L, SEEK_SET);
 
-	if (integerPixelsPerDegree == 3600)
+	if (integerPixelsPerDegree == PIXELS_PER_DEGREE_HIGH_DEF)
 	{
 		sprintf_s(splatDataFileName, 30, "%ldx%ldx%ldx%ld-hd.sdf", *minimumLatitudeNorth, *maximumLatitudeNorth, *minimumLongitudeWest, *maximumLongitudeWest);
 	}
@@ -287,7 +288,7 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 
 //| ------------------------------
 //| 
-//| FUNCTION: LoadUncompressedSplatDataFile
+//| FUNCTION: LoadUncompressedSplatDataFileForSrtm
 //| 
 //| OLD NAME: LoadSDF_SDF
 //| 
@@ -297,7 +298,7 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 //| 
 //| ------------------------------
 int
-LoadUncompressedSplatDataFile
+LoadUncompressedSplatDataFileForSrtm
    (char *name,
 	char *splatDataFilePath,
 	int **unitedStatesGeologicalSurveyData)
@@ -336,9 +337,9 @@ LoadUncompressedSplatDataFile
 	printf("\nReading %s... ", path_plus_name);
 	fflush(stdout);
 
-	for (x = 0; x < 1200; x++)
+	for (x = 0; x < PIXELS_PER_DEGREE_STANDARD; x++)
 	{
-		for (y = 0; y < 1200; y++)
+		for (y = 0; y < PIXELS_PER_DEGREE_STANDARD; y++)
 		{
 			fscanf_s(infile, "%ld", &unitedStatesGeologicalSurveyData[x][y]);
 		}
@@ -352,18 +353,18 @@ LoadUncompressedSplatDataFile
 
 //| ------------------------------
 //| 
-//| FUNCTION: LoadSplatDataFile
+//| FUNCTION: LoadSplatDataFileForSrtm
 //| 
 //| OLD NAME: LoadSDF
 //| 
 //| NOTES: 
 //|   This function loads the requested SDF file from the filesystem.
-//|   First, it tries to invoke the LoadUncompressedSplatDataFile() function to load an
+//|   First, it tries to invoke the LoadUncompressedSplatDataFileForSrtm() function to load an
 //|   uncompressed SDF file (since uncompressed files load slightly faster).
 //| 
 //| ------------------------------
 char
-LoadSplatDataFile
+LoadSplatDataFileForSrtm
    (char *name,
 	char *splatDataFilePath,
 	int **unitedStatesGeologicalSurveyData)
@@ -372,7 +373,7 @@ LoadSplatDataFile
 
 	//| Try to load an uncompressed SDF first.
 
-	return_value = LoadUncompressedSplatDataFile(name, splatDataFilePath, unitedStatesGeologicalSurveyData);
+	return_value = LoadUncompressedSplatDataFileForSrtm(name, splatDataFilePath, unitedStatesGeologicalSurveyData);
 
 	return return_value;
 }
@@ -403,7 +404,7 @@ ReadUnitedStatesGeologicalSurveyDataFile
 
 	sprintf_s(usgs_filename, _countof(usgs_filename), "%ldx%ldx%ldx%ld", minimumLatitudeNorth, maximumLatitudeNorth, minimumLongitudeWest, maximumLongitudeWest);
 
-	return (LoadSplatDataFile(usgs_filename, splatDataFilePath, unitedStatesGeologicalSurveyData));
+	return (LoadSplatDataFileForSrtm(usgs_filename, splatDataFilePath, unitedStatesGeologicalSurveyData));
 }
 
 
@@ -597,13 +598,13 @@ WriteSplatDataFile
 			{
 				if (mergeData)
 				{
-					if (integerPixelsPerDegree == 3600)
+					if (integerPixelsPerDegree == PIXELS_PER_DEGREE_HIGH_DEF)
 					{
-						fprintf(outfile, "%d\n", unitedStatesGeologicalSurveyData[1200 - (y / 3)][1199 - (x / 3)]);
+						fprintf(outfile, "%d\n", unitedStatesGeologicalSurveyData[PIXELS_PER_DEGREE_STANDARD - (y / 3)][(PIXELS_PER_DEGREE_STANDARD - 1) - (x / 3)]);
 					}
 					else
 					{
-						fprintf(outfile, "%d\n", unitedStatesGeologicalSurveyData[1200 - y][1199 - x]);
+						fprintf(outfile, "%d\n", unitedStatesGeologicalSurveyData[PIXELS_PER_DEGREE_STANDARD - y][(PIXELS_PER_DEGREE_STANDARD - 1) - x]);
 					}
 				}
 				else

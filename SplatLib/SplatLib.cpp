@@ -10,6 +10,7 @@
 #include "SplatLib.h"
 #include "itwom.h"
 #include "fontdata.h"
+#include "..\Common\Common.h"
 #include "..\Common\Site.h"
 #include "..\Common\constants.h"
 
@@ -64,38 +65,6 @@ LinearInterpolation
 	delta_x = (double)(x0 - x1);
 
 	result = y0 + (int)ceil((delta_y / delta_x)*(n - x0));
-
-	return result;
-}
-
-
-//| ------------------------------
-//| 
-//| FUNCTION: ArcCosine
-//| 
-//| OLD NAME: arccos
-//| 
-//| NOTES: 
-//|   This function implements the arc cosine function,
-//|   returning a value between 0 and TWO_PI.
-//| 
-//| ------------------------------
-double
-ArcCosine
-   (double x,
-	double y)
-{
-	double result = 0.0;
-
-	if (y > 0.0)
-	{
-		result = acos(x / y);
-	}
-
-	if (y < 0.0)
-	{
-		result = PI + acos(x / y);
-	}
 
 	return result;
 }
@@ -217,193 +186,6 @@ ConvertDecimalToDegreesMinutesSeconds
 
 //| ------------------------------
 //| 
-//| FUNCTION: GreatCircleDistanceBetweenSiteLocations
-//| 
-//| OLD NAME: Distance
-//| 
-//| NOTES: 
-//|   This function returns the great circle distance
-//|   in miles between any two site locations.
-//| 
-//| ------------------------------
-double
-GreatCircleDistanceBetweenSiteLocations
-   (Site site1,
-	Site site2)
-{
-	double lat1, lon1, lat2, lon2, distance;
-
-	lat1 = site1.lat*DEGREES_TO_RADIANS;
-	lon1 = site1.lon*DEGREES_TO_RADIANS;
-	lat2 = site2.lat*DEGREES_TO_RADIANS;
-	lon2 = site2.lon*DEGREES_TO_RADIANS;
-
-	distance = 3959.0*acos(sin(lat1)*sin(lat2) + cos(lat1)*cos(lat2)*cos((lon1)-(lon2)));
-
-	return distance;
-}
-
-
-//| ------------------------------
-//| 
-//| FUNCTION: AzimuthAngleBetweenSites
-//| 
-//| OLD NAME: Azimuth
-//| 
-//| NOTES: 
-//|   This function returns the azimuth (in degrees) to the
-//|   destination as seen from the location of the source.
-//| 
-//| ------------------------------
-double
-AzimuthAngleBetweenSites
-   (Site source,
-	Site destination)
-{
-	double dest_lat, dest_lon, src_lat, src_lon,
-		beta, azimuth, diff, num, den, fraction;
-
-	dest_lat = destination.lat*DEGREES_TO_RADIANS;
-	dest_lon = destination.lon*DEGREES_TO_RADIANS;
-
-	src_lat = source.lat*DEGREES_TO_RADIANS;
-	src_lon = source.lon*DEGREES_TO_RADIANS;
-
-	//| Calculate Surface Distance
-
-	beta = acos(sin(src_lat)*sin(dest_lat) + cos(src_lat)*cos(dest_lat)*cos(src_lon - dest_lon));
-
-	//| Calculate Azimuth
-
-	num = sin(dest_lat) - (sin(src_lat)*cos(beta));
-	den = cos(src_lat)*sin(beta);
-	fraction = num / den;
-
-	//| Trap potential problems in acos() due to rounding
-
-	if (fraction >= 1.0)
-	{
-		fraction = 1.0;
-	}
-
-	if (fraction <= -1.0)
-	{
-		fraction = -1.0;
-	}
-
-	//| Calculate azimuth
-
-	azimuth = acos(fraction);
-
-	//| Reference it to True North
-
-	diff = dest_lon - src_lon;
-
-	if (diff <= -PI)
-	{
-		diff += TWO_PI;
-	}
-
-	if (diff >= PI)
-	{
-		diff -= TWO_PI;
-	}
-
-	if (diff > 0.0)
-	{
-		azimuth = TWO_PI - azimuth;
-	}
-
-	return (azimuth / DEGREES_TO_RADIANS);
-}
-
-
-//| ------------------------------
-//| 
-//| FUNCTION: BearingStringToDecimalDegrees
-//| 
-//| OLD NAME: ReadBearing
-//| 
-//| NOTES: 
-//|   This function takes numeric input in the form of a character
-//|   string, and returns an equivalent bearing in degrees as a
-//|   decimal number (double). The input may either be expressed
-//|   in decimal format (40.139722) or degree, minute, second
-//|   format (40 08 23). This function also safely handles
-//|   extra spaces found either leading, trailing, or
-//|   embedded within the numbers expressed in the
-//|   input string. Decimal seconds are permitted.
-//| 
-//| ------------------------------
-double
-BearingStringToDecimalDegrees
-   (char *input)
-{
-	double seconds, bearing = 0.0;
-	char BearingString[20];
-	int	a, b, length, degrees, minutes;
-
-	//| Copy "input" to "string", and ignore any extra
-	//| spaces that might be present in the process.
-
-	BearingString[0] = 0;
-	length = (int)strlen(input);
-
-	for (a = 0, b = 0; (a < length) && (a < 18); a++)
-	{
-		if (((input[a] != 32) && (input[a] != '\n')) || ((input[a] == 32) && (input[a + 1] != 32) && (input[a + 1] != '\n') && (b != 0)))
-		{
-			BearingString[b] = input[a];
-			b++;
-		}
-	}
-
-	BearingString[b] = 0;
-
-	//| Count number of spaces in the clean string.
-
-	length = (int)strlen(BearingString);
-
-	for (a = 0, b = 0; a < length; a++)
-	{
-		if (BearingString[a] == 32)
-		{
-			b++;
-		}
-	}
-
-	if (b == 0)  //| Decimal Format (40.139722)
-	{
-		sscanf_s(BearingString, "%lf", &bearing);
-	}
-
-	if (b == 2)  //| Degree, Minute, Second Format (40 08 23.xx)
-	{
-		sscanf_s(BearingString, "%d %d %lf", &degrees, &minutes, &seconds);
-
-		bearing = fabs((double)degrees);
-		bearing += fabs(((double)minutes) / 60.0);
-		bearing += fabs(seconds / 3600.0);
-
-		if ((degrees < 0) || (minutes < 0) || (seconds < 0.0))
-		{
-			bearing = -bearing;
-		}
-	}
-
-	//| Anything else returns a 0.0
-
-	if ((bearing > 360.0) || (bearing < -360.0))
-	{
-		bearing = 0.0;
-	}
-
-	return bearing;
-}
-
-
-//| ------------------------------
-//| 
 //| FUNCTION: LoadSplatSiteLocationFile
 //| 
 //| OLD NAME: LoadQTH
@@ -493,7 +275,7 @@ LoadSplatSiteLocationFile
 		{
 			QthString[x] = 0;
 			sscanf_s(QthString, "%f", &tempsite.alt);
-			tempsite.alt *= 3.28084f;
+			tempsite.alt *= (float)FEET_PER_METER;
 		}
 		else
 		{
@@ -740,7 +522,7 @@ GetValueInDigitalElevationModelSignal
 //| NOTES: 
 //|   This function returns the elevation (in feet) of any location
 //|   represented by the digital elevation model data in memory.
-//|   Function returns -5000.0 for locations not found in memory.
+//|   Function returns LOCATION_NOT_IN_MEMORY for locations not found in memory.
 //| 
 //| ------------------------------
 double
@@ -769,11 +551,11 @@ GetSiteLocationElevation
 
 	if (found)
 	{
-		elevation = 3.28084*digitalElevationModelWrapper->digitalElevationModel[indx].data[x][y];
+		elevation = FEET_PER_METER * digitalElevationModelWrapper->digitalElevationModel[indx].data[x][y];
 	}
 	else
 	{
-		elevation = -5000.0;
+		elevation = LOCATION_NOT_IN_MEMORY;
 	}
 
 	return elevation;
@@ -854,7 +636,7 @@ ElevationAngleBetweenSites
 	a = GetSiteLocationElevation(destination, digitalElevationModelWrapper) + destination.alt + sphereRadius;
 	b = GetSiteLocationElevation(source, digitalElevationModelWrapper) + source.alt + sphereRadius;
 
-	dx = 5280.0 * GreatCircleDistanceBetweenSiteLocations(source, destination);
+	dx = FEET_PER_MILE * GreatCircleDistanceBetweenSiteLocations(source, destination);
 
 	//| Apply the Law of Cosines
 
@@ -886,7 +668,7 @@ GeneratePathBetweenSites
 	int	c;
 	double azimuth, distance, lat1, lon1, beta, den, num,
 		lat2, lon2, total_distance, dx, dy, path_length,
-		miles_per_sample, samples_per_radian = 68755.0;
+		miles_per_sample, samples_per_radian = SAMPLES_PER_RADIAN_STANDARD;
 	Site tempsite;
 
 	lat1 = source.lat * DEGREES_TO_RADIANS;
@@ -895,14 +677,14 @@ GeneratePathBetweenSites
 	lat2 = destination.lat * DEGREES_TO_RADIANS;
 	lon2 = destination.lon * DEGREES_TO_RADIANS;
 
-	if (((double)digitalElevationModelWrapper->demPixelsPerDegree) == 1200.0)
+	if (((double)digitalElevationModelWrapper->demPixelsPerDegree) == (double)PIXELS_PER_DEGREE_STANDARD)
 	{
-		samples_per_radian = 68755.0;
+		samples_per_radian = SAMPLES_PER_RADIAN_STANDARD;
 	}
 
-	if (((double)digitalElevationModelWrapper->demPixelsPerDegree) == 3600.0)
+	if (((double)digitalElevationModelWrapper->demPixelsPerDegree) == (double)PIXELS_PER_DEGREE_HIGH_DEF)
 	{
-		samples_per_radian = 206265.0;
+		samples_per_radian = SAMPLES_PER_RADIAN_HIGH_DEF;
 	}
 
 	azimuth = AzimuthAngleBetweenSites(source, destination) * DEGREES_TO_RADIANS;
@@ -938,7 +720,7 @@ GeneratePathBetweenSites
 
 	for (distance = 0.0, c = 0; (total_distance != 0.0) && (distance <= total_distance) && (c < path->pathArraySize); c++, distance = miles_per_sample * (double)c)
 	{
-		beta = distance / 3959.0;
+		beta = distance / EARTH_RADIUS_MILES;
 		lat2 = asin(sin(lat1)*cos(beta) + cos(azimuth)*sin(beta)*cos(lat1));
 		num = cos(beta) - (sin(lat1)*sin(lat2));
 		den = cos(lat1)*cos(lat2);
@@ -1044,7 +826,7 @@ ObstructedElevationAngleBetweenSites
 
 	GeneratePathBetweenSites(source, destination, digitalElevationModelWrapper, tempPath);
 
-	distance = 5280.0 * GreatCircleDistanceBetweenSiteLocations(source, destination);
+	distance = FEET_PER_MILE * GreatCircleDistanceBetweenSiteLocations(source, destination);
 	source_alt = er + source.alt + GetSiteLocationElevation(source, digitalElevationModelWrapper);
 	destination_alt = er + destination.alt + GetSiteLocationElevation(destination, digitalElevationModelWrapper);
 	source_alt2 = source_alt * source_alt;
@@ -1062,7 +844,7 @@ ObstructedElevationAngleBetweenSites
 
 	for (x = 2, block = 0; (x < tempPath->length) && (block == 0); x++)
 	{
-		distance = 5280.0*tempPath->distance[x];
+		distance = FEET_PER_MILE * tempPath->distance[x];
 
 		test_alt = sphereRadius + (tempPath->elevation[x] == 0.0 ? tempPath->elevation[x] : tempPath->elevation[x] + groundClutterHeight);
 
@@ -1106,10 +888,10 @@ ObstructedElevationAngleBetweenSites
 //|   This function returns the average terrain calculated in
 //|   the direction of "azimuth" (degrees) between "start_distance"
 //|   and "end_distance" (miles) from the source location. If
-//|   the terrain is all water (non-critical error), -5000.0 is
+//|   the terrain is all water (non-critical error), LOCATION_NOT_IN_MEMORY is
 //|   returned. If not enough SDF data has been loaded into
 //|   memory to complete the survey (critical error), then
-//|   -9999.0 is returned.
+//|   LOCATION_CRITICAL_ERROR is returned.
 //| 
 //| ------------------------------
 double
@@ -1132,7 +914,7 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 	//| Generate a path of elevations between the source
 	//| location and the remote location provided.
 
-	beta = end_distance / 3959.0;
+	beta = end_distance / EARTH_RADIUS_MILES;
 
 	azimuth = DEGREES_TO_RADIANS * azimuthx;
 
@@ -1182,11 +964,11 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 
 	//| If SDF data is missing for the endpoint of
 	//| the radial, then the average terrain cannot
-	//| be accurately calculated. Return -9999.0
+	//| be accurately calculated. Return LOCATION_CRITICAL_ERROR
 
-	if (GetSiteLocationElevation(destination, digitalElevationModelWrapper) < -4999.0)
+	if (GetSiteLocationElevation(destination, digitalElevationModelWrapper) < (LOCATION_NOT_IN_MEMORY + 1))
 	{
-		return (-9999.0);
+		return LOCATION_CRITICAL_ERROR;
 	}
 	else
 	{
@@ -1212,7 +994,7 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 
 		if (samples == 0)
 		{
-			terrain = -5000.0;  //| No land
+			terrain = LOCATION_NOT_IN_MEMORY;  //| No land
 		}
 		else
 		{
@@ -1234,7 +1016,7 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 //|   This function returns the antenna's Height Above Average
 //|   Terrain (HAAT) based on FCC Part 73.313(d). If a critical
 //|   error occurs, such as a lack of SDF data to complete the
-//|   survey, -5000.0 is returned.
+//|   survey, LOCATION_NOT_IN_MEMORY is returned.
 //| 
 //| ------------------------------
 double
@@ -1248,20 +1030,20 @@ AntennaHeightAboveAverageTerrain
 	char error = 0;
 	double terrain, avg_terrain, haat, sum = 0.0;
 
-	//| Calculate the average terrain between 2 and 10 miles
+	//| Calculate the average terrain between AVERAGE_TERRAIN_MIN_DISTANCE and AVERAGE_TERRAIN_MAX_DISTANCE 
 	//| from the antenna site at azimuths of 0, 45, 90, 135,
 	//| 180, 225, 270, and 315 degrees.
 
 	for (c = 0, azi = 0; (azi <= 315) && (error == 0); azi += 45)
 	{
-		terrain = AverageTerrainOverDistanceAtAzimuthFromSite(antenna, (double)azi, 2.0, 10.0, digitalElevationModelWrapper, path, groundClutterHeight);
+		terrain = AverageTerrainOverDistanceAtAzimuthFromSite(antenna, (double)azi, AVERAGE_TERRAIN_MIN_DISTANCE, AVERAGE_TERRAIN_MAX_DISTANCE, digitalElevationModelWrapper, path, groundClutterHeight);
 
-		if (terrain < -9998.0)  //| SDF data is missing
+		if (terrain < (LOCATION_CRITICAL_ERROR + 1))  //| SDF data is missing
 		{
 			error = 1;
 		}
 
-		if (terrain > -4999.0)  //| It's land, not water
+		if (terrain > (LOCATION_NOT_IN_MEMORY + 1))  //| It's land, not water
 		{
 			sum += terrain;  //| Sum of averages
 			c++;
@@ -1270,7 +1052,7 @@ AntennaHeightAboveAverageTerrain
 
 	if (error)
 	{
-		return -5000.0;
+		return LOCATION_NOT_IN_MEMORY;
 	}
 	else
 	{
@@ -1676,7 +1458,7 @@ LoadAntennaAzimuthElevationPatternFiles
 
 		fclose(fd);
 
-		//| Handle 0=360 degree ambiguity
+		//| Handle 0 = 360 degree ambiguity
 
 		if ((read_count[0] == 0) && (read_count[360] != 0))
 		{
@@ -2720,9 +2502,9 @@ LoadCartographicBoundaryFiles
 				sscanf_s(BoundariesString, "%lf %lf", &lon1, &lat1);
 
 				source.lat = lat0;
-				source.lon = (lon0>0.0 ? 360.0 - lon0 : -lon0);
+				source.lon = (lon0 > 0.0 ? 360.0 - lon0 : -lon0);
 				destination.lat = lat1;
-				destination.lon = (lon1>0.0 ? 360.0 - lon1 : -lon1);
+				destination.lon = (lon1 > 0.0 ? 360.0 - lon1 : -lon1);
 
 				GeneratePathBetweenSites(source, destination, digitalElevationModelWrapper, path);
 
@@ -2981,7 +2763,7 @@ ReadLongleyRiceParameterDataForSite
 
 				if ((strstr(LrString, "dBm") != NULL) || (strstr(LrString, "dbm") != NULL))
 				{
-					itmParameters->erp = (pow(10.0, (itmParameters->erp - 32.14) / 10.0));
+					itmParameters->erp = (pow(10.0, (itmParameters->erp - DBW_TO_DBM - DIPOLE_TO_ISOTROPIC_ANTENNA) / 10.0));
 				}
 			}
 		}
@@ -2993,7 +2775,7 @@ ReadLongleyRiceParameterDataForSite
 			itmParameters->erp = effectiveRadiatedPower;
 		}
 
-		if ((fresnelZoneFrequency >= 20.0) && (fresnelZoneFrequency <= 20000.0))
+		if ((fresnelZoneFrequency >= MINIMUM_FREQUENCY) && (fresnelZoneFrequency <= MAXIMUM_FREQUENCY))
 		{
 			itmParameters->frq_mhz = fresnelZoneFrequency;
 		}
@@ -3108,7 +2890,7 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 
 		if ((GetValueInDigitalElevationModelMask(path->lat[y], path->lon[y], digitalElevationModelWrapper) & mask_value) == 0)
 		{
-			distance = 5280.0*path->distance[y];
+			distance = FEET_PER_MILE * path->distance[y];
 			tx_alt = sphereRadius + source.alt + path->elevation[0];
 			rx_alt = sphereRadius + destination.alt + path->elevation[y];
 
@@ -3119,7 +2901,7 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 
 			for (x = y, block = 0; (x >= 0) && (block == 0); x--)
 			{
-				distance = 5280.0 * (path->distance[y] - path->distance[x]);
+				distance = FEET_PER_MILE * (path->distance[y] - path->distance[x]);
 				test_alt = sphereRadius + (path->elevation[x] == 0.0 ? path->elevation[x] : path->elevation[x] + groundClutterHeight);
 
 				cos_test_angle = ((rx_alt*rx_alt) + (distance*distance) - (test_alt*test_alt)) / (2.0*rx_alt*distance);
@@ -3195,7 +2977,7 @@ AnalyzeAndPlotPathLossBetweenSites
 
 	GeneratePathBetweenSites(source, destination, digitalElevationModelWrapper, path);
 
-	four_thirds_earth = FOUR_THIRDS * EARTH_RADIUS;
+	four_thirds_earth = FOUR_THIRDS * EARTH_RADIUS_FEET;
 
 	//| Copy elevations plus clutter along path into the pathElevation[] array.
 
@@ -3226,7 +3008,7 @@ AnalyzeAndPlotPathLossBetweenSites
 
 		if ((GetValueInDigitalElevationModelMask(path->lat[y], path->lon[y], digitalElevationModelWrapper) & 248) != (mask_value << 3))
 		{
-			distance = 5280.0 * path->distance[y];
+			distance = FEET_PER_MILE * path->distance[y];
 			xmtr_alt = four_thirds_earth + source.alt + path->elevation[0];
 			dest_alt = four_thirds_earth + destination.alt + path->elevation[y];
 			dest_alt2 = dest_alt * dest_alt;
@@ -3255,7 +3037,7 @@ AnalyzeAndPlotPathLossBetweenSites
 
 				for (x = 2, block = 0; (x < y) && (block == 0); x++)
 				{
-					distance = 5280.0 * path->distance[x];
+					distance = FEET_PER_MILE * path->distance[x];
 
 					test_alt = four_thirds_earth + (path->elevation[x] == 0.0 ? path->elevation[x] : path->elevation[x] + groundClutterHeight);
 
@@ -3338,7 +3120,7 @@ AnalyzeAndPlotPathLossBetweenSites
 				fprintf(fd, "%.7f, %.7f, %.3f, %.3f, ", path->lat[y], path->lon[y], azimuth, elevation);
 			}
 
-			//| If ERP==0, write path loss to alphanumeric
+			//| If ERP == 0, write path loss to alphanumeric
 			//| output file. Otherwise, write field strength
 			//| or received power level (below), as appropriate.
 
@@ -3369,9 +3151,9 @@ AnalyzeAndPlotPathLossBetweenSites
 			{
 				if (plotSignalPowerLevelContours != 0)
 				{
-					//| dBm is based on EIRP (ERP + 2.14)
+					//| dBm is based on EIRP (ERP + DIPOLE_TO_ISOTROPIC_ANTENNA)
 
-					rxp = itmParameters->erp / pow(10.0, (loss - 2.14) / 10.0);
+					rxp = itmParameters->erp / pow(10.0, (loss - DIPOLE_TO_ISOTROPIC_ANTENNA) / 10.0);
 
 					dBm = 10.0 * log10(rxp*1000.0);
 
@@ -3405,7 +3187,7 @@ AnalyzeAndPlotPathLossBetweenSites
 				}
 				else
 				{
-					field_strength = (139.4 + (20.0*log10(itmParameters->frq_mhz)) - loss) + (10.0*log10(itmParameters->erp / 1000.0));
+					field_strength = (FIELD_STRENGTH_MAGIC_NUMBER + (20.0*log10(itmParameters->frq_mhz)) - loss) + (10.0*log10(itmParameters->erp / 1000.0));
 
 					ifs = 100 + (int)rint(field_strength);
 
@@ -7390,8 +7172,8 @@ GenerateGnuPlotHeightProfileBetweenSites
 
 	if (fresnel_plot)
 	{
-		lambda = 9.8425e8 / (itmParameters->frq_mhz*1e6);
-		d = 5280.0*path->distance[path->length - 1];
+		lambda = SPEED_OF_LIGHT_FEET_PER_SECOND / (itmParameters->frq_mhz*1e6);
+		d = FEET_PER_MILE * path->distance[path->length - 1];
 	}
 
 	if (normalized)
@@ -7433,7 +7215,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 	err = fopen_s(&fd2, referenceNameAndPath, "wb");
 	err = fopen_s(&fd5, curvatureNameAndPath, "wb");
 
-	if ((itmParameters->frq_mhz >= 20.0) && (itmParameters->frq_mhz <= 20000.0) && fresnel_plot)
+	if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
 	{
 		err = fopen_s(&fd3, fresnelNameAndPath, "wb");
 		err = fopen_s(&fd4, fresnelPtNameAndPath, "wb");
@@ -7453,7 +7235,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 		}
 
 		a = terrain + sphereRadius;
-		cangle = 5280.0 * GreatCircleDistanceBetweenSiteLocations(destination, remote) / sphereRadius;
+		cangle = FEET_PER_MILE * GreatCircleDistanceBetweenSiteLocations(destination, remote) / sphereRadius;
 		c = b * sin(refangle*DEGREES_TO_RADIANS + HALF_PI) / sin(HALF_PI - refangle * DEGREES_TO_RADIANS - cangle);
 
 		height = a - c;
@@ -7466,10 +7248,10 @@ GenerateGnuPlotHeightProfileBetweenSites
 		//| where H is the distance from the LOS
 		//| path to the first Fresnel zone boundary.
 
-		if ((itmParameters->frq_mhz >= 20.0) && (itmParameters->frq_mhz <= 20000.0) && fresnel_plot)
+		if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
 		{
-			d1 = 5280.0*path->distance[x];
-			f_zone = -1.0*sqrt(lambda*d1*(d - d1) / d);
+			d1 = FEET_PER_MILE * path->distance[x];
+			f_zone = -1.0 * sqrt(lambda*d1*(d - d1) / d);
 			fpt6_zone = f_zone * fresnelZoneClearanceRatio;
 		}
 
@@ -7478,7 +7260,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 			r = -(nm*path->distance[x]) - nb;
 			height += r;
 
-			if ((itmParameters->frq_mhz >= 20.0) && (itmParameters->frq_mhz <= 20000.0) && fresnel_plot)
+			if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
 			{
 				f_zone += r;
 				fpt6_zone += r;
@@ -7514,7 +7296,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 			fprintf(fd5, "%f\t%f\n", path->distance[x], height - terrain);
 		}
 
-		if ((itmParameters->frq_mhz >= 20.0) && (itmParameters->frq_mhz <= 20000.0) && fresnel_plot)
+		if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
 		{
 			if (useMetricUnits)
 			{
@@ -7579,7 +7361,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 		fprintf(fd2, "%f\t%f\n", path->distance[path->length - 1], r);
 	}
 
-	if ((itmParameters->frq_mhz >= 20.0) && (itmParameters->frq_mhz <= 20000.0) && fresnel_plot)
+	if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
 	{
 		if (useMetricUnits)
 		{
@@ -7613,7 +7395,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 	fclose(fd2);
 	fclose(fd5);
 
-	if ((itmParameters->frq_mhz >= 20.0) && (itmParameters->frq_mhz <= 20000.0) && fresnel_plot)
+	if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
 	{
 		fclose(fd3);
 		fclose(fd4);
@@ -7698,7 +7480,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 	fprintf(fd, "set encoding iso_8859_1\n");
 	fprintf(fd, "set term %s\n", term);
 
-	if ((itmParameters->frq_mhz >= 20.0) && (itmParameters->frq_mhz <= 20000.0) && fresnel_plot)
+	if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
 	{
 		fprintf(fd, "set title \"%s Path Profile Between %s and %s (%.2f%c azimuth)\\nWith First Fresnel Zone\"\n", SPLAT_NAME, destination.name, source.name, azimuth, 176);
 	}
@@ -7741,7 +7523,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 
 	fprintf(fd, "set output \"%s.%s\"\n", basename, ext);
 
-	if ((itmParameters->frq_mhz >= 20.0) && (itmParameters->frq_mhz <= 20000.0) && fresnel_plot)
+	if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
 	{
 		if (groundClutterHeight > 0.0)
 		{
@@ -7800,7 +7582,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 				_unlink(clutterNameAndPath);
 			}
 
-			if ((itmParameters->frq_mhz >= 20.0) && (itmParameters->frq_mhz <= 20000.0) && fresnel_plot)
+			if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
 			{
 				_unlink(fresnelNameAndPath);
 				_unlink(fresnelPtNameAndPath);
@@ -7854,14 +7636,14 @@ PerformObstructionAnalysisBetweenSites
 	h_r_fpt6 = h_r;
 	h_r_orig = h_r;
 	h_t = GetSiteLocationElevation(xmtr, digitalElevationModelWrapper) + xmtr.alt + sphereRadius;
-	d_tx = 5280.0 * GreatCircleDistanceBetweenSiteLocations(rcvr, xmtr);
+	d_tx = FEET_PER_MILE * GreatCircleDistanceBetweenSiteLocations(rcvr, xmtr);
 	cos_tx_angle = ((h_r*h_r) + (d_tx*d_tx) - (h_t*h_t)) / (2.0*h_r*d_tx);
 	cos_tx_angle_f1 = cos_tx_angle;
 	cos_tx_angle_fpt6 = cos_tx_angle;
 
 	if (f)
 	{
-		lambda = 9.8425e8 / (f*1e6);
+		lambda = SPEED_OF_LIGHT_FEET_PER_SECOND / (f * 1e6);
 	}
 
 	if (groundClutterHeight > 0.0)
@@ -7901,7 +7683,7 @@ PerformObstructionAnalysisBetweenSites
 		site_x.alt = 0.0;
 
 		h_x = GetSiteLocationElevation(site_x, digitalElevationModelWrapper) + sphereRadius + groundClutterHeight;
-		d_x = 5280.0 * GreatCircleDistanceBetweenSiteLocations(rcvr, site_x);
+		d_x = FEET_PER_MILE * GreatCircleDistanceBetweenSiteLocations(rcvr, site_x);
 
 		//| Deal with the LOS path first.
 
@@ -7918,22 +7700,22 @@ PerformObstructionAnalysisBetweenSites
 			{
 				if (useMetricUnits)
 				{
-					fprintf(outfile, "   %8.4f N,%9.4f W, %5.2f kilometers, %6.2f meters AMSL\n", site_x.lat, site_x.lon, KM_PER_MILE*(d_x / 5280.0), METERS_PER_FOOT*(h_x - sphereRadius));
+					fprintf(outfile, "   %8.4f N,%9.4f W, %5.2f kilometers, %6.2f meters AMSL\n", site_x.lat, site_x.lon, KM_PER_MILE*(d_x / FEET_PER_MILE), METERS_PER_FOOT*(h_x - sphereRadius));
 				}
 				else
 				{
-					fprintf(outfile, "   %8.4f N,%9.4f W, %5.2f miles, %6.2f feet AMSL\n", site_x.lat, site_x.lon, d_x / 5280.0, h_x - sphereRadius);
+					fprintf(outfile, "   %8.4f N,%9.4f W, %5.2f miles, %6.2f feet AMSL\n", site_x.lat, site_x.lon, d_x / FEET_PER_MILE, h_x - sphereRadius);
 				}
 			}
 			else
 			{
 				if (useMetricUnits)
 				{
-					fprintf(outfile, "   %8.4f S,%9.4f W, %5.2f kilometers, %6.2f meters AMSL\n", -site_x.lat, site_x.lon, KM_PER_MILE*(d_x / 5280.0), METERS_PER_FOOT*(h_x - sphereRadius));
+					fprintf(outfile, "   %8.4f S,%9.4f W, %5.2f kilometers, %6.2f meters AMSL\n", -site_x.lat, site_x.lon, KM_PER_MILE*(d_x / FEET_PER_MILE), METERS_PER_FOOT*(h_x - sphereRadius));
 				}
 				else
 				{
-					fprintf(outfile, "   %8.4f S,%9.4f W, %5.2f miles, %6.2f feet AMSL\n", -site_x.lat, site_x.lon, d_x / 5280.0, h_x - sphereRadius);
+					fprintf(outfile, "   %8.4f S,%9.4f W, %5.2f miles, %6.2f feet AMSL\n", -site_x.lat, site_x.lon, d_x / FEET_PER_MILE, h_x - sphereRadius);
 				}
 			}
 		}
@@ -8104,7 +7886,7 @@ WriteSplatPathReport
 	char referenceNameAndPath[335];
 	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
 
-	four_thirds_earth = FOUR_THIRDS * EARTH_RADIUS;
+	four_thirds_earth = FOUR_THIRDS * EARTH_RADIUS_FEET;
 
 	for (x = 0; report_name[x] != 0; x++)
 	{
@@ -8152,7 +7934,7 @@ WriteSplatPathReport
 
 	haavt = AntennaHeightAboveAverageTerrain(source, digitalElevationModelWrapper, path, groundClutterHeight);
 
-	if (haavt > -4999.0)
+	if (haavt > (LOCATION_NOT_IN_MEMORY + 1))
 	{
 		if (useMetricUnits)
 		{
@@ -8248,7 +8030,7 @@ WriteSplatPathReport
 
 	haavt = AntennaHeightAboveAverageTerrain(destination, digitalElevationModelWrapper, path, groundClutterHeight);
 
-	if (haavt > -4999.0)
+	if (haavt > (LOCATION_NOT_IN_MEMORY + 1))
 	{
 		if (useMetricUnits)
 		{
@@ -8308,7 +8090,7 @@ WriteSplatPathReport
 		}
 		else
 		{
-			fprintf(fd2, "ITWOM Version %.1f Parameters Used In This Analysis:\n\n", IrregularTerrainModelVersion());
+			fprintf(fd2, "ITWOM Version %.1f Parameters Used In This Analysis:\n\n", ITWOM_VERSION);
 		}
 
 		fprintf(fd2, "Earth's Dielectric Constant: %.3lf\n", itmParameters->eps_dielect);
@@ -8393,11 +8175,11 @@ WriteSplatPathReport
 			dBm = 10.0*log10(itmParameters->erp*1000.0);
 			fprintf(fd2, " (%+.2f dBm)\n", dBm);
 
-			//| EIRP = ERP + 2.14 dB
+			//| EIRP = ERP + DIPOLE_TO_ISOTROPIC_ANTENNA (dB)
 
 			fprintf(fd2, "Transmitter EIRP: ");
 
-			eirp = itmParameters->erp*1.636816521;
+			eirp = itmParameters->erp * DIPOLE_TO_ISOTROPIC_ANTENNA_RATIO;
 
 			if (eirp < 1.0)
 			{
@@ -8453,7 +8235,7 @@ WriteSplatPathReport
 
 		for (y = 2; y < (path->length - 1); y++)  //| path->length-1 avoids itmParameters error
 		{
-			distance = 5280.0*path->distance[y];
+			distance = FEET_PER_MILE * path->distance[y];
 			source_alt = four_thirds_earth + source.alt + path->elevation[0];
 			dest_alt = four_thirds_earth + destination.alt + path->elevation[y];
 			dest_alt2 = dest_alt * dest_alt;
@@ -8472,7 +8254,7 @@ WriteSplatPathReport
 
 				for (x = 2, block = 0; (x < y) && (block == 0); x++)
 				{
-					distance = 5280.0 * (path->distance[y] - path->distance[x]);
+					distance = FEET_PER_MILE * (path->distance[y] - path->distance[x]);
 					test_alt = four_thirds_earth + path->elevation[x];
 
 					//| Calculate the cosine of the elevation
@@ -8584,7 +8366,7 @@ WriteSplatPathReport
 
 		if (distance != 0.0)
 		{
-			free_space_loss = 36.6 + (20.0*log10(itmParameters->frq_mhz)) + (20.0*log10(distance));
+			free_space_loss = (20.0 * log10(itmParameters->frq_mhz)) + (20.0 * log10(distance)) + FREE_SPACE_PATH_LOSS_CONSTANT;
 
 			fprintf(fd2, "Free space path loss: %.2f dB\n", free_space_loss);
 		}
@@ -8595,7 +8377,7 @@ WriteSplatPathReport
 		}
 		else
 		{
-			fprintf(fd2, "ITWOM Version %.1f path loss: %.2f dB\n", IrregularTerrainModelVersion(), loss);
+			fprintf(fd2, "ITWOM Version %.1f path loss: %.2f dB\n", ITWOM_VERSION, loss);
 		}
 
 		if (free_space_loss != 0.0)
@@ -8610,23 +8392,23 @@ WriteSplatPathReport
 
 		if (itmParameters->erp != 0.0)
 		{
-			field_strength = (139.4 + (20.0*log10(itmParameters->frq_mhz)) - total_loss) + (10.0*log10(itmParameters->erp / 1000.0));
+			field_strength = (FIELD_STRENGTH_MAGIC_NUMBER + (20.0*log10(itmParameters->frq_mhz)) - total_loss) + (10.0*log10(itmParameters->erp / 1000.0));
 
 			//| dBm is referenced to EIRP
 
 			rxp = eirp / (pow(10.0, (total_loss / 10.0)));
-			dBm = 10.0*(log10(rxp*1000.0));
-			power_density = (eirp / (pow(10.0, (total_loss - free_space_loss) / 10.0)));
+			dBm = 10.0 * log10(rxp*1000.0);
+			power_density = eirp / (pow(10.0, (total_loss - free_space_loss) / 10.0));
 			//| divide by 4*PI*distance_in_meters squared
-			power_density /= (4.0*PI*distance*distance*2589988.11);
+			power_density /= (4.0 * PI * distance * distance * POWER_DENSITY_MAGIC_NUMBER);
 
 			fprintf(fd2, "Field strength at %s: %.2f dBuV/meter\n", destination.name, field_strength);
 			fprintf(fd2, "Signal power level at %s: %+.2f dBm\n", destination.name, dBm);
 			fprintf(fd2, "Signal power density at %s: %+.2f dBW per square meter\n", destination.name, 10.0*log10(power_density));
-			voltage = 1.0e6*sqrt(50.0*(eirp / (pow(10.0, (total_loss - 2.14) / 10.0))));
+			voltage = 1.0e6 * sqrt(DIPOLE_50_OHM * (eirp / (pow(10.0, (total_loss - DIPOLE_TO_ISOTROPIC_ANTENNA) / 10.0))));
 			fprintf(fd2, "Voltage across a 50 ohm dipole at %s: %.2f uV (%.2f dBuV)\n", destination.name, voltage, 20.0*log10(voltage));
 
-			voltage = 1.0e6*sqrt(75.0*(eirp / (pow(10.0, (total_loss - 2.14) / 10.0))));
+			voltage = 1.0e6 * sqrt(DIPOLE_75_OHM * (eirp / (pow(10.0, (total_loss - DIPOLE_TO_ISOTROPIC_ANTENNA) / 10.0))));
 			fprintf(fd2, "Voltage across a 75 ohm dipole at %s: %.2f uV (%.2f dBuV)\n", destination.name, voltage, 20.0*log10(voltage));
 		}
 
@@ -8805,7 +8587,7 @@ WriteSplatPathReport
 			}
 			else
 			{
-				fprintf(fd, "set ylabel \"ITWOM Version %.1f Path Loss (dB)", IrregularTerrainModelVersion());
+				fprintf(fd, "set ylabel \"ITWOM Version %.1f Path Loss (dB)", ITWOM_VERSION);
 			}
 		}
 
@@ -8922,7 +8704,7 @@ WriteSplatSiteReport
 
 	terrain = AntennaHeightAboveAverageTerrain(xmtr, digitalElevationModelWrapper, path, groundClutterHeight);
 
-	if (terrain > -4999.0)
+	if (terrain > (LOCATION_NOT_IN_MEMORY + 1))
 	{
 		if (useMetricUnits)
 		{
@@ -8933,16 +8715,16 @@ WriteSplatSiteReport
 			fprintf(fd, "Antenna height above average terrain: %.2f feet\n\n", terrain);
 		}
 
-		//| Display the average terrain between 2 and 10 miles
+		//| Display the average terrain between AVERAGE_TERRAIN_MIN_DISTANCE and AVERAGE_TERRAIN_MAX_DISTANCE 
 		//| from the transmitter site at azimuths of 0, 45, 90,
 		//| 135, 180, 225, 270, and 315 degrees.
 
 		for (azi = 0; azi <= 315; azi += 45)
 		{
 			fprintf(fd, "Average terrain at %3d degrees azimuth: ", azi);
-			terrain = AverageTerrainOverDistanceAtAzimuthFromSite(xmtr, (double)azi, 2.0, 10.0, digitalElevationModelWrapper, path, groundClutterHeight);
+			terrain = AverageTerrainOverDistanceAtAzimuthFromSite(xmtr, (double)azi, AVERAGE_TERRAIN_MIN_DISTANCE, AVERAGE_TERRAIN_MAX_DISTANCE, digitalElevationModelWrapper, path, groundClutterHeight);
 
-			if (terrain > -4999.0)
+			if (terrain > (LOCATION_NOT_IN_MEMORY + 1))
 			{
 				if (useMetricUnits)
 				{
@@ -9027,7 +8809,7 @@ LoadSplatDataFilesForRegion
 					ymax -= 360;
 				}
 
-				if (digitalElevationModelWrapper->demPixelsPerDegree == 3600)
+				if (digitalElevationModelWrapper->demPixelsPerDegree == PIXELS_PER_DEGREE_HIGH_DEF)
 				{
 					snprintf(nameString, 19, "%dx%dx%dx%d-hd", x, x + 1, ymin, ymax);
 				}
@@ -9071,7 +8853,7 @@ LoadSplatDataFilesForRegion
 					ymax -= 360;
 				}
 
-				if (digitalElevationModelWrapper->demPixelsPerDegree == 3600)
+				if (digitalElevationModelWrapper->demPixelsPerDegree == PIXELS_PER_DEGREE_HIGH_DEF)
 				{
 					snprintf(nameString, 19, "%dx%dx%dx%d-hd", x, x + 1, ymin, ymax);
 				}
@@ -9444,7 +9226,7 @@ WriteKeyholeMarkupLanguageFile
 
 	for (y = 0; y < path->length; y++)
 	{
-		distance = 5280.0*path->distance[y];
+		distance = FEET_PER_MILE * path->distance[y];
 		tx_alt = sphereRadius + source.alt + path->elevation[0];
 		rx_alt = sphereRadius + destination.alt + path->elevation[y];
 
@@ -9455,7 +9237,7 @@ WriteKeyholeMarkupLanguageFile
 
 		for (x = y, block = 0; (x >= 0) && (block == 0); x--)
 		{
-			distance = 5280.0*(path->distance[y] - path->distance[x]);
+			distance = FEET_PER_MILE * (path->distance[y] - path->distance[x]);
 			test_alt = sphereRadius + path->elevation[x];
 
 			cos_test_angle = ((rx_alt*rx_alt) + (distance*distance) - (test_alt*test_alt)) / (2.0*rx_alt*distance);

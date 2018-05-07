@@ -22,8 +22,8 @@ void _declspec(dllexport) WriteSplatDataFile(char *filename, int integerPixelsPe
 
 //| Functions
 
-int LoadUncompressedSplatDataFile(char *name, char *splatDataFilePath, int **unitedStatesGeologicalSurveyData);
+int LoadUncompressedSplatDataFileForSrtm(char *name, char *splatDataFilePath, int **unitedStatesGeologicalSurveyData);
 
-char LoadSplatDataFile(char *name, char *splatDataFilePath, int **unitedStatesGeologicalSurveyData);
+char LoadSplatDataFileForSrtm(char *name, char *splatDataFilePath, int **unitedStatesGeologicalSurveyData);
 
 void AverageTerrain(int y, int x, int z, int maximumPixelIndexPerDegree, int minimumElevation, int **spaceShuttleRadarTopographyMissionData);

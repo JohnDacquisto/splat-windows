@@ -9,9 +9,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CityDecoder", "CityDecoder\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Bearing", "Bearing\BEARING.vcxproj", "{247FC1AF-8C74-4F30-9D5C-23617FB32932}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "usgs2sdf", "usgs2sdf\USGS2SDF.vcxproj", "{F44FE822-036C-405F-AE86-69DAA16A6916}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Usgs2Sdf", "usgs2sdf\USGS2SDF.vcxproj", "{F44FE822-036C-405F-AE86-69DAA16A6916}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "srtm2sdf", "srtm2sdf\SRTM2SDF.vcxproj", "{F0FBFEF6-2DAB-4BEB-8665-E550A515F6CA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Srtm2Sdf", "srtm2sdf\SRTM2SDF.vcxproj", "{F0FBFEF6-2DAB-4BEB-8665-E550A515F6CA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{F60693C4-018D-4012-A27F-952245FF6CD5}"
 EndProject
@@ -19,9 +19,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SplatLib", "SplatLib\SplatL
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BearingLib", "BearingLib\BearingLib.vcxproj", "{28A02430-A8FC-415B-9355-6B6C522BB88A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "srtm2sdfLib", "srtm2sdfLib\srtm2sdfLib.vcxproj", "{D37F57B0-5E24-44E8-A555-3A43ED8107FC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Srtm2SdfLib", "srtm2sdfLib\srtm2sdfLib.vcxproj", "{D37F57B0-5E24-44E8-A555-3A43ED8107FC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "usgs2sdfLib", "usgs2sdfLib\usgs2sdfLib.vcxproj", "{BCC072A7-CD11-4B8A-B68F-2346C81A1B70}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Usgs2SdfLib", "usgs2sdfLib\usgs2sdfLib.vcxproj", "{BCC072A7-CD11-4B8A-B68F-2346C81A1B70}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "UnitTests\UnitTests.vcxproj", "{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,14 @@ Global
 		{BCC072A7-CD11-4B8A-B68F-2346C81A1B70}.Release|x64.Build.0 = Release|x64
 		{BCC072A7-CD11-4B8A-B68F-2346C81A1B70}.Release|x86.ActiveCfg = Release|Win32
 		{BCC072A7-CD11-4B8A-B68F-2346C81A1B70}.Release|x86.Build.0 = Release|Win32
+		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Debug|x64.ActiveCfg = Debug|x64
+		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Debug|x64.Build.0 = Debug|x64
+		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Debug|x86.ActiveCfg = Debug|Win32
+		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Debug|x86.Build.0 = Debug|Win32
+		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|x64.ActiveCfg = Release|x64
+		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|x64.Build.0 = Release|x64
+		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|x86.ActiveCfg = Release|Win32
+		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

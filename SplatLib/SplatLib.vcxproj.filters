@@ -39,6 +39,18 @@
     <ClCompile Include="DigitalElevationModelWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tcomplex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="prop_type.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="propv_type.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="propa_type.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SplatLib.h">
@@ -69,6 +81,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DigitalElevationModelWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tcomplex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="prop_type.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="propv_type.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="propa_type.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

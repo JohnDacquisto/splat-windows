@@ -15,7 +15,13 @@
 
 //| Export functions
 
+int _declspec(dllexport) LinearInterpolation(int y0, int y1, int x0, int x1, int n);
+
 double _declspec(dllexport) LongitudeDifference(double lon1, double lon2);
+
+int _declspec(dllexport) ConvertToNormalizedAngle(double angle);
+
+void _declspec(dllexport) ConvertDecimalToDegreesMinutesSeconds(double decimal, char *dmsString);
 
 Site _declspec(dllexport) LoadSplatSiteLocationFile(char *filename);
 
@@ -92,20 +98,6 @@ void _declspec(dllexport) WriteKeyholeMarkupLanguageFile(Site source, Site desti
 
 
 //| Functions
-
-int LinearInterpolation(int y0, int y1, int x0, int x1, int n);
-
-double ArcCosine(double x, double y);
-
-int ConvertToNormalizedAngle(double angle);
-
-void ConvertDecimalToDegreesMinutesSeconds(double decimal, char *dmsString);
-
-double GreatCircleDistanceBetweenSiteLocations(Site site1, Site site2);
-
-double AzimuthAngleBetweenSites(Site source, Site destination);
-
-double BearingStringToDecimalDegrees(char *input);
 
 int SetValueInDigitalElevationModelMask(double lat, double lon, int value, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 

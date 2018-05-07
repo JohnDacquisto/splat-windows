@@ -47,46 +47,6 @@
 using namespace std;
 
 
-tcomplex::tcomplex()
-{
-}
-
-
-tcomplex::~tcomplex()
-{
-}
-
-
-prop_type::prop_type()
-{
-}
-
-
-prop_type::~prop_type()
-{
-}
-
-
-propv_type::propv_type()
-{
-}
-
-
-propv_type::~propv_type()
-{
-}
-
-
-propa_type::propa_type()
-{
-}
-
-
-propa_type::~propa_type()
-{
-}
-
-
 //| ------------------------------
 //| 
 //| FUNCTION: MinimumInteger
@@ -2968,23 +2928,6 @@ PrepareForPointToPointModeAnalysisV2
 }
 
 
-//| ------------------------------
-//| 
-//| FUNCTION: DegreesToRadians
-//| 
-//| OLD NAME: deg2rad
-//| 
-//| NOTES: 
-//| 
-//| ------------------------------
-double 
-DegreesToRadians
-   (double d)
-{
-	return d * 3.1415926535897 / 180.0;
-}
-
-
 //| ------------------------------------------------------------
 //| Point-To-Point Mode Calculations 
 //|
@@ -3713,20 +3656,4 @@ IrregularTerrainModelAreaCalculationDbLoss
 		delta_h_diff, frq_mhz, radio_climate, pol, mode_var, pctTime,
 		pctLoc, pctConf, dbloss, strmode, errnum);
 	return dbloss;
-}
-
-
-//| ------------------------------
-//| 
-//| FUNCTION: IrregularTerrainModelVersion
-//| 
-//| OLD NAME: ITWOMVersion
-//| 
-//| NOTES: 
-//| 
-//| ------------------------------
-double 
-IrregularTerrainModelVersion()
-{
-	return 3.0;
 }

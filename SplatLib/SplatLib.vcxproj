@@ -136,6 +136,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="propa_type.cpp" />
+    <ClCompile Include="propv_type.cpp" />
+    <ClCompile Include="prop_type.cpp" />
     <ClCompile Include="SplatLib.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -144,6 +147,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="tcomplex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColorRegion.h" />
@@ -153,9 +157,13 @@
     <ClInclude Include="IrregularTerrainModelParameters.h" />
     <ClInclude Include="itwom.h" />
     <ClInclude Include="Path.h" />
+    <ClInclude Include="propa_type.h" />
+    <ClInclude Include="propv_type.h" />
+    <ClInclude Include="prop_type.h" />
     <ClInclude Include="SplatLib.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="tcomplex.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.vcxproj">
