@@ -7,6 +7,7 @@
 #include <io.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <Windows.h>
 #include "SplatLib.h"
 #include "itwom.h"
 #include "fontdata.h"
@@ -6690,10 +6691,10 @@ GenerateGnuPlotTerrainProfileBetweenSites
 	sprintf_s(plotNameAndPath, _countof(plotNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "splat.gp");
 
 	char profileNameAndPath[335];
-	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
+	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
 
 	char clutterNameAndPath[335];
-	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
+	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
 
 	err = fopen_s(&fd, profileNameAndPath, "wb");
 
@@ -6840,13 +6841,29 @@ GenerateGnuPlotTerrainProfileBetweenSites
 	fclose(fd);
 
 	char gnuPlotAndSplat[335];
-	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "run gnuplot %s", plotNameAndPath);
+	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
 
 	//| Invokve gnuplot and run the splat.gp script.
-	x = system(gnuPlotAndSplat);
 
-	if (x != -1)
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+	ZeroMemory(&si, sizeof(si));
+	si.cb = sizeof(si);
+	ZeroMemory(&pi, sizeof(pi));
+
+	// Start the child process.
+
+	bool gnuplotSuccess = CreateProcess(NULL, gnuPlotAndSplat, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+
+	if (gnuplotSuccess == true)
 	{
+		// Wait until child process exits.
+		WaitForSingleObject(pi.hProcess, INFINITE);
+
+		// Close process and thread handles.
+		CloseHandle(pi.hProcess);
+		CloseHandle(pi.hThread);
+
 		if (saveGnuPlotWorkingFiles == 0)
 		{
 			_unlink(plotNameAndPath);
@@ -6908,13 +6925,13 @@ GenerateGnuPlotElevationProfileBetweenSites
 	sprintf_s(plotNameAndPath, _countof(plotNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "splat.gp");
 
 	char profileNameAndPath[335];
-	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
+	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
 
 	char clutterNameAndPath[335];
-	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
+	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
 
 	char referenceNameAndPath[335];
-	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
+	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
 
 	err = fopen_s(&fd, profileNameAndPath, "wb");
 
@@ -7106,13 +7123,29 @@ GenerateGnuPlotElevationProfileBetweenSites
 	fclose(fd);
 
 	char gnuPlotAndSplat[335];
-	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "run gnuplot %s", plotNameAndPath);
+	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
 
 	//| Invokve gnuplot and run the splat.gp script.
-	x = system(gnuPlotAndSplat);
 
-	if (x != -1)
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+	ZeroMemory(&si, sizeof(si));
+	si.cb = sizeof(si);
+	ZeroMemory(&pi, sizeof(pi));
+
+	// Start the child process.
+
+	bool gnuplotSuccess = CreateProcess(NULL, gnuPlotAndSplat, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+
+	if (gnuplotSuccess == true)
 	{
+		// Wait until child process exits.
+		WaitForSingleObject(pi.hProcess, INFINITE);
+
+		// Close process and thread handles.
+		CloseHandle(pi.hProcess);
+		CloseHandle(pi.hThread);
+
 		if (saveGnuPlotWorkingFiles == 0)
 		{
 			_unlink(plotNameAndPath);
@@ -7207,22 +7240,22 @@ GenerateGnuPlotHeightProfileBetweenSites
 	sprintf_s(plotNameAndPath, _countof(plotNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "splat.gp");
 
 	char profileNameAndPath[335];
-	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
+	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
 
 	char clutterNameAndPath[335];
-	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
+	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
 
 	char referenceNameAndPath[335];
-	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
+	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
 
 	char curvatureNameAndPath[335];
-	sprintf_s(curvatureNameAndPath, _countof(curvatureNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "curvature.gp");
+	sprintf_s(curvatureNameAndPath, _countof(curvatureNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "curvature.gp");
 
 	char fresnelNameAndPath[335];
-	sprintf_s(fresnelNameAndPath, _countof(fresnelNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "fresnel.gp");
+	sprintf_s(fresnelNameAndPath, _countof(fresnelNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "fresnel.gp");
 
 	char fresnelPtNameAndPath[335];
-	sprintf_s(fresnelPtNameAndPath, _countof(fresnelPtNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "fresnel_pt_6.gp");
+	sprintf_s(fresnelPtNameAndPath, _countof(fresnelPtNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "fresnel_pt_6.gp");
 
 	err = fopen_s(&fd, profileNameAndPath, "wb");
 
@@ -7582,13 +7615,29 @@ GenerateGnuPlotHeightProfileBetweenSites
 	fclose(fd);
 
 	char gnuPlotAndSplat[335];
-	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "run gnuplot %s", plotNameAndPath);
+	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
 
 	//| Invokve gnuplot and run the splat.gp script.
-	x = system(gnuPlotAndSplat);
 
-	if (x != -1)
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+	ZeroMemory(&si, sizeof(si));
+	si.cb = sizeof(si);
+	ZeroMemory(&pi, sizeof(pi));
+
+	// Start the child process.
+
+	bool gnuplotSuccess = CreateProcess(NULL, gnuPlotAndSplat, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+
+	if (gnuplotSuccess == true)
 	{
+		// Wait until child process exits.
+		WaitForSingleObject(pi.hProcess, INFINITE);
+
+		// Close process and thread handles.
+		CloseHandle(pi.hProcess);
+		CloseHandle(pi.hThread);
+
 		if (saveGnuPlotWorkingFiles == 0)
 		{
 			_unlink(plotNameAndPath);
@@ -7901,10 +7950,10 @@ WriteSplatPathReport
 	sprintf_s(plotNameAndPath, _countof(plotNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "splat.gp");
 
 	char profileNameAndPath[335];
-	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
+	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
 
 	char referenceNameAndPath[335];
-	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
+	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
 
 	four_thirds_earth = FOUR_THIRDS * EARTH_RADIUS_FEET;
 
@@ -8617,13 +8666,29 @@ WriteSplatPathReport
 		fclose(fd);
 
 		char gnuPlotAndSplat[335];
-		sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "run gnuplot %s", plotNameAndPath);
+		sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
 
 		//| Invokve gnuplot and run the splat.gp script.
-		x = system(gnuPlotAndSplat);
 
-		if (x != -1)
+		STARTUPINFO si;
+		PROCESS_INFORMATION pi;
+		ZeroMemory(&si, sizeof(si));
+		si.cb = sizeof(si);
+		ZeroMemory(&pi, sizeof(pi));
+
+		// Start the child process.
+
+		bool gnuplotSuccess = CreateProcess(NULL, gnuPlotAndSplat, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+
+		if (gnuplotSuccess == true)
 		{
+			// Wait until child process exits.
+			WaitForSingleObject(pi.hProcess, INFINITE);
+
+			// Close process and thread handles.
+			CloseHandle(pi.hProcess);
+			CloseHandle(pi.hThread);
+
 			if (saveGnuPlotWorkingFiles == 0)
 			{
 				_unlink(plotNameAndPath);
