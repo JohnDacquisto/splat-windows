@@ -146,8 +146,7 @@ ConvertDecimalToDegreesMinutesSeconds
    (double decimal,
 	char *dmsString)
 {
-	char sign;
-	int	degrees, minutes, seconds;
+	int	degrees, minutes, seconds, sign;
 	double a, b, c, d;
 
 	if (decimal < 0.0)
@@ -317,16 +316,16 @@ SetValueInDigitalElevationModelMask
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
 	int	x, y, indx;
-	char found;
+	bool found = false;
 
-	for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0);)
+	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
 		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
 		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
-			found = 1;
+			found = true;
 		}
 		else
 		{
@@ -368,16 +367,16 @@ SetOrValueInDigitalElevationModelMask
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
 	int	x, y, indx;
-	char found;
+	bool found = false;
 
-	for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0);)
+	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
 		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
 		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
-			found = 1;
+			found = true;
 		}
 		else
 		{
@@ -437,16 +436,16 @@ SetValueInDigitalElevationModelSignal
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
 	int	x, y, indx;
-	char found;
+	bool found = false;
 
-	for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0);)
+	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
 		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
 		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
-			found = 1;
+			found = true;
 		}
 		else
 		{
@@ -485,16 +484,16 @@ GetValueInDigitalElevationModelSignal
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
 	int	x, y, indx;
-	char found;
+	bool found = false;
 
-	for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0);)
+	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
 		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
 		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
-			found = 1;
+			found = true;
 		}
 		else
 		{
@@ -530,18 +529,18 @@ GetSiteLocationElevation
    (Site location,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
-	char found;
+	bool found = false;
 	int	x, y, indx;
 	double elevation;
 
-	for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0);)
+	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
 		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(location.lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
 		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, location.lon));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
-			found = 1;
+			found = true;
 		}
 		else
 		{
@@ -582,17 +581,17 @@ AddUserDefinedTerrainToDigitalElevationModelData
 	double height,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
-	char found;
+	bool found = false;
 	int	x, y, indx;
 
-	for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0);)
+	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
 		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
 		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
-			found = 1;
+			found = true;
 		}
 		else
 		{
@@ -605,7 +604,14 @@ AddUserDefinedTerrainToDigitalElevationModelData
 		digitalElevationModelWrapper->digitalElevationModel[indx].data[x][y] += (short)rint(height);
 	}
 
-	return found;
+	if (found)
+	{
+		return 1;
+	}
+	else 
+	{
+		return 0;
+	}
 }
 
 
@@ -817,7 +823,7 @@ ObstructedElevationAngleBetweenSites
 	double sphereRadius)
 {
 	int	x;
-	char block = 0;
+	bool block = false;
 	double source_alt, destination_alt, cos_xmtr_angle,
 		cos_test_angle, test_alt, elevation, distance,
 		source_alt2, first_obstruction_angle = 0.0;
@@ -842,7 +848,7 @@ ObstructedElevationAngleBetweenSites
 	//| at the source since we're interested in identifying the FIRST
 	//| obstruction along the path between source and destination.
 
-	for (x = 2, block = 0; (x < tempPath->length) && (block == 0); x++)
+	for (x = 2, block = false; (x < tempPath->length) && (block == false); x++)
 	{
 		distance = FEET_PER_MILE * tempPath->distance[x];
 
@@ -860,7 +866,7 @@ ObstructedElevationAngleBetweenSites
 
 		if (cos_xmtr_angle >= cos_test_angle)
 		{
-			block = 1;
+			block = true;
 			first_obstruction_angle = ((acos(cos_test_angle)) / DEGREES_TO_RADIANS) - 90.0;
 		}
 	}
@@ -1027,20 +1033,20 @@ AntennaHeightAboveAverageTerrain
 	double groundClutterHeight)
 {
 	int	azi, c;
-	char error = 0;
+	bool error = false;
 	double terrain, avg_terrain, haat, sum = 0.0;
 
 	//| Calculate the average terrain between AVERAGE_TERRAIN_MIN_DISTANCE and AVERAGE_TERRAIN_MAX_DISTANCE 
 	//| from the antenna site at azimuths of 0, 45, 90, 135,
 	//| 180, 225, 270, and 315 degrees.
 
-	for (c = 0, azi = 0; (azi <= 315) && (error == 0); azi += 45)
+	for (c = 0, azi = 0; (azi <= 315) && (error == false); azi += 45)
 	{
 		terrain = AverageTerrainOverDistanceAtAzimuthFromSite(antenna, (double)azi, AVERAGE_TERRAIN_MIN_DISTANCE, AVERAGE_TERRAIN_MAX_DISTANCE, digitalElevationModelWrapper, path, groundClutterHeight);
 
 		if (terrain < (LOCATION_CRITICAL_ERROR + 1))  //| SDF data is missing
 		{
-			error = 1;
+			error = true;
 		}
 
 		if (terrain > (LOCATION_NOT_IN_MEMORY + 1))  //| It's land, not water
@@ -1091,7 +1097,8 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 	int maximumLongitudeWest)
 {
 	int	a, b, c, byte;
-	char ok2print, occupied;
+	bool ok2print;
+	char occupied;
 	double x, y, lat, lon, textx = 0.0, texty = 0.0, xmin, xmax,
 		ymin, ymax, p1, p3, p6, p8, p12, p16, p24, label_length;
 
@@ -1112,7 +1119,7 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 		p16 = 16.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree);
 		p24 = 24.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree);
 
-		ok2print = 0;
+		ok2print = false;
 		occupied = 0;
 
 		//| Is Marker Position Clear Of Text Or Other Markers?
@@ -1171,7 +1178,7 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 
 					if (occupied == 0)
 					{
-						ok2print = 1;
+						ok2print = true;
 					}
 				}
 				else
@@ -1205,12 +1212,12 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 
 					if (occupied == 0)
 					{
-						ok2print = 1;
+						ok2print = true;
 					}
 				}
 			}
 
-			if (ok2print == 0)
+			if (ok2print == false)
 			{
 				if (LongitudeDifference(lon - label_length, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)))
 				{
@@ -1245,7 +1252,7 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 
 					if (occupied == 0)
 					{
-						ok2print = 1;
+						ok2print = true;
 					}
 				}
 				else
@@ -1281,7 +1288,7 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 
 					if (occupied == 0)
 					{
-						ok2print = 1;
+						ok2print = true;
 					}
 				}
 			}
@@ -1810,8 +1817,8 @@ LoadUncompressedSplatDataFile
 	char *splatDataFilePath)
 {
 	int	x, y, data, indx, minlat, minlon, maxlat, maxlon;
-	char found, free_page = 0, line[20], sdf_file[255],
-		path_plus_name[512];
+	bool found, free_page = false;
+	char line[20], sdf_file[255], path_plus_name[512];
 	FILE *fd;
 	errno_t err;
 
@@ -1834,33 +1841,33 @@ LoadUncompressedSplatDataFile
 
 	//| Is it already in memory?
 
-	for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0); indx++)
+	for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false); indx++)
 	{
 		if ((minlat == digitalElevationModelWrapper->digitalElevationModel[indx].min_north) && 
 			(minlon == digitalElevationModelWrapper->digitalElevationModel[indx].min_west) && 
 			(maxlat == digitalElevationModelWrapper->digitalElevationModel[indx].max_north) &&
 			(maxlon == digitalElevationModelWrapper->digitalElevationModel[indx].max_west))
 		{
-			found = 1;
+			found = true;
 		}
 	}
 
 	//| Is room available to load it?
 
-	if (found == 0)
+	if (found == false)
 	{
-		for (indx = 0, free_page = 0; (indx < digitalElevationModelWrapper->maxPages) && (free_page == 0); indx++)
+		for (indx = 0, free_page = false; (indx < digitalElevationModelWrapper->maxPages) && (free_page == false); indx++)
 		{
 			if (digitalElevationModelWrapper->digitalElevationModel[indx].max_north == -90)
 			{
-				free_page = 1;
+				free_page = true;
 			}
 		}
 	}
 
 	indx--;
 
-	if (free_page && (found == 0) && (indx >= 0) && (indx < digitalElevationModelWrapper->maxPages))
+	if (free_page && (found == false) && (indx >= 0) && (indx < digitalElevationModelWrapper->maxPages))
 	{
 		//| Search for SDF file in current working directory first
 
@@ -2038,7 +2045,7 @@ LoadSplatDataFile
 	char *splatDataFilePath)
 {
 	int	x, y, indx, minlat, minlon, maxlat, maxlon;
-	char found, free_page = 0;
+	bool found, free_page = false;
 	int	return_value = -1;
 
 	//| Try to load an uncompressed SDF first.
@@ -2056,33 +2063,33 @@ LoadSplatDataFile
 
 		//| Is it already in memory?
 
-		for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0); indx++)
+		for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false); indx++)
 		{
 			if ((minlat == digitalElevationModelWrapper->digitalElevationModel[indx].min_north) && 
 				(minlon == digitalElevationModelWrapper->digitalElevationModel[indx].min_west) && 
 				(maxlat == digitalElevationModelWrapper->digitalElevationModel[indx].max_north) &&
 				(maxlon == digitalElevationModelWrapper->digitalElevationModel[indx].max_west))
 			{
-				found = 1;
+				found = true;
 			}
 		}
 
 		//| Is room available to load it?
 
-		if (found == 0)
+		if (found == false)
 		{
-			for (indx = 0, free_page = 0; (indx < digitalElevationModelWrapper->maxPages) && (free_page == 0); indx++)
+			for (indx = 0, free_page = false; (indx < digitalElevationModelWrapper->maxPages) && (free_page == false); indx++)
 			{
 				if (digitalElevationModelWrapper->digitalElevationModel[indx].max_north == -90)
 				{
-					free_page = 1;
+					free_page = true;
 				}
 			}
 		}
 
 		indx--;
 
-		if (free_page && (found == 0) && (indx >= 0) && (indx < digitalElevationModelWrapper->maxPages))
+		if (free_page && (found == false) && (indx >= 0) && (indx < digitalElevationModelWrapper->maxPages))
 		{
 			fprintf(stdout, "Region  \"%s\" assumed as sea-level into page %d...", name, indx + 1);
 			fflush(stdout);
@@ -2295,7 +2302,7 @@ LoadUserDefinedTerrainFile
    (char *filename,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
-	int	i, x, y, z, ypix, xpix, tempxpix, tempypix, fd = 0;
+	int	i, x, y, z, ypix, xpix, tempxpix, tempypix;
 	char input[80], str[3][80], tempname[15], *pointer = NULL;
 	double latitude, longitude, height, tempheight;
 	FILE *fd1 = NULL, *fd2 = NULL;
@@ -2393,7 +2400,6 @@ LoadUserDefinedTerrainFile
 
 		fclose(fd1);
 		fclose(fd2);
-		_close(fd);
 
 		fprintf(stdout, "Done");
 		fflush(stdout);
@@ -2564,7 +2570,8 @@ ReadLongleyRiceParameterDataForSite
 	char *lrpFilePath)
 {
 	double din;
-	char filename[255], LrString[80], *pointer = NULL, return_value = 0;
+	bool return_value = false;
+	char filename[255], LrString[80], *pointer = NULL;
 	int	iin, ok = 0, x;
 	FILE *fd = NULL, *outfile = NULL;
 	errno_t err;
@@ -2623,7 +2630,7 @@ ReadLongleyRiceParameterDataForSite
 
 		ok = sscanf_s(LrString, "%lf", &din);
 
-		if (ok)
+		if (ok != 0)
 		{
 			itmParameters->eps_dielect = din;
 
@@ -2639,7 +2646,7 @@ ReadLongleyRiceParameterDataForSite
 			ok = sscanf_s(LrString, "%lf", &din);
 		}
 
-		if (ok)
+		if (ok != 0)
 		{
 			itmParameters->sgm_conductivity = din;
 
@@ -2655,7 +2662,7 @@ ReadLongleyRiceParameterDataForSite
 			ok = sscanf_s(LrString, "%lf", &din);
 		}
 
-		if (ok)
+		if (ok != 0)
 		{
 			itmParameters->eno_ns_surfref = din;
 
@@ -2671,7 +2678,7 @@ ReadLongleyRiceParameterDataForSite
 			ok = sscanf_s(LrString, "%lf", &din);
 		}
 
-		if (ok)
+		if (ok != 0)
 		{
 			itmParameters->frq_mhz = din;
 
@@ -2687,7 +2694,7 @@ ReadLongleyRiceParameterDataForSite
 			ok = sscanf_s(LrString, "%d", &iin);
 		}
 
-		if (ok)
+		if (ok != 0)
 		{
 			itmParameters->radio_climate = iin;
 
@@ -2703,7 +2710,7 @@ ReadLongleyRiceParameterDataForSite
 			ok = sscanf_s(LrString, "%d", &iin);
 		}
 
-		if (ok)
+		if (ok != 0)
 		{
 			itmParameters->pol = iin;
 
@@ -2719,7 +2726,7 @@ ReadLongleyRiceParameterDataForSite
 			ok = sscanf_s(LrString, "%lf", &din);
 		}
 
-		if (ok)
+		if (ok != 0)
 		{
 			itmParameters->conf = din;
 
@@ -2735,11 +2742,11 @@ ReadLongleyRiceParameterDataForSite
 			ok = sscanf_s(LrString, "%lf", &din);
 		}
 
-		if (ok)
+		if (ok != 0)
 		{
 			itmParameters->rel = din;
 			din = 0.0;
-			return_value = 1;
+			return_value = true;
 
 			if (fgets(LrString, 80, fd) != NULL)
 			{
@@ -2780,7 +2787,7 @@ ReadLongleyRiceParameterDataForSite
 			itmParameters->frq_mhz = fresnelZoneFrequency;
 		}
 
-		if (ok)
+		if (ok != 0)
 		{
 			LoadAntennaAzimuthElevationPatternFiles(filename, itmParameters, gotAntennaElevationAnglePattern, gotAntennaAzimuthAnglePattern);
 		}
@@ -2818,13 +2825,13 @@ ReadLongleyRiceParameterDataForSite
 
 		fclose(outfile);
 
-		return_value = 1;
+		return_value = true;
 
 		fprintf(stderr, "\n\n%c*** There were problems reading your \"%s\" file ***\nSPLAT will create and use an .lrp file with default data.\n", 7, filename);
 	}
 	else if (forced_read == 0)
 	{
-		return_value = 0;
+		return_value = false;
 	}
 
 	if (forced_read && ((fd == NULL) || (ok == 0)))
@@ -2841,10 +2848,17 @@ ReadLongleyRiceParameterDataForSite
 
 		fprintf(stderr, "Default parameters have been assumed for this analysis.\n");
 
-		return_value = 1;
+		return_value = true;
 	}
 
-	return (return_value);
+	if (return_value)
+	{
+		return 1;
+	}
+	else 
+	{
+		return 0;
+	}
 }
 
 
@@ -2876,7 +2890,7 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 	double groundClutterHeight,
 	double sphereRadius)
 {
-	char block;
+	bool block;
 	int x, y;
 	register double cos_xmtr_angle, cos_test_angle, test_alt;
 	double distance, rx_alt, tx_alt;
@@ -2899,7 +2913,7 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 
 			cos_xmtr_angle = ((rx_alt*rx_alt) + (distance*distance) - (tx_alt*tx_alt)) / (2.0*rx_alt*distance);
 
-			for (x = y, block = 0; (x >= 0) && (block == 0); x--)
+			for (x = y, block = false; (x >= 0) && (block == false); x--)
 			{
 				distance = FEET_PER_MILE * (path->distance[y] - path->distance[x]);
 				test_alt = sphereRadius + (path->elevation[x] == 0.0 ? path->elevation[x] : path->elevation[x] + groundClutterHeight);
@@ -2915,11 +2929,11 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 
 				if (cos_xmtr_angle >= cos_test_angle)
 				{
-					block = 1;
+					block = true;
 				}
 			}
 
-			if (block == 0)
+			if (block == false)
 			{
 				SetOrValueInDigitalElevationModelMask(path->lat[y], path->lon[y], mask_value, digitalElevationModelWrapper);
 			}
@@ -2967,7 +2981,8 @@ AnalyzeAndPlotPathLossBetweenSites
 	double groundClutterHeight)
 {
 	int	x, y, ifs, ofs, errnum;
-	char block = 0, strmode[100];
+	bool block = false;
+	char strmode[100];
 	double loss, azimuth, pattern = 0.0, xmtr_alt,
 		dest_alt, xmtr_alt2, dest_alt2, cos_rcvr_angle,
 		cos_test_angle = 0.0, test_alt, elevation = 0.0,
@@ -3035,7 +3050,7 @@ AnalyzeAndPlotPathLossBetweenSites
 				//| along the path IF elevation pattern data is available
 				//| or an output (.ano) file has been designated.
 
-				for (x = 2, block = 0; (x < y) && (block == 0); x++)
+				for (x = 2, block = false; (x < y) && (block == false); x++)
 				{
 					distance = FEET_PER_MILE * path->distance[x];
 
@@ -3067,7 +3082,7 @@ AnalyzeAndPlotPathLossBetweenSites
 
 					if (cos_rcvr_angle >= cos_test_angle)
 					{
-						block = 1;
+						block = true;
 					}
 				}
 
@@ -3286,9 +3301,9 @@ PlotLineOfSightCoverageFromSiteAtAltitude
 	double groundClutterHeight,
 	double sphereRadius)
 {
-	int y, z, count;
+	int x, y, z, count;
 	Site edge;
-	unsigned char symbol[4], x;
+	unsigned char symbol[4];
 	double lat, lon, minwest, maxnorth, th;
 	static unsigned char mask_value = 1;
 	FILE *fd = NULL;
@@ -3528,10 +3543,10 @@ PlotAttenuationFromSiteAtAltitude
 	double maximumAnalysisDistance,
 	double groundClutterHeight)
 {
-	int y, z, count;
+	int x, y, z, count;
 	Site edge;
 	double lat, lon, minwest, maxnorth, th;
-	unsigned char x, symbol[4];
+	unsigned char symbol[4];
 	static unsigned char mask_value = 1;
 	FILE *fd = NULL;
 	errno_t err;
@@ -4360,7 +4375,8 @@ WritePortablePixMapLineOfSightCoverageFile
 	int maximumLongitudeWest)
 {
 	char mapfile[255], geofile[255], kmlfile[255];
-	unsigned char found, mask;
+	bool found;
+	unsigned char mask;
 	unsigned width, height, terrain;
 	int indx, x, y, x0 = 0, y0 = 0;
 	double lat, lon, conversion, one_over_gamma,
@@ -4509,14 +4525,14 @@ WritePortablePixMapLineOfSightCoverageFile
 				lon += 360.0;
 			}
 
-			for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0);)
+			for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 			{
 				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - (double)digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
 				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
 
 				if ((x0 >= 0) && (x0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y0 >= 0) && (y0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 				{
-					found = 1;
+					found = true;
 				}
 				else
 				{
@@ -4690,7 +4706,8 @@ WritePortablePixMapAttenuationFile
 {
 	char mapfile[255], geofile[255], kmlfile[255], ckfile[255];
 	unsigned width, height, red, green, blue, terrain = 0;
-	unsigned char found, mask, cityorcounty;
+	bool found, cityorcounty;
+	unsigned char mask;
 	int indx, x, y, z, colorwidth, x0, y0, loss, level,
 		hundreds, tens, units, match;
 	double lat, lon, conversion, one_over_gamma,
@@ -4892,14 +4909,14 @@ WritePortablePixMapAttenuationFile
 				lon += 360.0;
 			}
 
-			for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0);)
+			for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 			{
 				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - (double)digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
 				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
 
 				if ((x0 >= 0) && (x0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y0 >= 0) && (y0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 				{
-					found = 1;
+					found = true;
 				}
 				else
 				{
@@ -4911,7 +4928,7 @@ WritePortablePixMapAttenuationFile
 			{
 				mask = digitalElevationModelWrapper->digitalElevationModel[indx].mask[x0][y0];
 				loss = digitalElevationModelWrapper->digitalElevationModel[indx].signal[x0][y0];
-				cityorcounty = 0;
+				cityorcounty = false;
 
 				match = 255;
 
@@ -4962,7 +4979,7 @@ WritePortablePixMapAttenuationFile
 					{
 						fprintf(fd, "%c%c%c", 255, 0, 0);
 					}
-					cityorcounty = 1;
+					cityorcounty = true;
 				}
 				else if (mask & 4)
 				{
@@ -4970,10 +4987,10 @@ WritePortablePixMapAttenuationFile
 
 					fprintf(fd, "%c%c%c", 0, 0, 0);
 
-					cityorcounty = 1;
+					cityorcounty = true;
 				}
 
-				if (cityorcounty == 0)
+				if (cityorcounty == false)
 				{
 					if ((loss == 0) || ((contourDisplayThreshold != 0) && (loss > abs(contourDisplayThreshold))))
 					{
@@ -5270,7 +5287,8 @@ WritePortablePixMapSignalStrengthFile
 {
 	char mapfile[255], geofile[255], kmlfile[255], ckfile[255];
 	unsigned width, height, terrain, red, green, blue;
-	unsigned char found, mask, cityorcounty;
+	bool found, cityorcounty;
+	unsigned char mask;
 	int indx, x, y, z = 1, x0, y0, signal, level, hundreds,
 		tens, units, match, colorwidth;
 	double conversion, one_over_gamma, lat, lon,
@@ -5472,14 +5490,14 @@ WritePortablePixMapSignalStrengthFile
 				lon += 360.0;
 			}
 
-			for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0);)
+			for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 			{
 				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - (double)digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
 				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
 
 				if ((x0 >= 0) && (x0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y0 >= 0) && (y0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 				{
-					found = 1;
+					found = true;
 				}
 				else
 				{
@@ -5491,7 +5509,7 @@ WritePortablePixMapSignalStrengthFile
 			{
 				mask = digitalElevationModelWrapper->digitalElevationModel[indx].mask[x0][y0];
 				signal = digitalElevationModelWrapper->digitalElevationModel[indx].signal[x0][y0] - 100;
-				cityorcounty = 0;
+				cityorcounty = false;
 
 				match = 255;
 
@@ -5543,7 +5561,7 @@ WritePortablePixMapSignalStrengthFile
 						fprintf(fd, "%c%c%c", 255, 0, 0);
 					}
 
-					cityorcounty = 1;
+					cityorcounty = true;
 				}
 				else if (mask & 4)
 				{
@@ -5551,10 +5569,10 @@ WritePortablePixMapSignalStrengthFile
 
 					fprintf(fd, "%c%c%c", 0, 0, 0);
 
-					cityorcounty = 1;
+					cityorcounty = true;
 				}
 
-				if (cityorcounty == 0)
+				if (cityorcounty == false)
 				{
 					if ((contourDisplayThreshold != 0) && (signal < contourDisplayThreshold))
 					{
@@ -5922,7 +5940,8 @@ WritePortablePixMapPowerLevelFile
 {
 	char mapfile[255], geofile[255], kmlfile[255], ckfile[255];
 	unsigned width, height, terrain, red, green, blue;
-	unsigned char found, mask, cityorcounty;
+	bool found, cityorcounty;
+	unsigned char mask;
 	int indx, x, y, z = 1, x0, y0, dBm, level, hundreds,
 		tens, units, match, colorwidth;
 	double conversion, one_over_gamma, lat, lon,
@@ -6124,14 +6143,14 @@ WritePortablePixMapPowerLevelFile
 				lon += 360.0;
 			}
 
-			for (indx = 0, found = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == 0);)
+			for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 			{
 				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - (double)digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
 				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
 
 				if ((x0 >= 0) && (x0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y0 >= 0) && (y0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 				{
-					found = 1;
+					found = true;
 				}
 				else
 				{
@@ -6143,7 +6162,7 @@ WritePortablePixMapPowerLevelFile
 			{
 				mask = digitalElevationModelWrapper->digitalElevationModel[indx].mask[x0][y0];
 				dBm = digitalElevationModelWrapper->digitalElevationModel[indx].signal[x0][y0] - 200;
-				cityorcounty = 0;
+				cityorcounty = false;
 
 				match = 255;
 
@@ -6195,7 +6214,7 @@ WritePortablePixMapPowerLevelFile
 						fprintf(fd, "%c%c%c", 255, 0, 0);
 					}
 
-					cityorcounty = 1;
+					cityorcounty = true;
 				}
 				else if (mask & 4)
 				{
@@ -6203,10 +6222,10 @@ WritePortablePixMapPowerLevelFile
 
 					fprintf(fd, "%c%c%c", 0, 0, 0);
 
-					cityorcounty = 1;
+					cityorcounty = true;
 				}
 
-				if (cityorcounty == 0)
+				if (cityorcounty == false)
 				{
 					if ((contourDisplayThreshold != 0) && (dBm < contourDisplayThreshold))
 					{
@@ -7859,7 +7878,8 @@ WriteSplatPathReport
 {
 	int	x, y, z, errnum;
 	char basename[255], term[30], ext[15], strmode[100],
-		report_name[80], block = 0, propstring[20];
+		report_name[80], propstring[20];
+	bool block = false;
 	double maxloss = -100000.0, minloss = 100000.0, loss, haavt,
 		angle1, angle2, azimuth, pattern = 1.0, patterndB = 0.0,
 		total_loss = 0.0, cos_xmtr_angle, cos_test_angle = 0.0,
@@ -8252,7 +8272,7 @@ WriteSplatPathReport
 				//| following code determines the elevation angle to
 				//| the first obstruction along the path.
 
-				for (x = 2, block = 0; (x < y) && (block == 0); x++)
+				for (x = 2, block = false; (x < y) && (block == false); x++)
 				{
 					distance = FEET_PER_MILE * (path->distance[y] - path->distance[x]);
 					test_alt = four_thirds_earth + path->elevation[x];
@@ -8273,7 +8293,7 @@ WriteSplatPathReport
 
 					if (cos_xmtr_angle >= cos_test_angle)
 					{
-						block = 1;
+						block = true;
 					}
 				}
 
@@ -9044,7 +9064,8 @@ WriteKeyholeMarkupLanguageFile
 	double sphereRadius)
 {
 	int	x, y;
-	char block, report_name[80];
+	char report_name[80];
+	bool block;
 	double distance, rx_alt, tx_alt, cos_xmtr_angle,
 		azimuth, cos_test_angle, test_alt;
 	FILE *fd = NULL;
@@ -9235,7 +9256,7 @@ WriteKeyholeMarkupLanguageFile
 
 		cos_xmtr_angle = ((rx_alt*rx_alt) + (distance*distance) - (tx_alt*tx_alt)) / (2.0*rx_alt*distance);
 
-		for (x = y, block = 0; (x >= 0) && (block == 0); x--)
+		for (x = y, block = false; (x >= 0) && (block == false); x--)
 		{
 			distance = FEET_PER_MILE * (path->distance[y] - path->distance[x]);
 			test_alt = sphereRadius + path->elevation[x];
@@ -9251,7 +9272,7 @@ WriteKeyholeMarkupLanguageFile
 
 			if (cos_xmtr_angle >= cos_test_angle)
 			{
-				block = 1;
+				block = true;
 			}
 		}
 

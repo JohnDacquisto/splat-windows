@@ -22,9 +22,7 @@ char
 *ConvertExponentialNotation
    (char *UsgsString)
 {
-	unsigned char x;
-
-	for (x = 0; UsgsString[x] != 0; x++)
+	for (int x = 0; UsgsString[x] != 0; x++)
 	{
 		if (UsgsString[x] == 'D')
 		{
@@ -32,5 +30,5 @@ char
 		}
 	}
 
-	return (UsgsString);
+	return UsgsString;
 }

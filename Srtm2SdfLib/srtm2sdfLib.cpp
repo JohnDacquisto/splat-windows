@@ -33,14 +33,15 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 	int **spaceShuttleRadarTopographyMissionData)
 {
 	int x, y, infile, byte = 0, bytes_read;
-	unsigned char error, buffer[2];
+	unsigned char buffer[2];
+	bool error;
 	char north[3], west[4], *base = NULL, blw_filename[255];
 	double cell_size, deg_north, deg_west;
 	FILE *fd = NULL;
 	errno_t err;
 
-	char fileExtentionHgt = 0;		//| OLD NAME: hgt
-	char fileExtentionBil = 0;		//| OLD NAME: bil
+	bool fileExtentionHgt = false;		//| OLD NAME: hgt
+	bool fileExtentionBil = false;		//| OLD NAME: bil
 
 	if (strstr(filename, ".zip") != NULL)
 	{
@@ -62,12 +63,12 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 
 	if (strstr(filename, ".hgt") != NULL)
 	{
-		fileExtentionHgt = 1;
+		fileExtentionHgt = true;
 	}
 
 	if (strstr(filename, ".bil") != NULL)
 	{
-		fileExtentionBil = 1;
+		fileExtentionBil = true;
 	}
 
 	base = strrchr(filename, '\\');
@@ -211,15 +212,15 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 		sprintf_s(splatDataFileName, 30, "%ldx%ldx%ldx%ld.sdf", *minimumLatitudeNorth, *maximumLatitudeNorth, *minimumLongitudeWest, *maximumLongitudeWest);
 	}
 
-	error = 0;
+	error = false;
 	*elevationProblem = 0;
 
 	printf("Reading %s... ", filename);
 	fflush(stdout);
 
-	for (x = 0; (x <= integerPixelsPerDegree) && (error == 0); x++)
+	for (x = 0; (x <= integerPixelsPerDegree) && (error == false); x++)
 	{
-		for (y = 0; (y <= integerPixelsPerDegree) && (error == 0); y++)
+		for (y = 0; (y <= integerPixelsPerDegree) && (error == false); y++)
 		{
 			bytes_read = _read(infile, &buffer, 2);
 
@@ -270,7 +271,7 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 			}
 			else
 			{
-				error = 1;
+				error = true;
 			}
 		}
 	}
