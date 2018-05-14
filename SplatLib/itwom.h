@@ -51,74 +51,71 @@ double _declspec(dllexport) StandardNormalTailDistributionFunction(const double 
 
 double _declspec(dllexport) CalculateTerrainInterdecileRangeDelta(double pfl[], const double &x1, const double &x2);
 
-void _declspec(dllexport) PointToPointCalculationLegacy(double elev[], double tht_m, double rht_m, double eps_dielect, double sgm_conductivity,
-	double eno_ns_surfref, double frq_mhz, int radio_climate, int pol, double conf, double rel, double &dbloss,
+void _declspec(dllexport) PointToPointCalculationLegacy(double elev[], double tht_m, double rht_m, double dielectricRelativePermittivityConstant, double conductivitySiemensPerMeter,
+	double atmosphericBendingConstant, double referenceFrequency, int radioClimate, int antennaPolarization, double fractionOfSituations, double fractionOfTime, double &dbloss,
 	char *strmode, int strmodeLen, int &errnum);
 
-void _declspec(dllexport) PointToPointCalculation(double elev[], double tht_m, double rht_m, double eps_dielect, double sgm_conductivity,
-	double eno_ns_surfref, double frq_mhz, int radio_climate, int pol, double conf, double rel, double &dbloss,
+void _declspec(dllexport) PointToPointCalculation(double elev[], double tht_m, double rht_m, double dielectricRelativePermittivityConstant, double conductivitySiemensPerMeter,
+	double atmosphericBendingConstant, double referenceFrequency, int radioClimate, int antennaPolarization, double fractionOfSituations, double fractionOfTime, double &dbloss,
 	char *strmode, int strmodeLen, int &errnum);
 
 void _declspec(dllexport) PointToPointCalculationMdhTwo(double elev[], double tht_m, double rht_m, 
-	double eps_dielect, double sgm_conductivity, double eno_ns_surfref, 
+	double dielectricRelativePermittivityConstant, double conductivitySiemensPerMeter, double atmosphericBendingConstant,
 	double enc_ncc_clcref, double clutter_height, double clutter_density, 
-	double delta_h_diff, double frq_mhz, int radio_climate, int pol, 
+	double delta_h_diff, double referenceFrequency, int radioClimate, int antennaPolarization,
 	int mode_var, double timepct, double locpct, double confpct, 
 	double &dbloss, int &propmode, double &deltaH, int &errnum);
 
 void _declspec(dllexport) PointToPointCalculationDh(double elev[], double tht_m, double rht_m,
-	double eps_dielect, double sgm_conductivity, double eno_ns_surfref,
+	double dielectricRelativePermittivityConstant, double conductivitySiemensPerMeter, double atmosphericBendingConstant,
 	double enc_ncc_clcref, double clutter_height, double clutter_density,
-	double delta_h_diff, double frq_mhz, int radio_climate, int pol,
-	double conf, double rel, double loc, double &dbloss, double &deltaH,
+	double delta_h_diff, double referenceFrequency, int radioClimate, int antennaPolarization,
+	double fractionOfSituations, double fractionOfTime, double loc, double &dbloss, double &deltaH,
 	int &errnum);
 
 void _declspec(dllexport) AreaCalculation(long ModVar, double deltaH, double tht_m, double rht_m, 
 	double dist_km, int TSiteCriteria, int RSiteCriteria, 
-	double eps_dielect, double sgm_conductivity, double eno_ns_surfref, 
+	double dielectricRelativePermittivityConstant, double conductivitySiemensPerMeter, double atmosphericBendingConstant,
 	double enc_ncc_clcref, double clutter_height, double clutter_density, 
-	double delta_h_diff, double frq_mhz, int radio_climate, int pol, 
+	double delta_h_diff, double referenceFrequency, int radioClimate, int antennaPolarization,
 	int mode_var, double pctTime, double pctLoc, double pctConf, 
 	double &dbloss, char *strmode, int &errnum);
 
 double _declspec(dllexport) IrregularTerrainModelAreaCalculationDbLoss(long ModVar, double deltaH, double tht_m, double rht_m,
 	double dist_km, int TSiteCriteria, int RSiteCriteria,
-	double eps_dielect, double sgm_conductivity, double eno_ns_surfref,
+	double dielectricRelativePermittivityConstant, double conductivitySiemensPerMeter, double atmosphericBendingConstant,
 	double enc_ncc_clcref, double clutter_height, double clutter_density,
-	double delta_h_diff, double frq_mhz, int radio_climate, int pol,
+	double delta_h_diff, double referenceFrequency, int radioClimate, int antennaPolarization,
 	int mode_var, double pctTime, double pctLoc, double pctConf);
 
+double _declspec(dllexport) CalculateClutterLoss(double d, prop_type &prop, propa_type &propa);
 
-//| Functions
+double _declspec(dllexport) CalculateDiffractionAttenuation(double d, prop_type &prop, propa_type &propa);
 
-double CalculateClutterLoss(double d, prop_type &prop, propa_type &propa);
+double _declspec(dllexport) CalculateDiffractionAttenuationV2(double d, prop_type &prop, propa_type &propa);
 
-double CalculateDiffractionAttenuation(double d, prop_type &prop, propa_type &propa);
+double _declspec(dllexport) CalculateScatterAttenuation(double d, prop_type &prop, propa_type &propa);
 
-double CalculateDiffractionAttenuationV2(double d, prop_type &prop, propa_type &propa);
+void _declspec(dllexport) Qlrps(double fmhz, double zsys, double en0, int ipol, double eps, double sgm, prop_type &prop);
 
-double CalculateScatterAttenuation(double d, prop_type &prop, propa_type &propa);
+double _declspec(dllexport) CalculateLineOfSightAttenuation(double d, prop_type &prop, propa_type &propa);
 
-void Qlrps(double fmhz, double zsys, double en0, int ipol, double eps, double sgm, prop_type &prop);
+double _declspec(dllexport) CalculateLineOfSightAttenuationV2(double d, prop_type &prop, propa_type &propa);
 
-double CalculateLineOfSightAttenuation(double d, prop_type &prop, propa_type &propa);
+void _declspec(dllexport) Qlra(int kst[], int klimx, int mdvarx, prop_type &prop, propv_type &propv);
 
-double CalculateLineOfSightAttenuationV2(double d, prop_type &prop, propa_type &propa);
+void _declspec(dllexport) CalculateLongleyRicePropagation(double d, prop_type &prop, propa_type &propa);
 
-void Qlra(int kst[], int klimx, int mdvarx, prop_type &prop, propv_type &propv);
+void _declspec(dllexport) CalculateLongleyRicePropagationV2(double d, prop_type &prop, propa_type &propa);
 
-void CalculateLongleyRicePropagation(double d, prop_type &prop, propa_type &propa);
+double _declspec(dllexport) CalculateLongleyRiceVariability(double zzt, double zzl, double zzc, prop_type &prop, propv_type &propv);
 
-void CalculateLongleyRicePropagationV2(double d, prop_type &prop, propa_type &propa);
+void _declspec(dllexport) CalculateHorizonDistances(double pfl[], prop_type &prop);
 
-double CalculateLongleyRiceVariability(double zzt, double zzl, double zzc, prop_type &prop, propv_type &propv);
+void _declspec(dllexport) CalculateHorizonDistancesV2(double pfl[], prop_type &prop, propa_type &propa);
 
-void CalculateHorizonDistances(double pfl[], prop_type &prop);
+double _declspec(dllexport) CalculateTerrainInterdecileRangeDeltaV2(double pfl[], const double &x1, const double &x2, propa_type &propa);
 
-void CalculateHorizonDistancesV2(double pfl[], prop_type &prop, propa_type &propa);
+void _declspec(dllexport) PrepareForPointToPointModeAnalysis(double pfl[], int klimx, int mdvarx, prop_type &prop, propa_type &propa, propv_type &propv);
 
-double CalculateTerrainInterdecileRangeDeltaV2(double pfl[], const double &x1, const double &x2, propa_type &propa);
-
-void PrepareForPointToPointModeAnalysis(double pfl[], int klimx, int mdvarx, prop_type &prop, propa_type &propa, propv_type &propv);
-
-void PrepareForPointToPointModeAnalysisV2(double pfl[], int klimx, int mdvarx, prop_type &prop, propa_type &propa, propv_type &propv);
+void _declspec(dllexport) PrepareForPointToPointModeAnalysisV2(double pfl[], int klimx, int mdvarx, prop_type &prop, propa_type &propa, propv_type &propv);

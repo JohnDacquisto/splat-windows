@@ -12,6 +12,6 @@ public:
 	tcomplex();
 	~tcomplex();
 
-	double tcreal;
-	double tcimag;
+	double complexReal;		//| OLD NAME: tcreal
+	double complexImag;		//| OLD NAME: tcimag
 };

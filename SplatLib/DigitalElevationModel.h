@@ -12,12 +12,12 @@ public:
 	DigitalElevationModel();
 	~DigitalElevationModel();
 
-	int min_north;
-	int max_north;
-	int min_west;
-	int max_west;
-	int max_el;
-	int min_el;
+	int minimumLatitudeNorth;	//| OLD NAME: min_north
+	int maximumLatitudeNorth;	//| OLD NAME: max_north
+	int minimumLongitudeWest;	//| OLD NAME: min_west
+	int maximumLongitudeWest;	//| OLD NAME: max_west
+	int maximumElevation;		//| OLD NAME: max_el
+	int minimumElevation;		//| OLD NAME: min_el
 
 	short **data;
 	unsigned char **mask;

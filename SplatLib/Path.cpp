@@ -8,10 +8,10 @@
 
 Path::Path()
 	: pathArraySize(0),
-	  lat(NULL),
-      lon(NULL),
-	  elevation(NULL),
-	  distance(NULL)
+	  latitudes(NULL),
+	  longitudes(NULL),
+	  elevations(NULL),
+	  distances(NULL)
 {
 }
 
@@ -20,39 +20,39 @@ Path::Path
    (long arraySize)
 	: pathArraySize(arraySize)
 {
-	lat = new double[pathArraySize];
+	latitudes = new double[pathArraySize];
 
-	lon = new double[pathArraySize];
+	longitudes = new double[pathArraySize];
 
-	elevation = new double[pathArraySize];
+	elevations = new double[pathArraySize];
 
-	distance = new double[pathArraySize];
+	distances = new double[pathArraySize];
 }
 
 
 Path::~Path()
 {
-	if (lat)
+	if (latitudes)
 	{
-		delete[] lat;
-		lat = NULL;
+		delete[] latitudes;
+		latitudes = NULL;
 	}
 
-	if (lon)
+	if (longitudes)
 	{
-		delete[] lon;
-		lon = NULL;
+		delete[] longitudes;
+		longitudes = NULL;
 	}
 
-	if (elevation)
+	if (elevations)
 	{
-		delete[] elevation;
-		elevation = NULL;
+		delete[] elevations;
+		elevations = NULL;
 	}
 
-	if (distance)
+	if (distances)
 	{
-		delete[] distance;
-		distance = NULL;
+		delete[] distances;
+		distances = NULL;
 	}
 }

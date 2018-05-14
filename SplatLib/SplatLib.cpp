@@ -222,9 +222,9 @@ LoadSplatSiteLocationFile
 		strncat_s(qthfile, ".qth\0", 5);
 	}
 
-	tempsite.lat = 91.0;
-	tempsite.lon = 361.0;
-	tempsite.alt = 0.0;
+	tempsite.latitude = 91.0;
+	tempsite.longitude = 361.0;
+	tempsite.altitude = 0.0;
 	tempsite.name[0] = 0;
 	tempsite.filename[0] = 0;
 
@@ -243,15 +243,15 @@ LoadSplatSiteLocationFile
 
 		//| Site Latitude
 		fgets(QthString, 49, fd);
-		tempsite.lat = BearingStringToDecimalDegrees(QthString);
+		tempsite.latitude = BearingStringToDecimalDegrees(QthString);
 
 		//| Site Longitude
 		fgets(QthString, 49, fd);
-		tempsite.lon = BearingStringToDecimalDegrees(QthString);
+		tempsite.longitude = BearingStringToDecimalDegrees(QthString);
 
-		if (tempsite.lon < 0.0)
+		if (tempsite.longitude < 0.0)
 		{
-			tempsite.lon += 360.0;
+			tempsite.longitude += 360.0;
 		}
 
 		//| Antenna Height
@@ -274,13 +274,13 @@ LoadSplatSiteLocationFile
 		if ((QthString[x] == 'M') || (QthString[x] == 'm'))
 		{
 			QthString[x] = 0;
-			sscanf_s(QthString, "%f", &tempsite.alt);
-			tempsite.alt *= (float)FEET_PER_METER;
+			sscanf_s(QthString, "%f", &tempsite.altitude);
+			tempsite.altitude *= (float)FEET_PER_METER;
 		}
 		else
 		{
 			QthString[x] = 0;
-			sscanf_s(QthString, "%f", &tempsite.alt);
+			sscanf_s(QthString, "%f", &tempsite.altitude);
 		}
 
 		for (x = 0; (x < 254) && (qthfile[x] != 0); x++)
@@ -311,8 +311,8 @@ LoadSplatSiteLocationFile
 //| ------------------------------
 int
 SetValueInDigitalElevationModelMask
-   (double lat,
-	double lon,
+   (double latitude,
+	double longitude,
 	int value,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
@@ -321,8 +321,8 @@ SetValueInDigitalElevationModelMask
 
 	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
-		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
-		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
+		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(latitude - digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth));
+		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest, longitude));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
@@ -362,8 +362,8 @@ SetValueInDigitalElevationModelMask
 //| ------------------------------
 int
 SetOrValueInDigitalElevationModelMask
-   (double lat,
-	double lon,
+   (double latitude,
+	double longitude,
 	int value,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
@@ -372,8 +372,8 @@ SetOrValueInDigitalElevationModelMask
 
 	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
-		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
-		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
+		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(latitude - digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth));
+		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest, longitude));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
@@ -410,11 +410,11 @@ SetOrValueInDigitalElevationModelMask
 //| ------------------------------
 int
 GetValueInDigitalElevationModelMask
-   (double lat,
-	double lon,
+   (double latitude,
+	double longitude,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
-	return (SetOrValueInDigitalElevationModelMask(lat, lon, 0, digitalElevationModelWrapper));
+	return (SetOrValueInDigitalElevationModelMask(latitude, longitude, 0, digitalElevationModelWrapper));
 }
 
 
@@ -431,8 +431,8 @@ GetValueInDigitalElevationModelMask
 //| ------------------------------
 int
 SetValueInDigitalElevationModelSignal
-   (double lat,
-	double lon,
+   (double latitude,
+	double longitude,
 	unsigned char signal,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
@@ -441,8 +441,8 @@ SetValueInDigitalElevationModelSignal
 
 	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
-		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
-		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
+		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(latitude - digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth));
+		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest, longitude));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
@@ -480,8 +480,8 @@ SetValueInDigitalElevationModelSignal
 //| ------------------------------
 unsigned char
 GetValueInDigitalElevationModelSignal
-   (double lat,
-	double lon,
+   (double latitude,
+	double longitude,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
 	int	x, y, indx;
@@ -489,8 +489,8 @@ GetValueInDigitalElevationModelSignal
 
 	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
-		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
-		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
+		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(latitude - digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth));
+		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest, longitude));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
@@ -536,8 +536,8 @@ GetSiteLocationElevation
 
 	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
-		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(location.lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
-		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, location.lon));
+		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(location.latitude - digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth));
+		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest, location.longitude));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
@@ -577,8 +577,8 @@ GetSiteLocationElevation
 //| ------------------------------
 int
 AddUserDefinedTerrainToDigitalElevationModelData
-   (double lat,
-	double lon,
+   (double latitude,
+	double longitude,
 	double height,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
@@ -587,8 +587,8 @@ AddUserDefinedTerrainToDigitalElevationModelData
 
 	for (indx = 0; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 	{
-		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
-		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
+		x = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(latitude - digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth));
+		y = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference(digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest, longitude));
 
 		if ((x >= 0) && (x <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y >= 0) && (y <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 		{
@@ -640,8 +640,8 @@ ElevationAngleBetweenSites
 {
 	register double a, b, dx;
 
-	a = GetSiteLocationElevation(destination, digitalElevationModelWrapper) + destination.alt + sphereRadius;
-	b = GetSiteLocationElevation(source, digitalElevationModelWrapper) + source.alt + sphereRadius;
+	a = GetSiteLocationElevation(destination, digitalElevationModelWrapper) + destination.altitude + sphereRadius;
+	b = GetSiteLocationElevation(source, digitalElevationModelWrapper) + source.altitude + sphereRadius;
 
 	dx = FEET_PER_MILE * GreatCircleDistanceBetweenSiteLocations(source, destination);
 
@@ -678,11 +678,11 @@ GeneratePathBetweenSites
 		miles_per_sample, samples_per_radian = SAMPLES_PER_RADIAN_STANDARD;
 	Site tempsite;
 
-	lat1 = source.lat * DEGREES_TO_RADIANS;
-	lon1 = source.lon * DEGREES_TO_RADIANS;
+	lat1 = source.latitude * DEGREES_TO_RADIANS;
+	lon1 = source.longitude * DEGREES_TO_RADIANS;
 
-	lat2 = destination.lat * DEGREES_TO_RADIANS;
-	lon2 = destination.lon * DEGREES_TO_RADIANS;
+	lat2 = destination.latitude * DEGREES_TO_RADIANS;
+	lon2 = destination.longitude * DEGREES_TO_RADIANS;
 
 	if (((double)digitalElevationModelWrapper->demPixelsPerDegree) == (double)PIXELS_PER_DEGREE_STANDARD)
 	{
@@ -719,10 +719,10 @@ GeneratePathBetweenSites
 		lat1 = lat1 / DEGREES_TO_RADIANS;
 		lon1 = lon1 / DEGREES_TO_RADIANS;
 
-		path->lat[c] = lat1;
-		path->lon[c] = lon1;
-		path->elevation[c] = GetSiteLocationElevation(source, digitalElevationModelWrapper);
-		path->distance[c] = 0.0;
+		path->latitudes[c] = lat1;
+		path->longitudes[c] = lon1;
+		path->elevations[c] = GetSiteLocationElevation(source, digitalElevationModelWrapper);
+		path->distances[c] = 0.0;
 	}
 
 	for (distance = 0.0, c = 0; (total_distance != 0.0) && (distance <= total_distance) && (c < path->pathArraySize); c++, distance = miles_per_sample * (double)c)
@@ -769,32 +769,32 @@ GeneratePathBetweenSites
 		lat2 = lat2 / DEGREES_TO_RADIANS;
 		lon2 = lon2 / DEGREES_TO_RADIANS;
 
-		path->lat[c] = lat2;
-		path->lon[c] = lon2;
-		tempsite.lat = lat2;
-		tempsite.lon = lon2;
-		path->elevation[c] = GetSiteLocationElevation(tempsite, digitalElevationModelWrapper);
-		path->distance[c] = distance;
+		path->latitudes[c] = lat2;
+		path->longitudes[c] = lon2;
+		tempsite.latitude = lat2;
+		tempsite.longitude = lon2;
+		path->elevations[c] = GetSiteLocationElevation(tempsite, digitalElevationModelWrapper);
+		path->distances[c] = distance;
 	}
 
 	//| Make sure exact destination point is recorded at path->length - 1
 
 	if (c < path->pathArraySize)
 	{
-		path->lat[c] = destination.lat;
-		path->lon[c] = destination.lon;
-		path->elevation[c] = GetSiteLocationElevation(destination, digitalElevationModelWrapper);
-		path->distance[c] = total_distance;
+		path->latitudes[c] = destination.latitude;
+		path->longitudes[c] = destination.longitude;
+		path->elevations[c] = GetSiteLocationElevation(destination, digitalElevationModelWrapper);
+		path->distances[c] = total_distance;
 		c++;
 	}
 
 	if (c < path->pathArraySize)
 	{
-		path->length = c;
+		path->pathLength = c;
 	}
 	else
 	{
-		path->length = path->pathArraySize - 1;
+		path->pathLength = path->pathArraySize - 1;
 	}
 }
 
@@ -834,8 +834,8 @@ ObstructedElevationAngleBetweenSites
 	GeneratePathBetweenSites(source, destination, digitalElevationModelWrapper, tempPath);
 
 	distance = FEET_PER_MILE * GreatCircleDistanceBetweenSiteLocations(source, destination);
-	source_alt = er + source.alt + GetSiteLocationElevation(source, digitalElevationModelWrapper);
-	destination_alt = er + destination.alt + GetSiteLocationElevation(destination, digitalElevationModelWrapper);
+	source_alt = er + source.altitude + GetSiteLocationElevation(source, digitalElevationModelWrapper);
+	destination_alt = er + destination.altitude + GetSiteLocationElevation(destination, digitalElevationModelWrapper);
 	source_alt2 = source_alt * source_alt;
 
 	//| Calculate the cosine of the elevation angle of the
@@ -849,11 +849,11 @@ ObstructedElevationAngleBetweenSites
 	//| at the source since we're interested in identifying the FIRST
 	//| obstruction along the path between source and destination.
 
-	for (x = 2, block = false; (x < tempPath->length) && (block == false); x++)
+	for (x = 2, block = false; (x < tempPath->pathLength) && (block == false); x++)
 	{
-		distance = FEET_PER_MILE * tempPath->distance[x];
+		distance = FEET_PER_MILE * tempPath->distances[x];
 
-		test_alt = sphereRadius + (tempPath->elevation[x] == 0.0 ? tempPath->elevation[x] : tempPath->elevation[x] + groundClutterHeight);
+		test_alt = sphereRadius + (tempPath->elevations[x] == 0.0 ? tempPath->elevations[x] : tempPath->elevations[x] + groundClutterHeight);
 
 		cos_test_angle = ((source_alt2)+(distance*distance) - (test_alt*test_alt)) / (2.0*source_alt*distance);
 
@@ -915,8 +915,8 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 	double beta, lat1, lon1, lat2, lon2, num, den, azimuth, terrain = 0.0;
 	Site destination;
 
-	lat1 = source.lat * DEGREES_TO_RADIANS;
-	lon1 = source.lon * DEGREES_TO_RADIANS;
+	lat1 = source.latitude * DEGREES_TO_RADIANS;
+	lon1 = source.longitude * DEGREES_TO_RADIANS;
 
 	//| Generate a path of elevations between the source
 	//| location and the remote location provided.
@@ -966,8 +966,8 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 	lat2 = lat2 / DEGREES_TO_RADIANS;
 	lon2 = lon2 / DEGREES_TO_RADIANS;
 
-	destination.lat = lat2;
-	destination.lon = lon2;
+	destination.latitude = lat2;
+	destination.longitude = lon2;
 
 	//| If SDF data is missing for the endpoint of
 	//| the radial, then the average terrain cannot
@@ -981,20 +981,20 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 	{
 		GeneratePathBetweenSites(source, destination, digitalElevationModelWrapper, path);
 
-		endpoint = path->length;
+		endpoint = path->pathLength;
 
 		//| Shrink the length of the radial if the
 		//| outermost portion is not over U.S. land.
 
-		for (c = endpoint - 1; (c >= 0) && (path->elevation[c] == 0.0); c--);
+		for (c = endpoint - 1; (c >= 0) && (path->elevations[c] == 0.0); c--);
 
 		endpoint = c + 1;
 
 		for (c = 0, samples = 0; c < endpoint; c++)
 		{
-			if (path->distance[c] >= start_distance)
+			if (path->distances[c] >= start_distance)
 			{
-				terrain += (path->elevation[c] == 0.0 ? path->elevation[c] : path->elevation[c] + groundClutterHeight);
+				terrain += (path->elevations[c] == 0.0 ? path->elevations[c] : path->elevations[c] + groundClutterHeight);
 				samples++;
 			}
 		}
@@ -1064,7 +1064,7 @@ AntennaHeightAboveAverageTerrain
 	else
 	{
 		avg_terrain = (sum / (double)c);
-		haat = (antenna.alt + GetSiteLocationElevation(antenna, digitalElevationModelWrapper)) - avg_terrain;
+		haat = (antenna.altitude + GetSiteLocationElevation(antenna, digitalElevationModelWrapper)) - avg_terrain;
 		return haat;
 	}
 }
@@ -1100,17 +1100,17 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 	int	a, b, c, byte;
 	bool ok2print;
 	char occupied;
-	double x, y, lat, lon, textx = 0.0, texty = 0.0, xmin, xmax,
+	double x, y, latitude, longitude, textx = 0.0, texty = 0.0, xmin, xmax,
 		ymin, ymax, p1, p3, p6, p8, p12, p16, p24, label_length;
 
 	xmin = (double)minimumLatitudeNorth;
 	xmax = (double)maximumLatitudeNorth;
 	ymin = (double)minimumLongitudeWest;
 	ymax = (double)maximumLongitudeWest;
-	lat = location.lat;
-	lon = location.lon;
+	latitude = location.latitude;
+	longitude = location.longitude;
 
-	if ((lat < xmax) && (lat >= xmin) && (LongitudeDifference(lon, ymax) <= 0.0) && (LongitudeDifference(lon, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))))
+	if ((latitude < xmax) && (latitude >= xmin) && (LongitudeDifference(longitude, ymax) <= 0.0) && (LongitudeDifference(longitude, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))))
 	{
 		p1 = 1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree);
 		p3 = 3.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree);
@@ -1125,9 +1125,9 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 
 		//| Is Marker Position Clear Of Text Or Other Markers?
 
-		for (a = 0, x = lat - p3; (x <= xmax) && (x >= xmin) && (a < 7); x += p1, a++)
+		for (a = 0, x = latitude - p3; (x <= xmax) && (x >= xmin) && (a < 7); x += p1, a++)
 		{
-			for (b = 0, y = lon - p3; (LongitudeDifference(y, ymax) <= 0.0) && (LongitudeDifference(y, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))) && (b < 7); y += p1, b++)
+			for (b = 0, y = longitude - p3; (LongitudeDifference(y, ymax) <= 0.0) && (LongitudeDifference(y, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))) && (b < 7); y += p1, b++)
 			{
 				occupied |= (GetValueInDigitalElevationModelMask(x, y, digitalElevationModelWrapper) & 2);
 			}
@@ -1142,17 +1142,17 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 
 			label_length = p1 * (double)(strlen(location.name) << 3);
 
-			if ((LongitudeDifference(lon + label_length, ymax) <= 0.0) && (LongitudeDifference(lon - label_length, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))))
+			if ((LongitudeDifference(longitude + label_length, ymax) <= 0.0) && (LongitudeDifference(longitude - label_length, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))))
 			{
 				//| Default: Centered Text
 
-				texty = lon + label_length / 2.0;
+				texty = longitude + label_length / 2.0;
 
-				if ((lat - p8) >= p16)
+				if ((latitude - p8) >= p16)
 				{
 					//| Position Text Below The Marker
 
-					textx = lat - p8;
+					textx = latitude - p8;
 
 					x = textx;
 					y = texty;
@@ -1186,7 +1186,7 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 				{
 					//| Position Text Above The Marker
 
-					textx = lat + p24;
+					textx = latitude + p24;
 
 					x = textx;
 					y = texty;
@@ -1220,13 +1220,13 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 
 			if (ok2print == false)
 			{
-				if (LongitudeDifference(lon - label_length, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)))
+				if (LongitudeDifference(longitude - label_length, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)))
 				{
 					//| Position Text To The
 					//| Right Of The Marker
 
-					textx = lat + p6;
-					texty = lon - p12;
+					textx = latitude + p6;
+					texty = longitude - p12;
 
 					x = textx;
 					y = texty;
@@ -1261,8 +1261,8 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 					//| Position Text To The
 					//| Left Of The Marker
 
-					textx = lat + p6;
-					texty = lon + p8 + (label_length);
+					textx = latitude + p6;
+					texty = longitude + p8 + (label_length);
 
 					x = textx;
 					y = texty;
@@ -1327,9 +1327,9 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 				//| Draw Square Marker Centered
 				//| On Location Specified
 
-				for (a = 0, x = lat - p3; (x <= xmax) && (x >= xmin) && (a < 7); x += p1, a++)
+				for (a = 0, x = latitude - p3; (x <= xmax) && (x >= xmin) && (a < 7); x += p1, a++)
 				{
-					for (b = 0, y = lon - p3; (LongitudeDifference(y, ymax) <= 0.0) && (LongitudeDifference(y, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))) && (b < 7); y += p1, b++)
+					for (b = 0, y = longitude - p3; (LongitudeDifference(y, ymax) <= 0.0) && (LongitudeDifference(y, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))) && (b < 7); y += p1, b++)
 					{
 						SetOrValueInDigitalElevationModelMask(x, y, 2, digitalElevationModelWrapper);
 					}
@@ -1775,7 +1775,7 @@ LoadAntennaAzimuthElevationPatternFiles
 				az = 1.0;
 			}
 
-			itmParameters->antenna_pattern[x][y] = az * elevation;
+			itmParameters->antennaRadiationPattern[x][y] = az * elevation;
 		}
 	}
 
@@ -1844,10 +1844,10 @@ LoadUncompressedSplatDataFile
 
 	for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false); indx++)
 	{
-		if ((minlat == digitalElevationModelWrapper->digitalElevationModel[indx].min_north) && 
-			(minlon == digitalElevationModelWrapper->digitalElevationModel[indx].min_west) && 
-			(maxlat == digitalElevationModelWrapper->digitalElevationModel[indx].max_north) &&
-			(maxlon == digitalElevationModelWrapper->digitalElevationModel[indx].max_west))
+		if ((minlat == digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth) &&
+			(minlon == digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest) &&
+			(maxlat == digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth) &&
+			(maxlon == digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest))
 		{
 			found = true;
 		}
@@ -1859,7 +1859,7 @@ LoadUncompressedSplatDataFile
 	{
 		for (indx = 0, free_page = false; (indx < digitalElevationModelWrapper->maxPages) && (free_page == false); indx++)
 		{
-			if (digitalElevationModelWrapper->digitalElevationModel[indx].max_north == -90)
+			if (digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth == -90)
 			{
 				free_page = true;
 			}
@@ -1893,16 +1893,16 @@ LoadUncompressedSplatDataFile
 			fflush(stdout);
 
 			fgets(line, 19, fd);
-			sscanf_s(line, "%d", &digitalElevationModelWrapper->digitalElevationModel[indx].max_west);
+			sscanf_s(line, "%d", &digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest);
 
 			fgets(line, 19, fd);
-			sscanf_s(line, "%d", &digitalElevationModelWrapper->digitalElevationModel[indx].min_north);
+			sscanf_s(line, "%d", &digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth);
 
 			fgets(line, 19, fd);
-			sscanf_s(line, "%d", &digitalElevationModelWrapper->digitalElevationModel[indx].min_west);
+			sscanf_s(line, "%d", &digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest);
 
 			fgets(line, 19, fd);
-			sscanf_s(line, "%d", &digitalElevationModelWrapper->digitalElevationModel[indx].max_north);
+			sscanf_s(line, "%d", &digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth);
 
 			for (x = 0; x < digitalElevationModelWrapper->demPixelsPerDegree; x++)
 			{
@@ -1915,88 +1915,88 @@ LoadUncompressedSplatDataFile
 					digitalElevationModelWrapper->digitalElevationModel[indx].signal[x][y] = 0;
 					digitalElevationModelWrapper->digitalElevationModel[indx].mask[x][y] = 0;
 
-					if (data > digitalElevationModelWrapper->digitalElevationModel[indx].max_el)
+					if (data > digitalElevationModelWrapper->digitalElevationModel[indx].maximumElevation)
 					{
-						digitalElevationModelWrapper->digitalElevationModel[indx].max_el = data;
+						digitalElevationModelWrapper->digitalElevationModel[indx].maximumElevation = data;
 					}
 
-					if (data < digitalElevationModelWrapper->digitalElevationModel[indx].min_el)
+					if (data < digitalElevationModelWrapper->digitalElevationModel[indx].minimumElevation)
 					{
-						digitalElevationModelWrapper->digitalElevationModel[indx].min_el = data;
+						digitalElevationModelWrapper->digitalElevationModel[indx].minimumElevation = data;
 					}
 				}
 			}
 
 			fclose(fd);
 
-			if (digitalElevationModelWrapper->digitalElevationModel[indx].min_el < *minimumElevation)
+			if (digitalElevationModelWrapper->digitalElevationModel[indx].minimumElevation < *minimumElevation)
 			{
-				*minimumElevation = digitalElevationModelWrapper->digitalElevationModel[indx].min_el;
+				*minimumElevation = digitalElevationModelWrapper->digitalElevationModel[indx].minimumElevation;
 			}
 
-			if (digitalElevationModelWrapper->digitalElevationModel[indx].max_el > *maximumElevation)
+			if (digitalElevationModelWrapper->digitalElevationModel[indx].maximumElevation > *maximumElevation)
 			{
-				*maximumElevation = digitalElevationModelWrapper->digitalElevationModel[indx].max_el;
+				*maximumElevation = digitalElevationModelWrapper->digitalElevationModel[indx].maximumElevation;
 			}
 
 			if (*maximumLatitudeNorth == -90)
 			{
-				*maximumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].max_north;
+				*maximumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth;
 			}
-			else if (digitalElevationModelWrapper->digitalElevationModel[indx].max_north > *maximumLatitudeNorth)
+			else if (digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth > *maximumLatitudeNorth)
 			{
-				*maximumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].max_north;
+				*maximumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth;
 			}
 
 			if (*minimumLatitudeNorth == 90)
 			{
-				*minimumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].min_north;
+				*minimumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth;
 			}
-			else if (digitalElevationModelWrapper->digitalElevationModel[indx].min_north < *minimumLatitudeNorth)
+			else if (digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth < *minimumLatitudeNorth)
 			{
-				*minimumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].min_north;
+				*minimumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth;
 			}
 
 			if (*maximumLongitudeWest == -1)
 			{
-				*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].max_west;
+				*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest;
 			}
 			else
 			{
-				if (abs(digitalElevationModelWrapper->digitalElevationModel[indx].max_west - *maximumLongitudeWest) < 180)
+				if (abs(digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest - *maximumLongitudeWest) < 180)
 				{
-					if (digitalElevationModelWrapper->digitalElevationModel[indx].max_west > *maximumLongitudeWest)
+					if (digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest > *maximumLongitudeWest)
 					{
-						*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].max_west;
+						*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest;
 					}
 				}
 				else
 				{
-					if (digitalElevationModelWrapper->digitalElevationModel[indx].max_west < *maximumLongitudeWest)
+					if (digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest < *maximumLongitudeWest)
 					{
-						*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].max_west;
+						*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest;
 					}
 				}
 			}
 
 			if (*minimumLongitudeWest == 360)
 			{
-				*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].min_west;
+				*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest;
 			}
 			else
 			{
-				if (fabs(digitalElevationModelWrapper->digitalElevationModel[indx].min_west - *minimumLongitudeWest) < 180.0)
+				if (fabs(digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest - *minimumLongitudeWest) < 180.0)
 				{
-					if (digitalElevationModelWrapper->digitalElevationModel[indx].min_west < *minimumLongitudeWest)
+					if (digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest < *minimumLongitudeWest)
 					{
-						*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].min_west;
+						*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest;
 					}
 				}
 				else
 				{
-					if (digitalElevationModelWrapper->digitalElevationModel[indx].min_west > *minimumLongitudeWest)
+					if (digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest > *minimumLongitudeWest)
 					{
-						*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].min_west;
+						*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest;
 					}
 				}
 			}
@@ -2066,10 +2066,10 @@ LoadSplatDataFile
 
 		for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false); indx++)
 		{
-			if ((minlat == digitalElevationModelWrapper->digitalElevationModel[indx].min_north) && 
-				(minlon == digitalElevationModelWrapper->digitalElevationModel[indx].min_west) && 
-				(maxlat == digitalElevationModelWrapper->digitalElevationModel[indx].max_north) &&
-				(maxlon == digitalElevationModelWrapper->digitalElevationModel[indx].max_west))
+			if ((minlat == digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth) &&
+				(minlon == digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest) &&
+				(maxlat == digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth) &&
+				(maxlon == digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest))
 			{
 				found = true;
 			}
@@ -2081,7 +2081,7 @@ LoadSplatDataFile
 		{
 			for (indx = 0, free_page = false; (indx < digitalElevationModelWrapper->maxPages) && (free_page == false); indx++)
 			{
-				if (digitalElevationModelWrapper->digitalElevationModel[indx].max_north == -90)
+				if (digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth == -90)
 				{
 					free_page = true;
 				}
@@ -2095,10 +2095,10 @@ LoadSplatDataFile
 			fprintf(stdout, "Region  \"%s\" assumed as sea-level into page %d...", name, indx + 1);
 			fflush(stdout);
 
-			digitalElevationModelWrapper->digitalElevationModel[indx].max_west = maxlon;
-			digitalElevationModelWrapper->digitalElevationModel[indx].min_north = minlat;
-			digitalElevationModelWrapper->digitalElevationModel[indx].min_west = minlon;
-			digitalElevationModelWrapper->digitalElevationModel[indx].max_north = maxlat;
+			digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest = maxlon;
+			digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth = minlat;
+			digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest = minlon;
+			digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth = maxlat;
 
 			//| Fill DEM with sea-level topography
 
@@ -2110,81 +2110,81 @@ LoadSplatDataFile
 					digitalElevationModelWrapper->digitalElevationModel[indx].signal[x][y] = 0;
 					digitalElevationModelWrapper->digitalElevationModel[indx].mask[x][y] = 0;
 
-					if (digitalElevationModelWrapper->digitalElevationModel[indx].min_el > 0)
+					if (digitalElevationModelWrapper->digitalElevationModel[indx].minimumElevation > 0)
 					{
-						digitalElevationModelWrapper->digitalElevationModel[indx].min_el = 0;
+						digitalElevationModelWrapper->digitalElevationModel[indx].minimumElevation = 0;
 					}
 				}
 			}
 
-			if (digitalElevationModelWrapper->digitalElevationModel[indx].min_el < *minimumElevation)
+			if (digitalElevationModelWrapper->digitalElevationModel[indx].minimumElevation < *minimumElevation)
 			{
-				*minimumElevation = digitalElevationModelWrapper->digitalElevationModel[indx].min_el;
+				*minimumElevation = digitalElevationModelWrapper->digitalElevationModel[indx].minimumElevation;
 			}
 
-			if (digitalElevationModelWrapper->digitalElevationModel[indx].max_el > *maximumElevation)
+			if (digitalElevationModelWrapper->digitalElevationModel[indx].maximumElevation > *maximumElevation)
 			{
-				*maximumElevation = digitalElevationModelWrapper->digitalElevationModel[indx].max_el;
+				*maximumElevation = digitalElevationModelWrapper->digitalElevationModel[indx].maximumElevation;
 			}
 
 			if (*maximumLatitudeNorth == -90)
 			{
-				*maximumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].max_north;
+				*maximumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth;
 			}
-			else if (digitalElevationModelWrapper->digitalElevationModel[indx].max_north > *maximumLatitudeNorth)
+			else if (digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth > *maximumLatitudeNorth)
 			{
-				*maximumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].max_north;
+				*maximumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth;
 			}
 
 			if (*minimumLatitudeNorth == 90)
 			{
-				*minimumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].min_north;
+				*minimumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth;
 			}
-			else if (digitalElevationModelWrapper->digitalElevationModel[indx].min_north < *minimumLatitudeNorth)
+			else if (digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth < *minimumLatitudeNorth)
 			{
-				*minimumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].min_north;
+				*minimumLatitudeNorth = digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth;
 			}
 
 			if (*maximumLongitudeWest == -1)
 			{
-				*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].max_west;
+				*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest;
 			}
 			else
 			{
-				if (abs(digitalElevationModelWrapper->digitalElevationModel[indx].max_west - *maximumLongitudeWest) < 180)
+				if (abs(digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest - *maximumLongitudeWest) < 180)
 				{
-					if (digitalElevationModelWrapper->digitalElevationModel[indx].max_west > *maximumLongitudeWest)
+					if (digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest > *maximumLongitudeWest)
 					{
-						*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].max_west;
+						*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest;
 					}
 				}
 				else
 				{
-					if (digitalElevationModelWrapper->digitalElevationModel[indx].max_west < *maximumLongitudeWest)
+					if (digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest < *maximumLongitudeWest)
 					{
-						*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].max_west;
+						*maximumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest;
 					}
 				}
 			}
 
 			if (*minimumLongitudeWest == 360)
 			{
-				*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].min_west;
+				*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest;
 			}
 			else
 			{
-				if (abs(digitalElevationModelWrapper->digitalElevationModel[indx].min_west - *minimumLongitudeWest) < 180)
+				if (abs(digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest - *minimumLongitudeWest) < 180)
 				{
-					if (digitalElevationModelWrapper->digitalElevationModel[indx].min_west < *minimumLongitudeWest)
+					if (digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest < *minimumLongitudeWest)
 					{
-						*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].min_west;
+						*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest;
 					}
 				}
 				else
 				{
-					if (digitalElevationModelWrapper->digitalElevationModel[indx].min_west > *minimumLongitudeWest)
+					if (digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest > *minimumLongitudeWest)
 					{
-						*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].min_west;
+						*minimumLongitudeWest = digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest;
 					}
 				}
 			}
@@ -2256,13 +2256,13 @@ LoadAndPlotCitiesAndSitesOnMaps
 			}
 
 			err = strncpy_s(city_site.name, _countof(city_site.name), str[0], 49);
-			city_site.lat = BearingStringToDecimalDegrees(str[1]);
-			city_site.lon = BearingStringToDecimalDegrees(str[2]);
-			city_site.alt = 0.0;
+			city_site.latitude = BearingStringToDecimalDegrees(str[1]);
+			city_site.longitude = BearingStringToDecimalDegrees(str[2]);
+			city_site.altitude = 0.0;
 
-			if (city_site.lon < 0.0)
+			if (city_site.longitude < 0.0)
 			{
-				city_site.lon += 360.0;
+				city_site.longitude += 360.0;
 			}
 
 			PlaceTextAndMarkerDataInMaskArrayForMaps(city_site, digitalElevationModelWrapper, minimumLatitudeNorth, maximumLatitudeNorth,
@@ -2508,16 +2508,16 @@ LoadCartographicBoundaryFiles
 			{
 				sscanf_s(BoundariesString, "%lf %lf", &lon1, &lat1);
 
-				source.lat = lat0;
-				source.lon = (lon0 > 0.0 ? 360.0 - lon0 : -lon0);
-				destination.lat = lat1;
-				destination.lon = (lon1 > 0.0 ? 360.0 - lon1 : -lon1);
+				source.latitude = lat0;
+				source.longitude = (lon0 > 0.0 ? 360.0 - lon0 : -lon0);
+				destination.latitude = lat1;
+				destination.longitude = (lon1 > 0.0 ? 360.0 - lon1 : -lon1);
 
 				GeneratePathBetweenSites(source, destination, digitalElevationModelWrapper, path);
 
-				for (x = 0; x < path->length; x++)
+				for (x = 0; x < path->pathLength; x++)
 				{
-					SetOrValueInDigitalElevationModelMask(path->lat[x], path->lon[x], 4, digitalElevationModelWrapper);
+					SetOrValueInDigitalElevationModelMask(path->latitudes[x], path->longitudes[x], 4, digitalElevationModelWrapper);
 				}
 
 				lat0 = lat1;
@@ -2579,15 +2579,15 @@ ReadLongleyRiceParameterDataForSite
 
 	//| Default parameters
 
-	itmParameters->eps_dielect = 0.0;
-	itmParameters->sgm_conductivity = 0.0;
-	itmParameters->eno_ns_surfref = 0.0;
-	itmParameters->frq_mhz = 0.0;
-	itmParameters->radio_climate = 0;
-	itmParameters->pol = 0;
-	itmParameters->conf = 0.0;
-	itmParameters->rel = 0.0;
-	itmParameters->erp = 0.0;
+	itmParameters->dielectricRelativePermittivityConstant = 0.0;
+	itmParameters->conductivitySiemensPerMeter = 0.0;
+	itmParameters->atmosphericBendingConstant = 0.0;
+	itmParameters->referenceFrequency = 0.0;
+	itmParameters->radioClimate = 0;
+	itmParameters->antennaPolarization = 0;
+	itmParameters->fractionOfSituations = 0.0;
+	itmParameters->fractionOfTime = 0.0;
+	itmParameters->effectiveRadiatedPower = 0.0;
 
 	//| Generate .lrp filename from txsite filename.
 
@@ -2633,7 +2633,7 @@ ReadLongleyRiceParameterDataForSite
 
 		if (ok != 0)
 		{
-			itmParameters->eps_dielect = din;
+			itmParameters->dielectricRelativePermittivityConstant = din;
 
 			fgets(LrString, 80, fd);
 
@@ -2649,7 +2649,7 @@ ReadLongleyRiceParameterDataForSite
 
 		if (ok != 0)
 		{
-			itmParameters->sgm_conductivity = din;
+			itmParameters->conductivitySiemensPerMeter = din;
 
 			fgets(LrString, 80, fd);
 
@@ -2665,7 +2665,7 @@ ReadLongleyRiceParameterDataForSite
 
 		if (ok != 0)
 		{
-			itmParameters->eno_ns_surfref = din;
+			itmParameters->atmosphericBendingConstant = din;
 
 			fgets(LrString, 80, fd);
 
@@ -2681,7 +2681,7 @@ ReadLongleyRiceParameterDataForSite
 
 		if (ok != 0)
 		{
-			itmParameters->frq_mhz = din;
+			itmParameters->referenceFrequency = din;
 
 			fgets(LrString, 80, fd);
 
@@ -2697,7 +2697,7 @@ ReadLongleyRiceParameterDataForSite
 
 		if (ok != 0)
 		{
-			itmParameters->radio_climate = iin;
+			itmParameters->radioClimate = iin;
 
 			fgets(LrString, 80, fd);
 
@@ -2713,7 +2713,7 @@ ReadLongleyRiceParameterDataForSite
 
 		if (ok != 0)
 		{
-			itmParameters->pol = iin;
+			itmParameters->antennaPolarization = iin;
 
 			fgets(LrString, 80, fd);
 
@@ -2729,7 +2729,7 @@ ReadLongleyRiceParameterDataForSite
 
 		if (ok != 0)
 		{
-			itmParameters->conf = din;
+			itmParameters->fractionOfSituations = din;
 
 			fgets(LrString, 80, fd);
 
@@ -2745,7 +2745,7 @@ ReadLongleyRiceParameterDataForSite
 
 		if (ok != 0)
 		{
-			itmParameters->rel = din;
+			itmParameters->fractionOfTime = din;
 			din = 0.0;
 			return_value = true;
 
@@ -2760,7 +2760,7 @@ ReadLongleyRiceParameterDataForSite
 
 				if (sscanf_s(LrString, "%lf", &din))
 				{
-					itmParameters->erp = din;
+					itmParameters->effectiveRadiatedPower = din;
 				}
 
 				//| ERP in SPLAT is referenced to 1 Watt
@@ -2771,7 +2771,7 @@ ReadLongleyRiceParameterDataForSite
 
 				if ((strstr(LrString, "dBm") != NULL) || (strstr(LrString, "dbm") != NULL))
 				{
-					itmParameters->erp = (pow(10.0, (itmParameters->erp - DBW_TO_DBM - DIPOLE_TO_ISOTROPIC_ANTENNA) / 10.0));
+					itmParameters->effectiveRadiatedPower = (pow(10.0, (itmParameters->effectiveRadiatedPower - DBW_TO_DBM - DIPOLE_TO_ISOTROPIC_ANTENNA) / 10.0));
 				}
 			}
 		}
@@ -2780,12 +2780,12 @@ ReadLongleyRiceParameterDataForSite
 
 		if (effectiveRadiatedPower != -1.0)
 		{
-			itmParameters->erp = effectiveRadiatedPower;
+			itmParameters->effectiveRadiatedPower = effectiveRadiatedPower;
 		}
 
 		if ((fresnelZoneFrequency >= MINIMUM_FREQUENCY) && (fresnelZoneFrequency <= MAXIMUM_FREQUENCY))
 		{
-			itmParameters->frq_mhz = fresnelZoneFrequency;
+			itmParameters->referenceFrequency = fresnelZoneFrequency;
 		}
 
 		if (ok != 0)
@@ -2799,29 +2799,29 @@ ReadLongleyRiceParameterDataForSite
 		//| Assign some default parameters
 		//| for use in this run.
 
-		itmParameters->eps_dielect = 15.0;
-		itmParameters->sgm_conductivity = 0.005;
-		itmParameters->eno_ns_surfref = 301.0;
-		itmParameters->frq_mhz = 300.0;
-		itmParameters->radio_climate = 5;
-		itmParameters->pol = 0;
-		itmParameters->conf = 0.50;
-		itmParameters->rel = 0.50;
-		itmParameters->erp = 0.0;
+		itmParameters->dielectricRelativePermittivityConstant = 15.0;
+		itmParameters->conductivitySiemensPerMeter = 0.005;
+		itmParameters->atmosphericBendingConstant = 301.0;
+		itmParameters->referenceFrequency = 300.0;
+		itmParameters->radioClimate = 5;
+		itmParameters->antennaPolarization = 0;
+		itmParameters->fractionOfSituations = 0.50;
+		itmParameters->fractionOfTime = 0.50;
+		itmParameters->effectiveRadiatedPower = 0.0;
 
 		//| Write them to a .lrp file.
 
 		err = fopen_s(&outfile, filename, "w");
 
-		fprintf(outfile, "%.3f\t; Earth Dielectric Constant (Relative permittivity)\n", itmParameters->eps_dielect);
-		fprintf(outfile, "%.3f\t; Earth Conductivity (Siemens per meter)\n", itmParameters->sgm_conductivity);
-		fprintf(outfile, "%.3f\t; Atmospheric Bending Constant (N-Units)\n", itmParameters->eno_ns_surfref);
-		fprintf(outfile, "%.3f\t; Frequency in MHz (20 MHz to 20 GHz)\n", itmParameters->frq_mhz);
-		fprintf(outfile, "%d\t; Radio Climate\n", itmParameters->radio_climate);
-		fprintf(outfile, "%d\t; Polarization (0 = Horizontal, 1 = Vertical)\n", itmParameters->pol);
-		fprintf(outfile, "%.2f\t; Fraction of Situations\n", itmParameters->conf);
-		fprintf(outfile, "%.2f\t; Fraction of Time\n", itmParameters->rel);
-		fprintf(outfile, "%.2f\t; Transmitter Effective Radiated Power in Watts or dBm (optional)\n", itmParameters->erp);
+		fprintf(outfile, "%.3f\t; Earth Dielectric Constant (Relative permittivity)\n", itmParameters->dielectricRelativePermittivityConstant);
+		fprintf(outfile, "%.3f\t; Earth Conductivity (Siemens per meter)\n", itmParameters->conductivitySiemensPerMeter);
+		fprintf(outfile, "%.3f\t; Atmospheric Bending Constant (N-Units)\n", itmParameters->atmosphericBendingConstant);
+		fprintf(outfile, "%.3f\t; Frequency in MHz (20 MHz to 20 GHz)\n", itmParameters->referenceFrequency);
+		fprintf(outfile, "%d\t; Radio Climate\n", itmParameters->radioClimate);
+		fprintf(outfile, "%d\t; Polarization (0 = Horizontal, 1 = Vertical)\n", itmParameters->antennaPolarization);
+		fprintf(outfile, "%.2f\t; Fraction of Situations\n", itmParameters->fractionOfSituations);
+		fprintf(outfile, "%.2f\t; Fraction of Time\n", itmParameters->fractionOfTime);
+		fprintf(outfile, "%.2f\t; Transmitter Effective Radiated Power in Watts or dBm (optional)\n", itmParameters->effectiveRadiatedPower);
 		fprintf(outfile, "\nPlease consult SPLAT documentation for the meaning and use of this data.\n");
 
 		fclose(outfile);
@@ -2837,15 +2837,15 @@ ReadLongleyRiceParameterDataForSite
 
 	if (forced_read && ((fd == NULL) || (ok == 0)))
 	{
-		itmParameters->eps_dielect = 15.0;
-		itmParameters->sgm_conductivity = 0.005;
-		itmParameters->eno_ns_surfref = 301.0;
-		itmParameters->frq_mhz = 300.0;
-		itmParameters->radio_climate = 5;
-		itmParameters->pol = 0;
-		itmParameters->conf = 0.50;
-		itmParameters->rel = 0.50;
-		itmParameters->erp = 0.0;
+		itmParameters->dielectricRelativePermittivityConstant = 15.0;
+		itmParameters->conductivitySiemensPerMeter = 0.005;
+		itmParameters->atmosphericBendingConstant = 301.0;
+		itmParameters->referenceFrequency = 300.0;
+		itmParameters->radioClimate = 5;
+		itmParameters->antennaPolarization = 0;
+		itmParameters->fractionOfSituations = 0.50;
+		itmParameters->fractionOfTime = 0.50;
+		itmParameters->effectiveRadiatedPower = 0.0;
 
 		fprintf(stderr, "Default parameters have been assumed for this analysis.\n");
 
@@ -2898,16 +2898,16 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 
 	GeneratePathBetweenSites(source, destination, digitalElevationModelWrapper, path);
 
-	for (y = 0; y < path->length; y++)
+	for (y = 0; y < path->pathLength; y++)
 	{
 		//| Test this point only if it hasn't been already
 		//| tested and found to be free of obstructions.
 
-		if ((GetValueInDigitalElevationModelMask(path->lat[y], path->lon[y], digitalElevationModelWrapper) & mask_value) == 0)
+		if ((GetValueInDigitalElevationModelMask(path->latitudes[y], path->longitudes[y], digitalElevationModelWrapper) & mask_value) == 0)
 		{
-			distance = FEET_PER_MILE * path->distance[y];
-			tx_alt = sphereRadius + source.alt + path->elevation[0];
-			rx_alt = sphereRadius + destination.alt + path->elevation[y];
+			distance = FEET_PER_MILE * path->distances[y];
+			tx_alt = sphereRadius + source.altitude + path->elevations[0];
+			rx_alt = sphereRadius + destination.altitude + path->elevations[y];
 
 			//| Calculate the cosine of the elevation of the
 			//| transmitter as seen at the temp rx point.
@@ -2916,8 +2916,8 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 
 			for (x = y, block = false; (x >= 0) && (block == false); x--)
 			{
-				distance = FEET_PER_MILE * (path->distance[y] - path->distance[x]);
-				test_alt = sphereRadius + (path->elevation[x] == 0.0 ? path->elevation[x] : path->elevation[x] + groundClutterHeight);
+				distance = FEET_PER_MILE * (path->distances[y] - path->distances[x]);
+				test_alt = sphereRadius + (path->elevations[x] == 0.0 ? path->elevations[x] : path->elevations[x] + groundClutterHeight);
 
 				cos_test_angle = ((rx_alt*rx_alt) + (distance*distance) - (test_alt*test_alt)) / (2.0*rx_alt*distance);
 
@@ -2936,12 +2936,12 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 
 			if (block == false)
 			{
-				SetOrValueInDigitalElevationModelMask(path->lat[y], path->lon[y], mask_value, digitalElevationModelWrapper);
+				SetOrValueInDigitalElevationModelMask(path->latitudes[y], path->longitudes[y], mask_value, digitalElevationModelWrapper);
 			}
 
 			if (fd != NULL)
 			{
-				fprintf(fd, "%.7f, %.7f", path->lat[y], path->lon[y]);
+				fprintf(fd, "%.7f, %.7f", path->latitudes[y], path->longitudes[y]);
 				if (block)
 				{
 					fprintf(fd, " (Obstruction)");
@@ -2997,15 +2997,15 @@ AnalyzeAndPlotPathLossBetweenSites
 
 	//| Copy elevations plus clutter along path into the pathElevation[] array.
 
-	for (x = 1; x < path->length - 1; x++)
+	for (x = 1; x < path->pathLength - 1; x++)
 	{
-		pathElevation[x + 2] = (path->elevation[x] == 0.0 ? path->elevation[x] * METERS_PER_FOOT : (groundClutterHeight + path->elevation[x]) * METERS_PER_FOOT);
+		pathElevation[x + 2] = (path->elevations[x] == 0.0 ? path->elevations[x] * METERS_PER_FOOT : (groundClutterHeight + path->elevations[x]) * METERS_PER_FOOT);
 	}
 
 	//| Copy ending points without clutter
 
-	pathElevation[2] = path->elevation[0] * METERS_PER_FOOT;
-	pathElevation[path->length + 1] = path->elevation[path->length - 1] * METERS_PER_FOOT;
+	pathElevation[2] = path->elevations[0] * METERS_PER_FOOT;
+	pathElevation[path->pathLength + 1] = path->elevations[path->pathLength - 1] * METERS_PER_FOOT;
 
 	//| Since the only energy the propagation model considers
 	//| reaching the destination is based on what is scattered
@@ -3017,16 +3017,16 @@ AnalyzeAndPlotPathLossBetweenSites
 	//| is required for properly integrating the antenna's elevation
 	//| pattern into the calculation for overall path loss.
 
-	for (y = 2; (y < (path->length - 1)) && (path->distance[y] <= maximumAnalysisDistance); y++)
+	for (y = 2; (y < (path->pathLength - 1)) && (path->distances[y] <= maximumAnalysisDistance); y++)
 	{
 		//| Process this point only if it
 		//| has not already been processed.
 
-		if ((GetValueInDigitalElevationModelMask(path->lat[y], path->lon[y], digitalElevationModelWrapper) & 248) != (mask_value << 3))
+		if ((GetValueInDigitalElevationModelMask(path->latitudes[y], path->longitudes[y], digitalElevationModelWrapper) & 248) != (mask_value << 3))
 		{
-			distance = FEET_PER_MILE * path->distance[y];
-			xmtr_alt = four_thirds_earth + source.alt + path->elevation[0];
-			dest_alt = four_thirds_earth + destination.alt + path->elevation[y];
+			distance = FEET_PER_MILE * path->distances[y];
+			xmtr_alt = four_thirds_earth + source.altitude + path->elevations[0];
+			dest_alt = four_thirds_earth + destination.altitude + path->elevations[y];
 			dest_alt2 = dest_alt * dest_alt;
 			xmtr_alt2 = xmtr_alt * xmtr_alt;
 
@@ -3053,9 +3053,9 @@ AnalyzeAndPlotPathLossBetweenSites
 
 				for (x = 2, block = false; (x < y) && (block == false); x++)
 				{
-					distance = FEET_PER_MILE * path->distance[x];
+					distance = FEET_PER_MILE * path->distances[x];
 
-					test_alt = four_thirds_earth + (path->elevation[x] == 0.0 ? path->elevation[x] : path->elevation[x] + groundClutterHeight);
+					test_alt = four_thirds_earth + (path->elevations[x] == 0.0 ? path->elevations[x] : path->elevations[x] + groundClutterHeight);
 
 					//| Calculate the cosine of the elevation
 					//| angle of the terrain (test point)
@@ -3107,40 +3107,40 @@ AnalyzeAndPlotPathLossBetweenSites
 
 									   //| Distance between elevation samples
 
-			pathElevation[1] = METERS_PER_MILE * (path->distance[y] - path->distance[y - 1]);
+			pathElevation[1] = METERS_PER_MILE * (path->distances[y] - path->distances[y - 1]);
 
 			if (useOldLongleyRiceModel)
 			{
-				PointToPointCalculationLegacy(pathElevation, (source.alt * METERS_PER_FOOT),
-					(destination.alt * METERS_PER_FOOT), itmParameters->eps_dielect,
-					itmParameters->sgm_conductivity, itmParameters->eno_ns_surfref, itmParameters->frq_mhz,
-					itmParameters->radio_climate, itmParameters->pol, itmParameters->conf, itmParameters->rel, loss,
+				PointToPointCalculationLegacy(pathElevation, (source.altitude * METERS_PER_FOOT),
+					(destination.altitude * METERS_PER_FOOT), itmParameters->dielectricRelativePermittivityConstant,
+					itmParameters->conductivitySiemensPerMeter, itmParameters->atmosphericBendingConstant, itmParameters->referenceFrequency,
+					itmParameters->radioClimate, itmParameters->antennaPolarization, itmParameters->fractionOfSituations, itmParameters->fractionOfTime, loss,
 					strmode, 100, errnum);
 			}
 			else
 			{
-				PointToPointCalculation(pathElevation, (source.alt * METERS_PER_FOOT),
-					(destination.alt * METERS_PER_FOOT), itmParameters->eps_dielect,
-					itmParameters->sgm_conductivity, itmParameters->eno_ns_surfref, itmParameters->frq_mhz,
-					itmParameters->radio_climate, itmParameters->pol, itmParameters->conf, itmParameters->rel, loss,
+				PointToPointCalculation(pathElevation, (source.altitude * METERS_PER_FOOT),
+					(destination.altitude * METERS_PER_FOOT), itmParameters->dielectricRelativePermittivityConstant,
+					itmParameters->conductivitySiemensPerMeter, itmParameters->atmosphericBendingConstant, itmParameters->referenceFrequency,
+					itmParameters->radioClimate, itmParameters->antennaPolarization, itmParameters->fractionOfSituations, itmParameters->fractionOfTime, loss,
 					strmode, 100, errnum);
 			}
 
-			temp.lat = path->lat[y];
-			temp.lon = path->lon[y];
+			temp.latitude = path->latitudes[y];
+			temp.longitude = path->longitudes[y];
 
 			azimuth = AzimuthAngleBetweenSites(source, temp);
 
 			if (fd != NULL)
 			{
-				fprintf(fd, "%.7f, %.7f, %.3f, %.3f, ", path->lat[y], path->lon[y], azimuth, elevation);
+				fprintf(fd, "%.7f, %.7f, %.3f, %.3f, ", path->latitudes[y], path->longitudes[y], azimuth, elevation);
 			}
 
 			//| If ERP == 0, write path loss to alphanumeric
 			//| output file. Otherwise, write field strength
 			//| or received power level (below), as appropriate.
 
-			if ((fd != NULL) && (itmParameters->erp == 0.0))
+			if ((fd != NULL) && (itmParameters->effectiveRadiatedPower == 0.0))
 			{
 				fprintf(fd, "%.2f", loss);
 			}
@@ -3154,7 +3154,7 @@ AnalyzeAndPlotPathLossBetweenSites
 			{
 				azimuth = rint(azimuth);
 
-				pattern = (double)itmParameters->antenna_pattern[(int)azimuth][x];
+				pattern = (double)itmParameters->antennaRadiationPattern[(int)azimuth][x];
 
 				if (pattern != 0.0)
 				{
@@ -3163,13 +3163,13 @@ AnalyzeAndPlotPathLossBetweenSites
 				}
 			}
 
-			if (itmParameters->erp != 0.0)
+			if (itmParameters->effectiveRadiatedPower != 0.0)
 			{
 				if (plotSignalPowerLevelContours != 0)
 				{
 					//| dBm is based on EIRP (ERP + DIPOLE_TO_ISOTROPIC_ANTENNA)
 
-					rxp = itmParameters->erp / pow(10.0, (loss - DIPOLE_TO_ISOTROPIC_ANTENNA) / 10.0);
+					rxp = itmParameters->effectiveRadiatedPower / pow(10.0, (loss - DIPOLE_TO_ISOTROPIC_ANTENNA) / 10.0);
 
 					dBm = 10.0 * log10(rxp*1000.0);
 
@@ -3192,18 +3192,18 @@ AnalyzeAndPlotPathLossBetweenSites
 						ifs = 255;
 					}
 
-					ofs = GetValueInDigitalElevationModelSignal(path->lat[y], path->lon[y], digitalElevationModelWrapper);
+					ofs = GetValueInDigitalElevationModelSignal(path->latitudes[y], path->longitudes[y], digitalElevationModelWrapper);
 
 					if (ofs > ifs)
 					{
 						ifs = ofs;
 					}
 
-					SetValueInDigitalElevationModelSignal(path->lat[y], path->lon[y], (unsigned char)ifs, digitalElevationModelWrapper);
+					SetValueInDigitalElevationModelSignal(path->latitudes[y], path->longitudes[y], (unsigned char)ifs, digitalElevationModelWrapper);
 				}
 				else
 				{
-					field_strength = (FIELD_STRENGTH_MAGIC_NUMBER + (20.0*log10(itmParameters->frq_mhz)) - loss) + (10.0*log10(itmParameters->erp / 1000.0));
+					field_strength = (FIELD_STRENGTH_MAGIC_NUMBER + (20.0*log10(itmParameters->referenceFrequency)) - loss) + (10.0*log10(itmParameters->effectiveRadiatedPower / 1000.0));
 
 					ifs = 100 + (int)rint(field_strength);
 
@@ -3217,14 +3217,14 @@ AnalyzeAndPlotPathLossBetweenSites
 						ifs = 255;
 					}
 
-					ofs = GetValueInDigitalElevationModelSignal(path->lat[y], path->lon[y], digitalElevationModelWrapper);
+					ofs = GetValueInDigitalElevationModelSignal(path->latitudes[y], path->longitudes[y], digitalElevationModelWrapper);
 
 					if (ofs > ifs)
 					{
 						ifs = ofs;
 					}
 
-					SetValueInDigitalElevationModelSignal(path->lat[y], path->lon[y], (unsigned char)ifs, digitalElevationModelWrapper);
+					SetValueInDigitalElevationModelSignal(path->latitudes[y], path->longitudes[y], (unsigned char)ifs, digitalElevationModelWrapper);
 
 					if (fd != NULL)
 					{
@@ -3243,14 +3243,14 @@ AnalyzeAndPlotPathLossBetweenSites
 					ifs = (int)rint(loss);
 				}
 
-				ofs = GetValueInDigitalElevationModelSignal(path->lat[y], path->lon[y], digitalElevationModelWrapper);
+				ofs = GetValueInDigitalElevationModelSignal(path->latitudes[y], path->longitudes[y], digitalElevationModelWrapper);
 
 				if ((ofs < ifs) && (ofs != 0))
 				{
 					ifs = ofs;
 				}
 
-				SetValueInDigitalElevationModelSignal(path->lat[y], path->lon[y], (unsigned char)ifs, digitalElevationModelWrapper);
+				SetValueInDigitalElevationModelSignal(path->latitudes[y], path->longitudes[y], (unsigned char)ifs, digitalElevationModelWrapper);
 			}
 
 			if (fd != NULL)
@@ -3264,7 +3264,7 @@ AnalyzeAndPlotPathLossBetweenSites
 
 			//| Mark this point as having been analyzed
 
-			SetValueInDigitalElevationModelMask(path->lat[y], path->lon[y], (GetValueInDigitalElevationModelMask(path->lat[y], path->lon[y], digitalElevationModelWrapper) & 7) + (mask_value << 3), digitalElevationModelWrapper);
+			SetValueInDigitalElevationModelMask(path->latitudes[y], path->longitudes[y], (GetValueInDigitalElevationModelMask(path->latitudes[y], path->longitudes[y], digitalElevationModelWrapper) & 7) + (mask_value << 3), digitalElevationModelWrapper);
 		}
 	}
 }
@@ -3305,7 +3305,7 @@ PlotLineOfSightCoverageFromSiteAtAltitude
 	int x, y, z, count;
 	Site edge;
 	unsigned char symbol[4];
-	double lat, lon, minwest, maxnorth, th;
+	double latitude, longitude, minwest, maxnorth, th;
 	static unsigned char mask_value = 1;
 	FILE *fd = NULL;
 	errno_t err;
@@ -3349,16 +3349,16 @@ PlotLineOfSightCoverageFromSiteAtAltitude
 	minwest = (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)) + (double)minimumLongitudeWest;
 	maxnorth = (double)maximumLatitudeNorth - (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree));
 
-	for (lon = minwest, x = 0, y = 0; LongitudeDifference(lon, (double)maximumLongitudeWest) <= 0.0; y++, lon = (minwest + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
+	for (longitude = minwest, x = 0, y = 0; LongitudeDifference(longitude, (double)maximumLongitudeWest) <= 0.0; y++, longitude = (minwest + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
-		if (lon >= 360.0)
+		if (longitude >= 360.0)
 		{
-			lon -= 360.0;
+			longitude -= 360.0;
 		}
 
-		edge.lat = maximumLatitudeNorth;
-		edge.lon = lon;
-		edge.alt = (float)altitude;
+		edge.latitude = maximumLatitudeNorth;
+		edge.longitude = longitude;
+		edge.altitude = (float)altitude;
 
 		AnalyzeAndPlotLineOfSightCoverageBetweenSites(source, edge, mask_value, fd, digitalElevationModelWrapper, path, groundClutterHeight, sphereRadius);
 		count++;
@@ -3386,11 +3386,11 @@ PlotLineOfSightCoverageFromSiteAtAltitude
 
 	z = (int)(th*(double)(maximumLatitudeNorth - minimumLatitudeNorth));
 
-	for (lat = maxnorth, x = 0, y = 0; lat >= (double)minimumLatitudeNorth; y++, lat = maxnorth - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y))
+	for (latitude = maxnorth, x = 0, y = 0; latitude >= (double)minimumLatitudeNorth; y++, latitude = maxnorth - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y))
 	{
-		edge.lat = lat;
-		edge.lon = minimumLongitudeWest;
-		edge.alt = (float)altitude;
+		edge.latitude = latitude;
+		edge.longitude = minimumLongitudeWest;
+		edge.altitude = (float)altitude;
 
 		AnalyzeAndPlotLineOfSightCoverageBetweenSites(source, edge, mask_value, fd, digitalElevationModelWrapper, path, groundClutterHeight, sphereRadius);
 		count++;
@@ -3418,16 +3418,16 @@ PlotLineOfSightCoverageFromSiteAtAltitude
 
 	z = (int)(th*ConvertToNormalizedAngle(maximumLongitudeWest - minimumLongitudeWest));
 
-	for (lon = minwest, x = 0, y = 0; LongitudeDifference(lon, (double)maximumLongitudeWest) <= 0.0; y++, lon = (minwest + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
+	for (longitude = minwest, x = 0, y = 0; LongitudeDifference(longitude, (double)maximumLongitudeWest) <= 0.0; y++, longitude = (minwest + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
-		if (lon >= 360.0)
+		if (longitude >= 360.0)
 		{
-			lon -= 360.0;
+			longitude -= 360.0;
 		}
 
-		edge.lat = minimumLatitudeNorth;
-		edge.lon = lon;
-		edge.alt = (float)altitude;
+		edge.latitude = minimumLatitudeNorth;
+		edge.longitude = longitude;
+		edge.altitude = (float)altitude;
 
 		AnalyzeAndPlotLineOfSightCoverageBetweenSites(source, edge, mask_value, fd, digitalElevationModelWrapper, path, groundClutterHeight, sphereRadius);
 		count++;
@@ -3455,11 +3455,11 @@ PlotLineOfSightCoverageFromSiteAtAltitude
 
 	z = (int)(th*(double)(maximumLatitudeNorth - minimumLatitudeNorth));
 
-	for (lat = (double)minimumLatitudeNorth, x = 0, y = 0; lat < (double)maximumLatitudeNorth; y++, lat = ((double)minimumLatitudeNorth + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
+	for (latitude = (double)minimumLatitudeNorth, x = 0, y = 0; latitude < (double)maximumLatitudeNorth; y++, latitude = ((double)minimumLatitudeNorth + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
-		edge.lat = lat;
-		edge.lon = maximumLongitudeWest;
-		edge.alt = (float)altitude;
+		edge.latitude = latitude;
+		edge.longitude = maximumLongitudeWest;
+		edge.altitude = (float)altitude;
 
 		AnalyzeAndPlotLineOfSightCoverageBetweenSites(source, edge, mask_value, fd, digitalElevationModelWrapper, path, groundClutterHeight, sphereRadius);
 		count++;
@@ -3546,7 +3546,7 @@ PlotAttenuationFromSiteAtAltitude
 {
 	int x, y, z, count;
 	Site edge;
-	double lat, lon, minwest, maxnorth, th;
+	double latitude, longitude, minwest, maxnorth, th;
 	unsigned char symbol[4];
 	static unsigned char mask_value = 1;
 	FILE *fd = NULL;
@@ -3571,7 +3571,7 @@ PlotAttenuationFromSiteAtAltitude
 		fprintf(stdout, "\nComputing ITWOM ");
 	}
 
-	if (itmParameters->erp == 0.0)
+	if (itmParameters->effectiveRadiatedPower == 0.0)
 	{
 		fprintf(stdout, "path loss");
 	}
@@ -3607,7 +3607,7 @@ PlotAttenuationFromSiteAtAltitude
 		//| Write header information to output file
 		fprintf(fd, "%d, %d\t; max_west, min_west\n%d, %d\t; max_north, min_north\n\n", maximumLongitudeWest, minimumLongitudeWest, maximumLatitudeNorth, minimumLatitudeNorth);
 		fprintf(fd, "Latitude, Longitude, AzimuthAngle, ElevationAngle, ");
-		if (itmParameters->erp == 0.0)
+		if (itmParameters->effectiveRadiatedPower == 0.0)
 		{
 			fprintf(fd, "PathLoss\n");
 		}
@@ -3631,16 +3631,16 @@ PlotAttenuationFromSiteAtAltitude
 
 	z = (int)(th*ConvertToNormalizedAngle(maximumLongitudeWest - minimumLongitudeWest));
 
-	for (lon = minwest, x = 0, y = 0; LongitudeDifference(lon, (double)maximumLongitudeWest) <= 0.0; y++, lon = (minwest + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
+	for (longitude = minwest, x = 0, y = 0; LongitudeDifference(longitude, (double)maximumLongitudeWest) <= 0.0; y++, longitude = (minwest + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
-		if (lon >= 360.0)
+		if (longitude >= 360.0)
 		{
-			lon -= 360.0;
+			longitude -= 360.0;
 		}
 
-		edge.lat = maximumLatitudeNorth;
-		edge.lon = lon;
-		edge.alt = (float)altitude;
+		edge.latitude = maximumLatitudeNorth;
+		edge.longitude = longitude;
+		edge.altitude = (float)altitude;
 
 		AnalyzeAndPlotPathLossBetweenSites(source, edge, mask_value, fd, digitalElevationModelWrapper, path, itmParameters, pathElevation, useOldLongleyRiceModel,
 			plotSignalPowerLevelContours, gotAntennaElevationAnglePattern, maximumAnalysisDistance, groundClutterHeight);
@@ -3669,11 +3669,11 @@ PlotAttenuationFromSiteAtAltitude
 
 	z = (int)(th*(double)(maximumLatitudeNorth - minimumLatitudeNorth));
 
-	for (lat = maxnorth, x = 0, y = 0; lat >= (double)minimumLatitudeNorth; y++, lat = (maxnorth - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
+	for (latitude = maxnorth, x = 0, y = 0; latitude >= (double)minimumLatitudeNorth; y++, latitude = (maxnorth - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
-		edge.lat = lat;
-		edge.lon = minimumLongitudeWest;
-		edge.alt = (float)altitude;
+		edge.latitude = latitude;
+		edge.longitude = minimumLongitudeWest;
+		edge.altitude = (float)altitude;
 
 		AnalyzeAndPlotPathLossBetweenSites(source, edge, mask_value, fd, digitalElevationModelWrapper, path, itmParameters, pathElevation, useOldLongleyRiceModel,
 			plotSignalPowerLevelContours, gotAntennaElevationAnglePattern, maximumAnalysisDistance, groundClutterHeight);
@@ -3702,15 +3702,15 @@ PlotAttenuationFromSiteAtAltitude
 
 	z = (int)(th*ConvertToNormalizedAngle(maximumLongitudeWest - minimumLongitudeWest));
 
-	for (lon = minwest, x = 0, y = 0; LongitudeDifference(lon, (double)maximumLongitudeWest) <= 0.0; y++, lon = (minwest + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
+	for (longitude = minwest, x = 0, y = 0; LongitudeDifference(longitude, (double)maximumLongitudeWest) <= 0.0; y++, longitude = (minwest + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
-		if (lon >= 360.0)
+		if (longitude >= 360.0)
 		{
-			lon -= 360.0;
+			longitude -= 360.0;
 		}
-		edge.lat = minimumLatitudeNorth;
-		edge.lon = lon;
-		edge.alt = (float)altitude;
+		edge.latitude = minimumLatitudeNorth;
+		edge.longitude = longitude;
+		edge.altitude = (float)altitude;
 
 		AnalyzeAndPlotPathLossBetweenSites(source, edge, mask_value, fd, digitalElevationModelWrapper, path, itmParameters, pathElevation, useOldLongleyRiceModel,
 			plotSignalPowerLevelContours, gotAntennaElevationAnglePattern, maximumAnalysisDistance, groundClutterHeight);
@@ -3739,11 +3739,11 @@ PlotAttenuationFromSiteAtAltitude
 
 	z = (int)(th*(double)(maximumLatitudeNorth - minimumLatitudeNorth));
 
-	for (lat = (double)minimumLatitudeNorth, x = 0, y = 0; lat < (double)maximumLatitudeNorth; y++, lat = ((double)minimumLatitudeNorth + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
+	for (latitude = (double)minimumLatitudeNorth, x = 0, y = 0; latitude < (double)maximumLatitudeNorth; y++, latitude = ((double)minimumLatitudeNorth + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
-		edge.lat = lat;
-		edge.lon = maximumLongitudeWest;
-		edge.alt = (float)altitude;
+		edge.latitude = latitude;
+		edge.longitude = maximumLongitudeWest;
+		edge.altitude = (float)altitude;
 
 		AnalyzeAndPlotPathLossBetweenSites(source, edge, mask_value, fd, digitalElevationModelWrapper, path, itmParameters, pathElevation, useOldLongleyRiceModel,
 			plotSignalPowerLevelContours, gotAntennaElevationAnglePattern, maximumAnalysisDistance, groundClutterHeight);
@@ -4380,7 +4380,7 @@ WritePortablePixMapLineOfSightCoverageFile
 	unsigned char mask;
 	unsigned width, height, terrain;
 	int indx, x, y, x0 = 0, y0 = 0;
-	double lat, lon, conversion, one_over_gamma,
+	double latitude, longitude, conversion, one_over_gamma,
 		north, south, east, west, minwest;
 	FILE *fd;
 	errno_t err;
@@ -4500,7 +4500,7 @@ WritePortablePixMapLineOfSightCoverageFile
 			fprintf(fd, "      <Point>\n");
 			fprintf(fd, "        <extrude>1</extrude>\n");
 			fprintf(fd, "        <altitudeMode>relativeToGround</altitudeMode>\n");
-			fprintf(fd, "        <coordinates>%f,%f,%f</coordinates>\n", (xmtr[x].lon < 180.0 ? -xmtr[x].lon : 360.0 - xmtr[x].lon), xmtr[x].lat, xmtr[x].alt);
+			fprintf(fd, "        <coordinates>%f,%f,%f</coordinates>\n", (xmtr[x].longitude < 180.0 ? -xmtr[x].longitude : 360.0 - xmtr[x].longitude), xmtr[x].latitude, xmtr[x].altitude);
 			fprintf(fd, "      </Point>\n");
 			fprintf(fd, "     </Placemark>\n");
 		}
@@ -4517,19 +4517,19 @@ WritePortablePixMapLineOfSightCoverageFile
 	fprintf(stdout, "\nWriting \"%s\" (%ux%u pixmap image)... ", mapfile, width, height);
 	fflush(stdout);
 
-	for (y = 0, lat = north; y < (int)height; y++, lat = (north - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
+	for (y = 0, latitude = north; y < (int)height; y++, latitude = (north - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
-		for (x = 0, lon = maximumLongitudeWest; x < (int)width; x++, lon = ((double)maximumLongitudeWest - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)x)))
+		for (x = 0, longitude = maximumLongitudeWest; x < (int)width; x++, longitude = ((double)maximumLongitudeWest - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)x)))
 		{
-			if (lon < 0.0)
+			if (longitude < 0.0)
 			{
-				lon += 360.0;
+				longitude += 360.0;
 			}
 
 			for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 			{
-				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - (double)digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
-				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
+				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(latitude - (double)digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth));
+				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest, longitude));
 
 				if ((x0 >= 0) && (x0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y0 >= 0) && (y0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 				{
@@ -4711,7 +4711,7 @@ WritePortablePixMapAttenuationFile
 	unsigned char mask;
 	int indx, x, y, z, colorwidth, x0, y0, loss, level,
 		hundreds, tens, units, match;
-	double lat, lon, conversion, one_over_gamma,
+	double latitude, longitude, conversion, one_over_gamma,
 		north, south, east, west, minwest;
 	FILE *fd;
 	errno_t err;
@@ -4871,7 +4871,7 @@ WritePortablePixMapAttenuationFile
 			fprintf(fd, "      <Point>\n");
 			fprintf(fd, "        <extrude>1</extrude>\n");
 			fprintf(fd, "        <altitudeMode>relativeToGround</altitudeMode>\n");
-			fprintf(fd, "        <coordinates>%f,%f,%f</coordinates>\n", (xmtr[x].lon < 180.0 ? -xmtr[x].lon : 360.0 - xmtr[x].lon), xmtr[x].lat, xmtr[x].alt);
+			fprintf(fd, "        <coordinates>%f,%f,%f</coordinates>\n", (xmtr[x].longitude < 180.0 ? -xmtr[x].longitude : 360.0 - xmtr[x].longitude), xmtr[x].latitude, xmtr[x].altitude);
 			fprintf(fd, "      </Point>\n");
 			fprintf(fd, "     </Placemark>\n");
 		}
@@ -4901,19 +4901,19 @@ WritePortablePixMapAttenuationFile
 
 	fflush(stdout);
 
-	for (y = 0, lat = north; y < (int)height; y++, lat = (north - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
+	for (y = 0, latitude = north; y < (int)height; y++, latitude = (north - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
-		for (x = 0, lon = maximumLongitudeWest; x < (int)width; x++, lon = (maximumLongitudeWest - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)x)))
+		for (x = 0, longitude = maximumLongitudeWest; x < (int)width; x++, longitude = (maximumLongitudeWest - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)x)))
 		{
-			if (lon < 0.0)
+			if (longitude < 0.0)
 			{
-				lon += 360.0;
+				longitude += 360.0;
 			}
 
 			for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 			{
-				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - (double)digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
-				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
+				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(latitude - (double)digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth));
+				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest, longitude));
 
 				if ((x0 >= 0) && (x0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y0 >= 0) && (y0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 				{
@@ -5292,7 +5292,7 @@ WritePortablePixMapSignalStrengthFile
 	unsigned char mask;
 	int indx, x, y, z = 1, x0, y0, signal, level, hundreds,
 		tens, units, match, colorwidth;
-	double conversion, one_over_gamma, lat, lon,
+	double conversion, one_over_gamma, latitude, longitude,
 		north, south, east, west, minwest;
 	FILE *fd;
 	errno_t err;
@@ -5452,7 +5452,7 @@ WritePortablePixMapSignalStrengthFile
 			fprintf(fd, "      <Point>\n");
 			fprintf(fd, "        <extrude>1</extrude>\n");
 			fprintf(fd, "        <altitudeMode>relativeToGround</altitudeMode>\n");
-			fprintf(fd, "        <coordinates>%f,%f,%f</coordinates>\n", (xmtr[x].lon<180.0 ? -xmtr[x].lon : 360.0 - xmtr[x].lon), xmtr[x].lat, xmtr[x].alt);
+			fprintf(fd, "        <coordinates>%f,%f,%f</coordinates>\n", (xmtr[x].longitude < 180.0 ? -xmtr[x].longitude : 360.0 - xmtr[x].longitude), xmtr[x].latitude, xmtr[x].altitude);
 			fprintf(fd, "      </Point>\n");
 			fprintf(fd, "     </Placemark>\n");
 		}
@@ -5482,19 +5482,19 @@ WritePortablePixMapSignalStrengthFile
 
 	fflush(stdout);
 
-	for (y = 0, lat = north; y < (int)height; y++, lat = (north - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
+	for (y = 0, latitude = north; y < (int)height; y++, latitude = (north - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
-		for (x = 0, lon = maximumLongitudeWest; x < (int)width; x++, lon = (maximumLongitudeWest - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)x)))
+		for (x = 0, longitude = maximumLongitudeWest; x < (int)width; x++, longitude = (maximumLongitudeWest - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)x)))
 		{
-			if (lon < 0.0)
+			if (longitude < 0.0)
 			{
-				lon += 360.0;
+				longitude += 360.0;
 			}
 
 			for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 			{
-				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - (double)digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
-				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
+				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(latitude - (double)digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth));
+				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest, longitude));
 
 				if ((x0 >= 0) && (x0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y0 >= 0) && (y0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 				{
@@ -5945,7 +5945,7 @@ WritePortablePixMapPowerLevelFile
 	unsigned char mask;
 	int indx, x, y, z = 1, x0, y0, dBm, level, hundreds,
 		tens, units, match, colorwidth;
-	double conversion, one_over_gamma, lat, lon,
+	double conversion, one_over_gamma, latitude, longitude,
 		north, south, east, west, minwest;
 	FILE *fd;
 	errno_t err;
@@ -6105,7 +6105,7 @@ WritePortablePixMapPowerLevelFile
 			fprintf(fd, "      <Point>\n");
 			fprintf(fd, "        <extrude>1</extrude>\n");
 			fprintf(fd, "        <altitudeMode>relativeToGround</altitudeMode>\n");
-			fprintf(fd, "        <coordinates>%f,%f,%f</coordinates>\n", (xmtr[x].lon < 180.0 ? -xmtr[x].lon : 360.0 - xmtr[x].lon), xmtr[x].lat, xmtr[x].alt);
+			fprintf(fd, "        <coordinates>%f,%f,%f</coordinates>\n", (xmtr[x].longitude < 180.0 ? -xmtr[x].longitude : 360.0 - xmtr[x].longitude), xmtr[x].latitude, xmtr[x].altitude);
 			fprintf(fd, "      </Point>\n");
 			fprintf(fd, "     </Placemark>\n");
 		}
@@ -6135,19 +6135,19 @@ WritePortablePixMapPowerLevelFile
 
 	fflush(stdout);
 
-	for (y = 0, lat = north; y < (int)height; y++, lat = (north - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
+	for (y = 0, latitude = north; y < (int)height; y++, latitude = (north - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
-		for (x = 0, lon = maximumLongitudeWest; x < (int)width; x++, lon = (maximumLongitudeWest - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)x)))
+		for (x = 0, longitude = maximumLongitudeWest; x < (int)width; x++, longitude = (maximumLongitudeWest - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)x)))
 		{
-			if (lon < 0.0)
+			if (longitude < 0.0)
 			{
-				lon += 360.0;
+				longitude += 360.0;
 			}
 
 			for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false);)
 			{
-				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(lat - (double)digitalElevationModelWrapper->digitalElevationModel[indx].min_north));
-				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].max_west, lon));
+				x0 = (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree)*(latitude - (double)digitalElevationModelWrapper->digitalElevationModel[indx].minimumLatitudeNorth));
+				y0 = (digitalElevationModelWrapper->demPixelsPerDegree - 1) - (int)rint(((double)digitalElevationModelWrapper->demPixelsPerDegree) * LongitudeDifference((double)digitalElevationModelWrapper->digitalElevationModel[indx].maximumLongitudeWest, longitude));
 
 				if ((x0 >= 0) && (x0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)) && (y0 >= 0) && (y0 <= (digitalElevationModelWrapper->demPixelsPerDegree - 1)))
 				{
@@ -6703,34 +6703,34 @@ GenerateGnuPlotTerrainProfileBetweenSites
 		err = fopen_s(&fd1, clutterNameAndPath, "wb");
 	}
 
-	for (x = 0; x < path->length; x++)
+	for (x = 0; x < path->pathLength; x++)
 	{
-		if ((path->elevation[x] + groundClutterHeight) > maxheight)
+		if ((path->elevations[x] + groundClutterHeight) > maxheight)
 		{
-			maxheight = path->elevation[x] + groundClutterHeight;
+			maxheight = path->elevations[x] + groundClutterHeight;
 		}
 
-		if (path->elevation[x] < minheight)
+		if (path->elevations[x] < minheight)
 		{
-			minheight = path->elevation[x];
+			minheight = path->elevations[x];
 		}
 
 		if (useMetricUnits)
 		{
-			fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distance[x], METERS_PER_FOOT*path->elevation[x]);
+			fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distances[x], METERS_PER_FOOT*path->elevations[x]);
 
-			if ((fd1 != NULL) && (x > 0) && (x < (path->length - 2)))
+			if ((fd1 != NULL) && (x > 0) && (x < (path->pathLength - 2)))
 			{
-				fprintf(fd1, "%f\t%f\n", KM_PER_MILE*path->distance[x], METERS_PER_FOOT*(path->elevation[x] == 0.0 ? path->elevation[x] : (path->elevation[x] + groundClutterHeight)));
+				fprintf(fd1, "%f\t%f\n", KM_PER_MILE*path->distances[x], METERS_PER_FOOT*(path->elevations[x] == 0.0 ? path->elevations[x] : (path->elevations[x] + groundClutterHeight)));
 			}
 		}
 		else
 		{
-			fprintf(fd, "%f\t%f\n", path->distance[x], path->elevation[x]);
+			fprintf(fd, "%f\t%f\n", path->distances[x], path->elevations[x]);
 
-			if ((fd1 != NULL) && (x > 0) && (x < (path->length - 2)))
+			if ((fd1 != NULL) && (x > 0) && (x < (path->pathLength - 2)))
 			{
-				fprintf(fd1, "%f\t%f\n", path->distance[x], (path->elevation[x] == 0.0 ? path->elevation[x] : (path->elevation[x] + groundClutterHeight)));
+				fprintf(fd1, "%f\t%f\n", path->distances[x], (path->elevations[x] == 0.0 ? path->elevations[x] : (path->elevations[x] + groundClutterHeight)));
 			}
 		}
 	}
@@ -6942,25 +6942,25 @@ GenerateGnuPlotElevationProfileBetweenSites
 
 	err = fopen_s(&fd2, referenceNameAndPath, "wb");
 
-	for (x = 1; x < path->length - 1; x++)
+	for (x = 1; x < path->pathLength - 1; x++)
 	{
-		remote.lat = path->lat[x];
-		remote.lon = path->lon[x];
-		remote.alt = 0.0;
+		remote.latitude = path->latitudes[x];
+		remote.longitude = path->longitudes[x];
+		remote.altitude = 0.0;
 		angle = ElevationAngleBetweenSites(destination, remote, digitalElevationModelWrapper, sphereRadius);
 
 		if (groundClutterHeight > 0.0)
 		{
-			remote2.lat = path->lat[x];
-			remote2.lon = path->lon[x];
+			remote2.latitude = path->latitudes[x];
+			remote2.longitude = path->longitudes[x];
 
-			if (path->elevation[x] != 0.0)
+			if (path->elevations[x] != 0.0)
 			{
-				remote2.alt = (float)groundClutterHeight;
+				remote2.altitude = (float)groundClutterHeight;
 			}
 			else
 			{
-				remote2.alt = 0.0;
+				remote2.altitude = 0.0;
 			}
 
 			clutter_angle = ElevationAngleBetweenSites(destination, remote2, digitalElevationModelWrapper, sphereRadius);
@@ -6968,25 +6968,25 @@ GenerateGnuPlotElevationProfileBetweenSites
 
 		if (useMetricUnits)
 		{
-			fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distance[x], angle);
+			fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distances[x], angle);
 
 			if (fd1 != NULL)
 			{
-				fprintf(fd1, "%f\t%f\n", KM_PER_MILE*path->distance[x], clutter_angle);
+				fprintf(fd1, "%f\t%f\n", KM_PER_MILE*path->distances[x], clutter_angle);
 			}
 
-			fprintf(fd2, "%f\t%f\n", KM_PER_MILE*path->distance[x], refangle);
+			fprintf(fd2, "%f\t%f\n", KM_PER_MILE*path->distances[x], refangle);
 		}
 		else
 		{
-			fprintf(fd, "%f\t%f\n", path->distance[x], angle);
+			fprintf(fd, "%f\t%f\n", path->distances[x], angle);
 
 			if (fd1 != NULL)
 			{
-				fprintf(fd1, "%f\t%f\n", path->distance[x], clutter_angle);
+				fprintf(fd1, "%f\t%f\n", path->distances[x], clutter_angle);
 			}
 
-			fprintf(fd2, "%f\t%f\n", path->distance[x], refangle);
+			fprintf(fd2, "%f\t%f\n", path->distances[x], refangle);
 		}
 
 		if (angle > maxangle)
@@ -7007,13 +7007,13 @@ GenerateGnuPlotElevationProfileBetweenSites
 
 	if (useMetricUnits)
 	{
-		fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distance[path->length - 1], refangle);
-		fprintf(fd2, "%f\t%f\n", KM_PER_MILE*path->distance[path->length - 1], refangle);
+		fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distances[path->pathLength - 1], refangle);
+		fprintf(fd2, "%f\t%f\n", KM_PER_MILE*path->distances[path->pathLength - 1], refangle);
 	}
 	else
 	{
-		fprintf(fd, "%f\t%f\n", path->distance[path->length - 1], refangle);
-		fprintf(fd2, "%f\t%f\n", path->distance[path->length - 1], refangle);
+		fprintf(fd, "%f\t%f\n", path->distances[path->pathLength - 1], refangle);
+		fprintf(fd2, "%f\t%f\n", path->distances[path->pathLength - 1], refangle);
 	}
 
 	fclose(fd);
@@ -7218,22 +7218,22 @@ GenerateGnuPlotHeightProfileBetweenSites
 	azimuth = AzimuthAngleBetweenSites(destination, source);
 	distance = GreatCircleDistanceBetweenSiteLocations(destination, source);
 	refangle = ElevationAngleBetweenSites(destination, source, digitalElevationModelWrapper, sphereRadius);
-	b = GetSiteLocationElevation(destination, digitalElevationModelWrapper) + destination.alt + sphereRadius;
+	b = GetSiteLocationElevation(destination, digitalElevationModelWrapper) + destination.altitude + sphereRadius;
 
 	//| Wavelength and path distance (great circle) in feet.
 
 	if (fresnel_plot)
 	{
-		lambda = SPEED_OF_LIGHT_FEET_PER_SECOND / (itmParameters->frq_mhz*1e6);
-		d = FEET_PER_MILE * path->distance[path->length - 1];
+		lambda = SPEED_OF_LIGHT_FEET_PER_SECOND / (itmParameters->referenceFrequency * 1e6);
+		d = FEET_PER_MILE * path->distances[path->pathLength - 1];
 	}
 
 	if (normalized)
 	{
 		ed = GetSiteLocationElevation(destination, digitalElevationModelWrapper);
 		es = GetSiteLocationElevation(source, digitalElevationModelWrapper);
-		nb = -destination.alt - ed;
-		nm = (-source.alt - es - nb) / (path->distance[path->length - 1]);
+		nb = -destination.altitude - ed;
+		nm = (-source.altitude - es - nb) / (path->distances[path->pathLength - 1]);
 	}
 
 	char plotNameAndPath[335];
@@ -7267,23 +7267,23 @@ GenerateGnuPlotHeightProfileBetweenSites
 	err = fopen_s(&fd2, referenceNameAndPath, "wb");
 	err = fopen_s(&fd5, curvatureNameAndPath, "wb");
 
-	if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
+	if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
 	{
 		err = fopen_s(&fd3, fresnelNameAndPath, "wb");
 		err = fopen_s(&fd4, fresnelPtNameAndPath, "wb");
 	}
 
-	for (x = 0; x < (path->length - 1); x++)
+	for (x = 0; x < (path->pathLength - 1); x++)
 	{
-		remote.lat = path->lat[x];
-		remote.lon = path->lon[x];
-		remote.alt = 0.0;
+		remote.latitude = path->latitudes[x];
+		remote.longitude = path->longitudes[x];
+		remote.altitude = 0.0;
 
 		terrain = GetSiteLocationElevation(remote, digitalElevationModelWrapper);
 
 		if (x == 0)
 		{
-			terrain += destination.alt;  //| RX antenna spike
+			terrain += destination.altitude;  //| RX antenna spike
 		}
 
 		a = terrain + sphereRadius;
@@ -7300,19 +7300,19 @@ GenerateGnuPlotHeightProfileBetweenSites
 		//| where H is the distance from the LOS
 		//| path to the first Fresnel zone boundary.
 
-		if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
+		if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
 		{
-			d1 = FEET_PER_MILE * path->distance[x];
+			d1 = FEET_PER_MILE * path->distances[x];
 			f_zone = -1.0 * sqrt(lambda*d1*(d - d1) / d);
 			fpt6_zone = f_zone * fresnelZoneClearanceRatio;
 		}
 
 		if (normalized)
 		{
-			r = -(nm*path->distance[x]) - nb;
+			r = -(nm*path->distances[x]) - nb;
 			height += r;
 
-			if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
+			if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
 			{
 				f_zone += r;
 				fpt6_zone += r;
@@ -7325,40 +7325,40 @@ GenerateGnuPlotHeightProfileBetweenSites
 
 		if (useMetricUnits)
 		{
-			fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distance[x], METERS_PER_FOOT*height);
+			fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distances[x], METERS_PER_FOOT*height);
 
-			if ((fd1 != NULL) && (x > 0) && (x < (path->length - 2)))
+			if ((fd1 != NULL) && (x > 0) && (x < (path->pathLength - 2)))
 			{
-				fprintf(fd1, "%f\t%f\n", KM_PER_MILE*path->distance[x], METERS_PER_FOOT*(terrain == 0.0 ? height : (height + groundClutterHeight)));
+				fprintf(fd1, "%f\t%f\n", KM_PER_MILE*path->distances[x], METERS_PER_FOOT*(terrain == 0.0 ? height : (height + groundClutterHeight)));
 			}
 
-			fprintf(fd2, "%f\t%f\n", KM_PER_MILE*path->distance[x], METERS_PER_FOOT*r);
-			fprintf(fd5, "%f\t%f\n", KM_PER_MILE*path->distance[x], METERS_PER_FOOT*(height - terrain));
+			fprintf(fd2, "%f\t%f\n", KM_PER_MILE*path->distances[x], METERS_PER_FOOT*r);
+			fprintf(fd5, "%f\t%f\n", KM_PER_MILE*path->distances[x], METERS_PER_FOOT*(height - terrain));
 		}
 		else
 		{
-			fprintf(fd, "%f\t%f\n", path->distance[x], height);
+			fprintf(fd, "%f\t%f\n", path->distances[x], height);
 
-			if ((fd1 != NULL) && (x > 0) && (x < (path->length - 2)))
+			if ((fd1 != NULL) && (x > 0) && (x < (path->pathLength - 2)))
 			{
-				fprintf(fd1, "%f\t%f\n", path->distance[x], (terrain == 0.0 ? height : (height + groundClutterHeight)));
+				fprintf(fd1, "%f\t%f\n", path->distances[x], (terrain == 0.0 ? height : (height + groundClutterHeight)));
 			}
 
-			fprintf(fd2, "%f\t%f\n", path->distance[x], r);
-			fprintf(fd5, "%f\t%f\n", path->distance[x], height - terrain);
+			fprintf(fd2, "%f\t%f\n", path->distances[x], r);
+			fprintf(fd5, "%f\t%f\n", path->distances[x], height - terrain);
 		}
 
-		if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
+		if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
 		{
 			if (useMetricUnits)
 			{
-				fprintf(fd3, "%f\t%f\n", KM_PER_MILE*path->distance[x], METERS_PER_FOOT*f_zone);
-				fprintf(fd4, "%f\t%f\n", KM_PER_MILE*path->distance[x], METERS_PER_FOOT*fpt6_zone);
+				fprintf(fd3, "%f\t%f\n", KM_PER_MILE*path->distances[x], METERS_PER_FOOT*f_zone);
+				fprintf(fd4, "%f\t%f\n", KM_PER_MILE*path->distances[x], METERS_PER_FOOT*fpt6_zone);
 			}
 			else
 			{
-				fprintf(fd3, "%f\t%f\n", path->distance[x], f_zone);
-				fprintf(fd4, "%f\t%f\n", path->distance[x], fpt6_zone);
+				fprintf(fd3, "%f\t%f\n", path->distances[x], f_zone);
+				fprintf(fd4, "%f\t%f\n", path->distances[x], fpt6_zone);
 			}
 
 			if (f_zone < minheight)
@@ -7395,7 +7395,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 
 	if (normalized)
 	{
-		r = -(nm*path->distance[path->length - 1]) - nb;
+		r = -(nm*path->distances[path->pathLength - 1]) - nb;
 	}
 	else
 	{
@@ -7404,26 +7404,26 @@ GenerateGnuPlotHeightProfileBetweenSites
 
 	if (useMetricUnits)
 	{
-		fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distance[path->length - 1], METERS_PER_FOOT*r);
-		fprintf(fd2, "%f\t%f\n", KM_PER_MILE*path->distance[path->length - 1], METERS_PER_FOOT*r);
+		fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distances[path->pathLength - 1], METERS_PER_FOOT*r);
+		fprintf(fd2, "%f\t%f\n", KM_PER_MILE*path->distances[path->pathLength - 1], METERS_PER_FOOT*r);
 	}
 	else
 	{
-		fprintf(fd, "%f\t%f\n", path->distance[path->length - 1], r);
-		fprintf(fd2, "%f\t%f\n", path->distance[path->length - 1], r);
+		fprintf(fd, "%f\t%f\n", path->distances[path->pathLength - 1], r);
+		fprintf(fd2, "%f\t%f\n", path->distances[path->pathLength - 1], r);
 	}
 
-	if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
+	if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
 	{
 		if (useMetricUnits)
 		{
-			fprintf(fd3, "%f\t%f\n", KM_PER_MILE*path->distance[path->length - 1], METERS_PER_FOOT*r);
-			fprintf(fd4, "%f\t%f\n", KM_PER_MILE*path->distance[path->length - 1], METERS_PER_FOOT*r);
+			fprintf(fd3, "%f\t%f\n", KM_PER_MILE*path->distances[path->pathLength - 1], METERS_PER_FOOT*r);
+			fprintf(fd4, "%f\t%f\n", KM_PER_MILE*path->distances[path->pathLength - 1], METERS_PER_FOOT*r);
 		}
 		else
 		{
-			fprintf(fd3, "%f\t%f\n", path->distance[path->length - 1], r);
-			fprintf(fd4, "%f\t%f\n", path->distance[path->length - 1], r);
+			fprintf(fd3, "%f\t%f\n", path->distances[path->pathLength - 1], r);
+			fprintf(fd4, "%f\t%f\n", path->distances[path->pathLength - 1], r);
 		}
 	}
 
@@ -7447,7 +7447,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 	fclose(fd2);
 	fclose(fd5);
 
-	if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
+	if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
 	{
 		fclose(fd3);
 		fclose(fd4);
@@ -7532,7 +7532,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 	fprintf(fd, "set encoding iso_8859_1\n");
 	fprintf(fd, "set term %s\n", term);
 
-	if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
+	if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
 	{
 		fprintf(fd, "set title \"%s Path Profile Between %s and %s (%.2f%c azimuth)\\nWith First Fresnel Zone\"\n", SPLAT_NAME, destination.name, source.name, azimuth, 176);
 	}
@@ -7575,22 +7575,22 @@ GenerateGnuPlotHeightProfileBetweenSites
 
 	fprintf(fd, "set output \"%s.%s\"\n", basename, ext);
 
-	if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
+	if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
 	{
 		if (groundClutterHeight > 0.0)
 		{
 			if (useMetricUnits)
 			{
-				fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f meters)\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight*METERS_PER_FOOT, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->frq_mhz, fresnelPtNameAndPath, fresnelZoneClearanceRatio*100.0);
+				fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f meters)\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight*METERS_PER_FOOT, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->referenceFrequency, fresnelPtNameAndPath, fresnelZoneClearanceRatio*100.0);
 			}
 			else
 			{
-				fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f feet)\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->frq_mhz, fresnelPtNameAndPath, fresnelZoneClearanceRatio*100.0);
+				fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f feet)\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->referenceFrequency, fresnelPtNameAndPath, fresnelZoneClearanceRatio*100.0);
 			}
 		}
 		else
 		{
-			fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->frq_mhz, fresnelPtNameAndPath, fresnelZoneClearanceRatio*100.0);
+			fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->referenceFrequency, fresnelPtNameAndPath, fresnelZoneClearanceRatio*100.0);
 		}
 	}
 	else
@@ -7650,7 +7650,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 				_unlink(clutterNameAndPath);
 			}
 
-			if ((itmParameters->frq_mhz >= MINIMUM_FREQUENCY) && (itmParameters->frq_mhz <= MAXIMUM_FREQUENCY) && fresnel_plot)
+			if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
 			{
 				_unlink(fresnelNameAndPath);
 				_unlink(fresnelPtNameAndPath);
@@ -7699,11 +7699,11 @@ PerformObstructionAnalysisBetweenSites
 	char ObsString[255], string_fpt6[255], string_f1[255];
 
 	GeneratePathBetweenSites(xmtr, rcvr, digitalElevationModelWrapper, path);
-	h_r = GetSiteLocationElevation(rcvr, digitalElevationModelWrapper) + rcvr.alt + sphereRadius;
+	h_r = GetSiteLocationElevation(rcvr, digitalElevationModelWrapper) + rcvr.altitude + sphereRadius;
 	h_r_f1 = h_r;
 	h_r_fpt6 = h_r;
 	h_r_orig = h_r;
-	h_t = GetSiteLocationElevation(xmtr, digitalElevationModelWrapper) + xmtr.alt + sphereRadius;
+	h_t = GetSiteLocationElevation(xmtr, digitalElevationModelWrapper) + xmtr.altitude + sphereRadius;
 	d_tx = FEET_PER_MILE * GreatCircleDistanceBetweenSiteLocations(rcvr, xmtr);
 	cos_tx_angle = ((h_r*h_r) + (d_tx*d_tx) - (h_t*h_t)) / (2.0*h_r*d_tx);
 	cos_tx_angle_f1 = cos_tx_angle;
@@ -7744,11 +7744,11 @@ PerformObstructionAnalysisBetweenSites
 	//| acos(). However, note the inverted comparison: if
 	//| acos(A) > acos(B), then B > A.
 
-	for (x = path->length - 1; x > 0; x--)
+	for (x = path->pathLength - 1; x > 0; x--)
 	{
-		site_x.lat = path->lat[x];
-		site_x.lon = path->lon[x];
-		site_x.alt = 0.0;
+		site_x.latitude = path->latitudes[x];
+		site_x.longitude = path->longitudes[x];
+		site_x.altitude = 0.0;
 
 		h_x = GetSiteLocationElevation(site_x, digitalElevationModelWrapper) + sphereRadius + groundClutterHeight;
 		d_x = FEET_PER_MILE * GreatCircleDistanceBetweenSiteLocations(rcvr, site_x);
@@ -7764,26 +7764,26 @@ PerformObstructionAnalysisBetweenSites
 				fprintf(outfile, "Between %s and %s, %s detected obstructions at:\n\n", rcvr.name, xmtr.name, SPLAT_NAME);
 			}
 
-			if (site_x.lat >= 0.0)
+			if (site_x.latitude >= 0.0)
 			{
 				if (useMetricUnits)
 				{
-					fprintf(outfile, "   %8.4f N,%9.4f W, %5.2f kilometers, %6.2f meters AMSL\n", site_x.lat, site_x.lon, KM_PER_MILE*(d_x / FEET_PER_MILE), METERS_PER_FOOT*(h_x - sphereRadius));
+					fprintf(outfile, "   %8.4f N,%9.4f W, %5.2f kilometers, %6.2f meters AMSL\n", site_x.latitude, site_x.longitude, KM_PER_MILE*(d_x / FEET_PER_MILE), METERS_PER_FOOT*(h_x - sphereRadius));
 				}
 				else
 				{
-					fprintf(outfile, "   %8.4f N,%9.4f W, %5.2f miles, %6.2f feet AMSL\n", site_x.lat, site_x.lon, d_x / FEET_PER_MILE, h_x - sphereRadius);
+					fprintf(outfile, "   %8.4f N,%9.4f W, %5.2f miles, %6.2f feet AMSL\n", site_x.latitude, site_x.longitude, d_x / FEET_PER_MILE, h_x - sphereRadius);
 				}
 			}
 			else
 			{
 				if (useMetricUnits)
 				{
-					fprintf(outfile, "   %8.4f S,%9.4f W, %5.2f kilometers, %6.2f meters AMSL\n", -site_x.lat, site_x.lon, KM_PER_MILE*(d_x / FEET_PER_MILE), METERS_PER_FOOT*(h_x - sphereRadius));
+					fprintf(outfile, "   %8.4f S,%9.4f W, %5.2f kilometers, %6.2f meters AMSL\n", -site_x.latitude, site_x.longitude, KM_PER_MILE*(d_x / FEET_PER_MILE), METERS_PER_FOOT*(h_x - sphereRadius));
 				}
 				else
 				{
-					fprintf(outfile, "   %8.4f S,%9.4f W, %5.2f miles, %6.2f feet AMSL\n", -site_x.lat, site_x.lon, d_x / FEET_PER_MILE, h_x - sphereRadius);
+					fprintf(outfile, "   %8.4f S,%9.4f W, %5.2f miles, %6.2f feet AMSL\n", -site_x.latitude, site_x.longitude, d_x / FEET_PER_MILE, h_x - sphereRadius);
 				}
 			}
 		}
@@ -7974,31 +7974,31 @@ WriteSplatPathReport
 	fprintf(fd2, "%s\n\n", lineOfDashes);
 	fprintf(fd2, "Transmitter site: %s\n", source.name);
 
-	if (source.lat >= 0.0)
+	if (source.latitude >= 0.0)
 	{
-		ConvertDecimalToDegreesMinutesSeconds(source.lat, dmsString);
-		fprintf(fd2, "Site location: %.4f North / %.4f West", source.lat, source.lon);
+		ConvertDecimalToDegreesMinutesSeconds(source.latitude, dmsString);
+		fprintf(fd2, "Site location: %.4f North / %.4f West", source.latitude, source.longitude);
 		fprintf(fd2, " (%s N / ", dmsString);
 	}
 	else
 	{
-		ConvertDecimalToDegreesMinutesSeconds(source.lat, dmsString);
-		fprintf(fd2, "Site location: %.4f South / %.4f West", -source.lat, source.lon);
+		ConvertDecimalToDegreesMinutesSeconds(source.latitude, dmsString);
+		fprintf(fd2, "Site location: %.4f South / %.4f West", -source.latitude, source.longitude);
 		fprintf(fd2, " (%s S / ", dmsString);
 	}
 
-	ConvertDecimalToDegreesMinutesSeconds(source.lon, dmsString);
+	ConvertDecimalToDegreesMinutesSeconds(source.longitude, dmsString);
 	fprintf(fd2, "%s W)\n", dmsString);
 
 	if (useMetricUnits)
 	{
 		fprintf(fd2, "Ground elevation: %.2f meters AMSL\n", METERS_PER_FOOT * GetSiteLocationElevation(source, digitalElevationModelWrapper));
-		fprintf(fd2, "Antenna height: %.2f meters AGL / %.2f meters AMSL\n", METERS_PER_FOOT * source.alt, METERS_PER_FOOT * (source.alt + GetSiteLocationElevation(source, digitalElevationModelWrapper)));
+		fprintf(fd2, "Antenna height: %.2f meters AGL / %.2f meters AMSL\n", METERS_PER_FOOT * source.altitude, METERS_PER_FOOT * (source.altitude + GetSiteLocationElevation(source, digitalElevationModelWrapper)));
 	}
 	else
 	{
 		fprintf(fd2, "Ground elevation: %.2f feet AMSL\n", GetSiteLocationElevation(source, digitalElevationModelWrapper));
-		fprintf(fd2, "Antenna height: %.2f feet AGL / %.2f feet AMSL\n", source.alt, source.alt + GetSiteLocationElevation(source, digitalElevationModelWrapper));
+		fprintf(fd2, "Antenna height: %.2f feet AGL / %.2f feet AMSL\n", source.altitude, source.altitude + GetSiteLocationElevation(source, digitalElevationModelWrapper));
 	}
 
 	haavt = AntennaHeightAboveAverageTerrain(source, digitalElevationModelWrapper, path, groundClutterHeight);
@@ -8025,7 +8025,7 @@ WriteSplatPathReport
 
 		if ((x >= 0) && (x <= 1000))
 		{
-			pattern = (double)itmParameters->antenna_pattern[(int)rint(azimuth)][x];
+			pattern = (double)itmParameters->antennaRadiationPattern[(int)rint(azimuth)][x];
 		}
 
 		patterndB = 20.0*log10(pattern);
@@ -8070,31 +8070,31 @@ WriteSplatPathReport
 
 	fprintf(fd2, "Receiver site: %s\n", destination.name);
 
-	if (destination.lat >= 0.0)
+	if (destination.latitude >= 0.0)
 	{
-		ConvertDecimalToDegreesMinutesSeconds(destination.lat, dmsString);
-		fprintf(fd2, "Site location: %.4f North / %.4f West", destination.lat, destination.lon);
+		ConvertDecimalToDegreesMinutesSeconds(destination.latitude, dmsString);
+		fprintf(fd2, "Site location: %.4f North / %.4f West", destination.latitude, destination.longitude);
 		fprintf(fd2, " (%s N / ", dmsString);
 	}
 	else
 	{
-		ConvertDecimalToDegreesMinutesSeconds(destination.lat, dmsString);
-		fprintf(fd2, "Site location: %.4f South / %.4f West", -destination.lat, destination.lon);
+		ConvertDecimalToDegreesMinutesSeconds(destination.latitude, dmsString);
+		fprintf(fd2, "Site location: %.4f South / %.4f West", -destination.latitude, destination.longitude);
 		fprintf(fd2, " (%s S / ", dmsString);
 	}
 
-	ConvertDecimalToDegreesMinutesSeconds(destination.lon, dmsString);
+	ConvertDecimalToDegreesMinutesSeconds(destination.longitude, dmsString);
 	fprintf(fd2, "%s W)\n", dmsString);
 
 	if (useMetricUnits)
 	{
 		fprintf(fd2, "Ground elevation: %.2f meters AMSL\n", METERS_PER_FOOT * GetSiteLocationElevation(destination, digitalElevationModelWrapper));
-		fprintf(fd2, "Antenna height: %.2f meters AGL / %.2f meters AMSL\n", METERS_PER_FOOT * destination.alt, METERS_PER_FOOT * (destination.alt + GetSiteLocationElevation(destination, digitalElevationModelWrapper)));
+		fprintf(fd2, "Antenna height: %.2f meters AGL / %.2f meters AMSL\n", METERS_PER_FOOT * destination.altitude, METERS_PER_FOOT * (destination.altitude + GetSiteLocationElevation(destination, digitalElevationModelWrapper)));
 	}
 	else
 	{
 		fprintf(fd2, "Ground elevation: %.2f feet AMSL\n", GetSiteLocationElevation(destination, digitalElevationModelWrapper));
-		fprintf(fd2, "Antenna height: %.2f feet AGL / %.2f feet AMSL\n", destination.alt, destination.alt + GetSiteLocationElevation(destination, digitalElevationModelWrapper));
+		fprintf(fd2, "Antenna height: %.2f feet AGL / %.2f feet AMSL\n", destination.altitude, destination.altitude + GetSiteLocationElevation(destination, digitalElevationModelWrapper));
 	}
 
 	haavt = AntennaHeightAboveAverageTerrain(destination, digitalElevationModelWrapper, path, groundClutterHeight);
@@ -8151,7 +8151,7 @@ WriteSplatPathReport
 
 	fprintf(fd2, "\n%s\n\n", lineOfDashes);
 
-	if (itmParameters->frq_mhz > 0.0)
+	if (itmParameters->referenceFrequency > 0.0)
 	{
 		if (useOldLongleyRiceModel)
 		{
@@ -8162,13 +8162,13 @@ WriteSplatPathReport
 			fprintf(fd2, "ITWOM Version %.1f Parameters Used In This Analysis:\n\n", ITWOM_VERSION);
 		}
 
-		fprintf(fd2, "Earth's Dielectric Constant: %.3lf\n", itmParameters->eps_dielect);
-		fprintf(fd2, "Earth's Conductivity: %.3lf Siemens/meter\n", itmParameters->sgm_conductivity);
-		fprintf(fd2, "Atmospheric Bending Constant (N-units): %.3lf ppm\n", itmParameters->eno_ns_surfref);
-		fprintf(fd2, "Frequency: %.3lf MHz\n", itmParameters->frq_mhz);
-		fprintf(fd2, "Radio Climate: %d (", itmParameters->radio_climate);
+		fprintf(fd2, "Earth's Dielectric Constant: %.3lf\n", itmParameters->dielectricRelativePermittivityConstant);
+		fprintf(fd2, "Earth's Conductivity: %.3lf Siemens/meter\n", itmParameters->conductivitySiemensPerMeter);
+		fprintf(fd2, "Atmospheric Bending Constant (N-units): %.3lf ppm\n", itmParameters->atmosphericBendingConstant);
+		fprintf(fd2, "Frequency: %.3lf MHz\n", itmParameters->referenceFrequency);
+		fprintf(fd2, "Radio Climate: %d (", itmParameters->radioClimate);
 
-		switch (itmParameters->radio_climate)
+		switch (itmParameters->radioClimate)
 		{
 		case 1:
 			fprintf(fd2, "Equatorial");
@@ -8202,53 +8202,53 @@ WriteSplatPathReport
 			fprintf(fd2, "Unknown");
 		}
 
-		fprintf(fd2, ")\nPolarization: %d (", itmParameters->pol);
+		fprintf(fd2, ")\nPolarization: %d (", itmParameters->antennaPolarization);
 
-		if (itmParameters->pol == 0)
+		if (itmParameters->antennaPolarization == 0)
 		{
 			fprintf(fd2, "Horizontal");
 		}
 
-		if (itmParameters->pol == 1)
+		if (itmParameters->antennaPolarization == 1)
 		{
 			fprintf(fd2, "Vertical");
 		}
 
-		fprintf(fd2, ")\nFraction of Situations: %.1lf%c\n", itmParameters->conf*100.0, 37);
-		fprintf(fd2, "Fraction of Time: %.1lf%c\n", itmParameters->rel*100.0, 37);
+		fprintf(fd2, ")\nFraction of Situations: %.1lf%c\n", itmParameters->fractionOfSituations * 100.0, 37);
+		fprintf(fd2, "Fraction of Time: %.1lf%c\n", itmParameters->fractionOfTime * 100.0, 37);
 
-		if (itmParameters->erp != 0.0)
+		if (itmParameters->effectiveRadiatedPower != 0.0)
 		{
 			fprintf(fd2, "Transmitter ERP: ");
 
-			if (itmParameters->erp < 1.0)
+			if (itmParameters->effectiveRadiatedPower < 1.0)
 			{
-				fprintf(fd2, "%.1lf milliwatts", 1000.0*itmParameters->erp);
+				fprintf(fd2, "%.1lf milliwatts", 1000.0 * itmParameters->effectiveRadiatedPower);
 			}
 
-			if ((itmParameters->erp >= 1.0) && (itmParameters->erp < 10.0))
+			if ((itmParameters->effectiveRadiatedPower >= 1.0) && (itmParameters->effectiveRadiatedPower < 10.0))
 			{
-				fprintf(fd2, "%.1lf Watts", itmParameters->erp);
+				fprintf(fd2, "%.1lf Watts", itmParameters->effectiveRadiatedPower);
 			}
 
-			if ((itmParameters->erp >= 10.0) && (itmParameters->erp < 10.0e3))
+			if ((itmParameters->effectiveRadiatedPower >= 10.0) && (itmParameters->effectiveRadiatedPower < 10.0e3))
 			{
-				fprintf(fd2, "%.0lf Watts", itmParameters->erp);
+				fprintf(fd2, "%.0lf Watts", itmParameters->effectiveRadiatedPower);
 			}
 
-			if (itmParameters->erp >= 10.0e3)
+			if (itmParameters->effectiveRadiatedPower >= 10.0e3)
 			{
-				fprintf(fd2, "%.3lf kilowatts", itmParameters->erp / 1.0e3);
+				fprintf(fd2, "%.3lf kilowatts", itmParameters->effectiveRadiatedPower / 1.0e3);
 			}
 
-			dBm = 10.0*log10(itmParameters->erp*1000.0);
+			dBm = 10.0 * log10(itmParameters->effectiveRadiatedPower * 1000.0);
 			fprintf(fd2, " (%+.2f dBm)\n", dBm);
 
 			//| EIRP = ERP + DIPOLE_TO_ISOTROPIC_ANTENNA (dB)
 
 			fprintf(fd2, "Transmitter EIRP: ");
 
-			eirp = itmParameters->erp * DIPOLE_TO_ISOTROPIC_ANTENNA_RATIO;
+			eirp = itmParameters->effectiveRadiatedPower * DIPOLE_TO_ISOTROPIC_ANTENNA_RATIO;
 
 			if (eirp < 1.0)
 			{
@@ -8288,25 +8288,25 @@ WriteSplatPathReport
 		//| Copy elevations plus clutter along
 		//| path into the pathElevation[] array.
 
-		for (x = 1; x < path->length - 1; x++)
+		for (x = 1; x < path->pathLength - 1; x++)
 		{
-			pathElevation[x + 2] = METERS_PER_FOOT * (path->elevation[x] == 0.0 ? path->elevation[x] : (groundClutterHeight + path->elevation[x]));
+			pathElevation[x + 2] = METERS_PER_FOOT * (path->elevations[x] == 0.0 ? path->elevations[x] : (groundClutterHeight + path->elevations[x]));
 		}
 
 		//| Copy ending points without clutter
 
-		pathElevation[2] = path->elevation[0] * METERS_PER_FOOT;
-		pathElevation[path->length + 1] = path->elevation[path->length - 1] * METERS_PER_FOOT;
+		pathElevation[2] = path->elevations[0] * METERS_PER_FOOT;
+		pathElevation[path->pathLength + 1] = path->elevations[path->pathLength - 1] * METERS_PER_FOOT;
 
 		err = fopen_s(&fd, profileNameAndPath, "w");
 
 		azimuth = rint(AzimuthAngleBetweenSites(source, destination));
 
-		for (y = 2; y < (path->length - 1); y++)  //| path->length-1 avoids itmParameters error
+		for (y = 2; y < (path->pathLength - 1); y++)  //| path->length-1 avoids itmParameters error
 		{
-			distance = FEET_PER_MILE * path->distance[y];
-			source_alt = four_thirds_earth + source.alt + path->elevation[0];
-			dest_alt = four_thirds_earth + destination.alt + path->elevation[y];
+			distance = FEET_PER_MILE * path->distances[y];
+			source_alt = four_thirds_earth + source.altitude + path->elevations[0];
+			dest_alt = four_thirds_earth + destination.altitude + path->elevations[y];
 			dest_alt2 = dest_alt * dest_alt;
 			source_alt2 = source_alt * source_alt;
 
@@ -8323,8 +8323,8 @@ WriteSplatPathReport
 
 				for (x = 2, block = false; (x < y) && (block == false); x++)
 				{
-					distance = FEET_PER_MILE * (path->distance[y] - path->distance[x]);
-					test_alt = four_thirds_earth + path->elevation[x];
+					distance = FEET_PER_MILE * (path->distances[y] - path->distances[x]);
+					test_alt = four_thirds_earth + path->elevations[x];
 
 					//| Calculate the cosine of the elevation
 					//| angle of the terrain (test point)
@@ -8360,22 +8360,22 @@ WriteSplatPathReport
 
 			//| Distance between elevation samples
 
-			pathElevation[1] = METERS_PER_MILE * (path->distance[y] - path->distance[y - 1]);
+			pathElevation[1] = METERS_PER_MILE * (path->distances[y] - path->distances[y - 1]);
 
 			if (useOldLongleyRiceModel)
 			{
-				PointToPointCalculationLegacy(pathElevation, (source.alt * METERS_PER_FOOT),
-					(destination.alt * METERS_PER_FOOT), itmParameters->eps_dielect,
-					itmParameters->sgm_conductivity, itmParameters->eno_ns_surfref, itmParameters->frq_mhz,
-					itmParameters->radio_climate, itmParameters->pol, itmParameters->conf, itmParameters->rel, loss,
+				PointToPointCalculationLegacy(pathElevation, (source.altitude * METERS_PER_FOOT),
+					(destination.altitude * METERS_PER_FOOT), itmParameters->dielectricRelativePermittivityConstant,
+					itmParameters->conductivitySiemensPerMeter, itmParameters->atmosphericBendingConstant, itmParameters->referenceFrequency,
+					itmParameters->radioClimate, itmParameters->antennaPolarization, itmParameters->fractionOfSituations, itmParameters->fractionOfTime, loss,
 					strmode, 100, errnum);
 			}
 			else
 			{
-				PointToPointCalculation(pathElevation, (source.alt * METERS_PER_FOOT),
-					(destination.alt * METERS_PER_FOOT), itmParameters->eps_dielect,
-					itmParameters->sgm_conductivity, itmParameters->eno_ns_surfref, itmParameters->frq_mhz,
-					itmParameters->radio_climate, itmParameters->pol, itmParameters->conf, itmParameters->rel, loss,
+				PointToPointCalculation(pathElevation, (source.altitude * METERS_PER_FOOT),
+					(destination.altitude * METERS_PER_FOOT), itmParameters->dielectricRelativePermittivityConstant,
+					itmParameters->conductivitySiemensPerMeter, itmParameters->atmosphericBendingConstant, itmParameters->referenceFrequency,
+					itmParameters->radioClimate, itmParameters->antennaPolarization, itmParameters->fractionOfSituations, itmParameters->fractionOfTime, loss,
 					strmode, 100, errnum);
 			}
 
@@ -8395,7 +8395,7 @@ WriteSplatPathReport
 
 			if ((x >= 0) && (x <= 1000))
 			{
-				pattern = (double)itmParameters->antenna_pattern[(int)azimuth][x];
+				pattern = (double)itmParameters->antennaRadiationPattern[(int)azimuth][x];
 
 				if (pattern != 0.0)
 				{
@@ -8411,11 +8411,11 @@ WriteSplatPathReport
 
 			if (useMetricUnits)
 			{
-				fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distance[y], total_loss);
+				fprintf(fd, "%f\t%f\n", KM_PER_MILE*path->distances[y], total_loss);
 			}
 			else
 			{
-				fprintf(fd, "%f\t%f\n", path->distance[y], total_loss);
+				fprintf(fd, "%f\t%f\n", path->distances[y], total_loss);
 			}
 
 			if (total_loss > maxloss)
@@ -8435,7 +8435,7 @@ WriteSplatPathReport
 
 		if (distance != 0.0)
 		{
-			free_space_loss = (20.0 * log10(itmParameters->frq_mhz)) + (20.0 * log10(distance)) + FREE_SPACE_PATH_LOSS_CONSTANT;
+			free_space_loss = (20.0 * log10(itmParameters->referenceFrequency)) + (20.0 * log10(distance)) + FREE_SPACE_PATH_LOSS_CONSTANT;
 
 			fprintf(fd2, "Free space path loss: %.2f dB\n", free_space_loss);
 		}
@@ -8459,9 +8459,9 @@ WriteSplatPathReport
 			fprintf(fd2, "Total path loss including %s antenna pattern: %.2f dB\n", source.name, total_loss);
 		}
 
-		if (itmParameters->erp != 0.0)
+		if (itmParameters->effectiveRadiatedPower != 0.0)
 		{
-			field_strength = (FIELD_STRENGTH_MAGIC_NUMBER + (20.0*log10(itmParameters->frq_mhz)) - total_loss) + (10.0*log10(itmParameters->erp / 1000.0));
+			field_strength = (FIELD_STRENGTH_MAGIC_NUMBER + (20.0*log10(itmParameters->referenceFrequency)) - total_loss) + (10.0*log10(itmParameters->effectiveRadiatedPower / 1000.0));
 
 			//| dBm is referenced to EIRP
 
@@ -8568,7 +8568,7 @@ WriteSplatPathReport
 	fprintf(stdout, "\nPath Loss Report written to: \"%s\"\n", reportNameAndPath);
 	fflush(stdout);
 
-	PerformObstructionAnalysisBetweenSites(source, destination, itmParameters->frq_mhz, fd2, digitalElevationModelWrapper, path,
+	PerformObstructionAnalysisBetweenSites(source, destination, itmParameters->referenceFrequency, fd2, digitalElevationModelWrapper, path,
 		useMetricUnits, groundClutterHeight, fresnelZoneClearanceRatio, sphereRadius);
 
 	fclose(fd2);
@@ -8760,31 +8760,31 @@ WriteSplatSiteReport
 
 	fprintf(fd, "%s\n\n", lineOfDashes);
 
-	if (xmtr.lat >= 0.0)
+	if (xmtr.latitude >= 0.0)
 	{
-		ConvertDecimalToDegreesMinutesSeconds(xmtr.lat, dmsString);
-		fprintf(fd, "Site location: %.4f North / %.4f West", xmtr.lat, xmtr.lon);
+		ConvertDecimalToDegreesMinutesSeconds(xmtr.latitude, dmsString);
+		fprintf(fd, "Site location: %.4f North / %.4f West", xmtr.latitude, xmtr.longitude);
 		fprintf(fd, " (%s N / ", dmsString);
 	}
 	else
 	{
-		ConvertDecimalToDegreesMinutesSeconds(xmtr.lat, dmsString);
-		fprintf(fd, "Site location: %.4f South / %.4f West", -xmtr.lat, xmtr.lon);
+		ConvertDecimalToDegreesMinutesSeconds(xmtr.latitude, dmsString);
+		fprintf(fd, "Site location: %.4f South / %.4f West", -xmtr.latitude, xmtr.longitude);
 		fprintf(fd, " (%s S / ", dmsString);
 	}
 
-	ConvertDecimalToDegreesMinutesSeconds(xmtr.lon, dmsString);
+	ConvertDecimalToDegreesMinutesSeconds(xmtr.longitude, dmsString);
 	fprintf(fd, "%s W)\n", dmsString);
 
 	if (useMetricUnits)
 	{
 		fprintf(fd, "Ground elevation: %.2f meters AMSL\n", METERS_PER_FOOT * GetSiteLocationElevation(xmtr, digitalElevationModelWrapper));
-		fprintf(fd, "Antenna height: %.2f meters AGL / %.2f meters AMSL\n", METERS_PER_FOOT * xmtr.alt, METERS_PER_FOOT * (xmtr.alt + GetSiteLocationElevation(xmtr, digitalElevationModelWrapper)));
+		fprintf(fd, "Antenna height: %.2f meters AGL / %.2f meters AMSL\n", METERS_PER_FOOT * xmtr.altitude, METERS_PER_FOOT * (xmtr.altitude + GetSiteLocationElevation(xmtr, digitalElevationModelWrapper)));
 	}
 	else
 	{
 		fprintf(fd, "Ground elevation: %.2f feet AMSL\n", GetSiteLocationElevation(xmtr, digitalElevationModelWrapper));
-		fprintf(fd, "Antenna height: %.2f feet AGL / %.2f feet AMSL\n", xmtr.alt, xmtr.alt + GetSiteLocationElevation(xmtr, digitalElevationModelWrapper));
+		fprintf(fd, "Antenna height: %.2f feet AGL / %.2f feet AMSL\n", xmtr.altitude, xmtr.altitude + GetSiteLocationElevation(xmtr, digitalElevationModelWrapper));
 	}
 
 	terrain = AntennaHeightAboveAverageTerrain(xmtr, digitalElevationModelWrapper, path, groundClutterHeight);
@@ -9031,7 +9031,7 @@ LoadSplatAlphanumericOutputFile
 
 		while (feof(fd) == 0)
 		{
-			if (itmParameters->erp == 0.0)
+			if (itmParameters->effectiveRadiatedPower == 0.0)
 			{
 				//| Path loss
 
@@ -9048,7 +9048,7 @@ LoadSplatAlphanumericOutputFile
 				}
 			}
 
-			if ((itmParameters->erp != 0.0) && (plotSignalPowerLevelContours != 0))
+			if ((itmParameters->effectiveRadiatedPower != 0.0) && (plotSignalPowerLevelContours != 0))
 			{
 				//| signal power level in dBm
 
@@ -9070,7 +9070,7 @@ LoadSplatAlphanumericOutputFile
 				}
 			}
 
-			if ((itmParameters->erp != 0.0) && (plotSignalPowerLevelContours == 0))
+			if ((itmParameters->effectiveRadiatedPower != 0.0) && (plotSignalPowerLevelContours == 0))
 			{
 				//| field strength dBuV/m
 
@@ -9165,18 +9165,18 @@ WriteKeyholeMarkupLanguageFile
 	fprintf(fd, "    <description>\n");
 	fprintf(fd, "       Transmit Site\n");
 
-	if (source.lat >= 0.0)
+	if (source.latitude >= 0.0)
 	{
-		ConvertDecimalToDegreesMinutesSeconds(source.lat, dmsString);
+		ConvertDecimalToDegreesMinutesSeconds(source.latitude, dmsString);
 		fprintf(fd, "       <BR>%s North</BR>\n", dmsString);
 	}
 	else
 	{
-		ConvertDecimalToDegreesMinutesSeconds(source.lat, dmsString);
+		ConvertDecimalToDegreesMinutesSeconds(source.latitude, dmsString);
 		fprintf(fd, "       <BR>%s South</BR>\n", dmsString);
 	}
 
-	ConvertDecimalToDegreesMinutesSeconds(source.lon, dmsString);
+	ConvertDecimalToDegreesMinutesSeconds(source.longitude, dmsString);
 	fprintf(fd, "       <BR>%s West</BR>\n", dmsString);
 
 	azimuth = AzimuthAngleBetweenSites(source, destination);
@@ -9209,7 +9209,7 @@ WriteKeyholeMarkupLanguageFile
 	fprintf(fd, "    <Point>\n");
 	fprintf(fd, "      <extrude>1</extrude>\n");
 	fprintf(fd, "      <altitudeMode>relativeToGround</altitudeMode>\n");
-	fprintf(fd, "      <coordinates>%f,%f,30</coordinates>\n", (source.lon < 180.0 ? -source.lon : 360.0 - source.lon), source.lat);
+	fprintf(fd, "      <coordinates>%f,%f,30</coordinates>\n", (source.longitude < 180.0 ? -source.longitude : 360.0 - source.longitude), source.latitude);
 	fprintf(fd, "    </Point>\n");
 	fprintf(fd, "</Placemark>\n");
 
@@ -9218,18 +9218,18 @@ WriteKeyholeMarkupLanguageFile
 	fprintf(fd, "    <description>\n");
 	fprintf(fd, "       Receive Site\n");
 
-	if (destination.lat >= 0.0)
+	if (destination.latitude >= 0.0)
 	{
-		ConvertDecimalToDegreesMinutesSeconds(destination.lat, dmsString);
+		ConvertDecimalToDegreesMinutesSeconds(destination.latitude, dmsString);
 		fprintf(fd, "       <BR>%s North</BR>\n", dmsString);
 	}
 	else
 	{
-		ConvertDecimalToDegreesMinutesSeconds(destination.lat, dmsString);
+		ConvertDecimalToDegreesMinutesSeconds(destination.latitude, dmsString);
 		fprintf(fd, "       <BR>%s South</BR>\n", dmsString);
 	}
 
-	ConvertDecimalToDegreesMinutesSeconds(destination.lon, dmsString);
+	ConvertDecimalToDegreesMinutesSeconds(destination.longitude, dmsString);
 	fprintf(fd, "       <BR>%s West</BR>\n", dmsString);
 
 	if (useMetricUnits)
@@ -9259,7 +9259,7 @@ WriteKeyholeMarkupLanguageFile
 	fprintf(fd, "    <Point>\n");
 	fprintf(fd, "      <extrude>1</extrude>\n");
 	fprintf(fd, "      <altitudeMode>relativeToGround</altitudeMode>\n");
-	fprintf(fd, "      <coordinates>%f,%f,30</coordinates>\n", (destination.lon < 180.0 ? -destination.lon : 360.0 - destination.lon), destination.lat);
+	fprintf(fd, "      <coordinates>%f,%f,30</coordinates>\n", (destination.longitude < 180.0 ? -destination.longitude : 360.0 - destination.longitude), destination.latitude);
 	fprintf(fd, "    </Point>\n");
 	fprintf(fd, "</Placemark>\n");
 
@@ -9281,9 +9281,9 @@ WriteKeyholeMarkupLanguageFile
 	fprintf(fd, "    <altitudeMode>relativeToGround</altitudeMode>\n");
 	fprintf(fd, "    <coordinates>\n");
 
-	for (x = 0; x < path->length; x++)
+	for (x = 0; x < path->pathLength; x++)
 	{
-		fprintf(fd, "      %f,%f,5\n", (path->lon[x] < 180.0 ? -path->lon[x] : 360.0 - path->lon[x]), path->lat[x]);
+		fprintf(fd, "      %f,%f,5\n", (path->longitudes[x] < 180.0 ? -path->longitudes[x] : 360.0 - path->longitudes[x]), path->latitudes[x]);
 	}
 
 	fprintf(fd, "    </coordinates>\n");
@@ -9310,11 +9310,11 @@ WriteKeyholeMarkupLanguageFile
 
 	//| Walk across the "path", indentifying obstructions along the way
 
-	for (y = 0; y < path->length; y++)
+	for (y = 0; y < path->pathLength; y++)
 	{
-		distance = FEET_PER_MILE * path->distance[y];
-		tx_alt = sphereRadius + source.alt + path->elevation[0];
-		rx_alt = sphereRadius + destination.alt + path->elevation[y];
+		distance = FEET_PER_MILE * path->distances[y];
+		tx_alt = sphereRadius + source.altitude + path->elevations[0];
+		rx_alt = sphereRadius + destination.altitude + path->elevations[y];
 
 		//| Calculate the cosine of the elevation of the
 		//| transmitter as seen at the temp rx point.
@@ -9323,8 +9323,8 @@ WriteKeyholeMarkupLanguageFile
 
 		for (x = y, block = false; (x >= 0) && (block == false); x--)
 		{
-			distance = FEET_PER_MILE * (path->distance[y] - path->distance[x]);
-			test_alt = sphereRadius + path->elevation[x];
+			distance = FEET_PER_MILE * (path->distances[y] - path->distances[x]);
+			test_alt = sphereRadius + path->elevations[x];
 
 			cos_test_angle = ((rx_alt*rx_alt) + (distance*distance) - (test_alt*test_alt)) / (2.0*rx_alt*distance);
 
@@ -9343,11 +9343,11 @@ WriteKeyholeMarkupLanguageFile
 
 		if (block)
 		{
-			fprintf(fd, "      %f,%f,-30\n", (path->lon[y] < 180.0 ? -path->lon[y] : 360.0 - path->lon[y]), path->lat[y]);
+			fprintf(fd, "      %f,%f,-30\n", (path->longitudes[y] < 180.0 ? -path->longitudes[y] : 360.0 - path->longitudes[y]), path->latitudes[y]);
 		}
 		else
 		{
-			fprintf(fd, "      %f,%f,5\n", (path->lon[y] < 180.0 ? -path->lon[y] : 360.0 - path->lon[y]), path->lat[y]);
+			fprintf(fd, "      %f,%f,5\n", (path->longitudes[y] < 180.0 ? -path->longitudes[y] : 360.0 - path->longitudes[y]), path->latitudes[y]);
 		}
 	}
 
@@ -9356,8 +9356,8 @@ WriteKeyholeMarkupLanguageFile
 	fprintf(fd, "</Placemark>\n");
 
 	fprintf(fd, "    <LookAt>\n");
-	fprintf(fd, "      <longitude>%f</longitude>\n", (source.lon < 180.0 ? -source.lon : 360.0 - source.lon));
-	fprintf(fd, "      <latitude>%f</latitude>\n", source.lat);
+	fprintf(fd, "      <longitude>%f</longitude>\n", (source.longitude < 180.0 ? -source.longitude : 360.0 - source.longitude));
+	fprintf(fd, "      <latitude>%f</latitude>\n", source.latitude);
 	fprintf(fd, "      <range>300.0</range>\n");
 	fprintf(fd, "      <tilt>45.0</tilt>\n");
 	fprintf(fd, "      <heading>%f</heading>\n", azimuth);

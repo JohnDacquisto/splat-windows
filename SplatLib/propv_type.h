@@ -13,7 +13,7 @@ public:
 	~propv_type();
 
 	double sgc;
-	int lvar;
-	int mdvar;
-	int klim;
+	int recomputeParameters;	//| OLD NAME: lvar
+	int variabilityMode;		//| OLD NAME: mdvar
+	int radioClimate;			//| OLD NAME: klim
 };

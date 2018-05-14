@@ -83,7 +83,7 @@
 #define SPEED_OF_LIGHT_FEET_PER_SECOND 9.8425e8
 
 //| JAD TODO - Not sure the significance of this value. May have to do with going from ERP watts
-//| to field strength volts, and/or going from frequency to meters via speed-of-light.
+//| to field strength volts, and/or going from frequency to meters via speed-of-light?
 #define FIELD_STRENGTH_MAGIC_NUMBER 139.4
 
 //| JAD TODO - Not sure the significance of this value.

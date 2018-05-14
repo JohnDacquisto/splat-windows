@@ -12,9 +12,9 @@ public:
 	Site();
 	~Site();
 
-	double lat;
-	double lon;
-	float alt;
+	double latitude;		//| OLD NAME: lat
+	double longitude;		//| OLD NAME: lon
+	float altitude;			//| OLD NAME: alt
 	double azimuth;
 	char name[50];
 	char filename[255];

@@ -47,8 +47,8 @@ LoadSplatSiteLocationFileForBearing
 	qthfile[x + 3] = 'h';
 	qthfile[x + 4] = 0;
 
-	tempsite.lat = 91.0;
-	tempsite.lon = 361.0;
+	tempsite.latitude = 91.0;
+	tempsite.longitude = 361.0;
 	tempsite.name[0] = 0;
 	tempsite.azimuth = 0.0;
 
@@ -67,11 +67,11 @@ LoadSplatSiteLocationFileForBearing
 
 		//| Site Latitude
 		fgets(QthString, 49, fd);
-		tempsite.lat = BearingStringToDecimalDegrees(QthString);
+		tempsite.latitude = BearingStringToDecimalDegrees(QthString);
 
 		//| Site Longitude
 		fgets(QthString, 49, fd);
-		tempsite.lon = BearingStringToDecimalDegrees(QthString);
+		tempsite.longitude = BearingStringToDecimalDegrees(QthString);
 
 		fclose(fd);
 	}

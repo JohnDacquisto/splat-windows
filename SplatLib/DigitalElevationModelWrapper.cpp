@@ -27,12 +27,12 @@ DigitalElevationModelWrapper::DigitalElevationModelWrapper
 	{
 		digitalElevationModel[i].AllocateArrays(demPixelsPerDegree);
 
-		digitalElevationModel[i].min_el = 32768;
-		digitalElevationModel[i].max_el = -32768;
-		digitalElevationModel[i].min_north = 90;
-		digitalElevationModel[i].max_north = -90;
-		digitalElevationModel[i].min_west = 360;
-		digitalElevationModel[i].max_west = -1;
+		digitalElevationModel[i].minimumElevation = 32768;
+		digitalElevationModel[i].maximumElevation = -32768;
+		digitalElevationModel[i].minimumLatitudeNorth = 90;
+		digitalElevationModel[i].maximumLatitudeNorth = -90;
+		digitalElevationModel[i].minimumLongitudeWest = 360;
+		digitalElevationModel[i].maximumLongitudeWest = -1;
 	}
 }
 

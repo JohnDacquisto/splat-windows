@@ -4,8 +4,15 @@
 
 #include "stdafx.h"
 #include <math.h>
+#include <Windows.h>
+#include <dbghelp.h>
 #include "Common.h"
 #include "constants.h"
+
+typedef BOOL(WINAPI *MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hFile, MINIDUMP_TYPE DumpType,
+										CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
+										CONST PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
+										CONST PMINIDUMP_CALLBACK_INFORMATION CallbackParam);
 
 
 //| ------------------------------
@@ -59,11 +66,11 @@ AzimuthAngleBetweenSites
 	double dest_lat, dest_lon, src_lat, src_lon,
 		beta, azimuth, diff, num, den, fraction;
 
-	dest_lat = destination.lat*DEGREES_TO_RADIANS;
-	dest_lon = destination.lon*DEGREES_TO_RADIANS;
+	dest_lat = destination.latitude * DEGREES_TO_RADIANS;
+	dest_lon = destination.longitude * DEGREES_TO_RADIANS;
 
-	src_lat = source.lat*DEGREES_TO_RADIANS;
-	src_lon = source.lon*DEGREES_TO_RADIANS;
+	src_lat = source.latitude * DEGREES_TO_RADIANS;
+	src_lon = source.longitude * DEGREES_TO_RADIANS;
 
 	//| Calculate Surface Distance
 
@@ -216,12 +223,111 @@ GreatCircleDistanceBetweenSiteLocations
 {
 	double lat1, lon1, lat2, lon2, distance;
 
-	lat1 = site1.lat * DEGREES_TO_RADIANS;
-	lon1 = site1.lon * DEGREES_TO_RADIANS;
-	lat2 = site2.lat * DEGREES_TO_RADIANS;
-	lon2 = site2.lon * DEGREES_TO_RADIANS;
+	lat1 = site1.latitude * DEGREES_TO_RADIANS;
+	lon1 = site1.longitude * DEGREES_TO_RADIANS;
+	lat2 = site2.latitude * DEGREES_TO_RADIANS;
+	lon2 = site2.longitude * DEGREES_TO_RADIANS;
 
 	distance = EARTH_RADIUS_MILES * acos(sin(lat1)*sin(lat2) + cos(lat1)*cos(lat2)*cos(lon1 - lon2));
 
 	return distance;
+}
+
+
+//| ------------------------------
+//| 
+//| FUNCTION: CommonUnhandledExceptionFilter
+//| 
+//| INFLOWS: 
+//|   struct _EXCEPTION_POINTERS *ExceptionInfo - ignored
+//|
+//| OUTFLOWS: 
+//|   none 
+//|
+//| RETURNS: (long WINAPI) - EXCEPTION_EXECUTE_HANDLER: execute the 
+//|                          associated exception handler, usually 
+//|                          results in process termination
+//| 
+//| NOTES: 
+//|   Try to perform any clean up work before the application fails 
+//|   on an unhandled exception, and write a minidump to capture it.
+//| 
+//| ------------------------------
+long
+WINAPI
+CommonUnhandledExceptionFilter
+   (struct _EXCEPTION_POINTERS *ExceptionInfo)
+{
+	//| Static variable ensures we pass through this only one (to prevent this
+	//| this from being called if it failed in the recovery effort as well.
+	static BOOL firstPass = TRUE;
+
+	if (firstPass) 
+	{
+		firstPass = FALSE;
+
+		//| Try to create a minidump file. Ideally this should be done from a separate watchdog process, to give the
+		//| best chance of successfully creating the file, rather than doing it in this process which
+		//| may be too unstable mattering on the fail scenario.
+		//| First, need to load the required library.
+
+		HINSTANCE libraryInstance = LoadLibrary("dbghelp.dll");
+
+		if (libraryInstance)
+		{
+			//| Loaded the library, so find the required function address.
+			MINIDUMPWRITEDUMP pDump = (MINIDUMPWRITEDUMP)GetProcAddress(libraryInstance, "MiniDumpWriteDump");
+
+			if (pDump)
+			{
+				//| Found the function address, so save the minidump file.
+				//| JAD TODO - Save this to the working folder?
+
+				HANDLE hFile = CreateFile("C:\\Temp\\splat.dmp", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+				if (hFile != INVALID_HANDLE_VALUE)
+				{
+					//| Have a valid file handle, so write the dump.
+					_MINIDUMP_EXCEPTION_INFORMATION ExInfo;
+					ExInfo.ThreadId = GetCurrentThreadId();
+					ExInfo.ExceptionPointers = ExceptionInfo;
+					ExInfo.ClientPointers = NULL;
+
+					//| Right now, uses general MiniDumpNormal when creating the file. This can be changed to give more comprehensive or useful results,
+					//| but needs to be considered carefully, because the file size can significantly increase mattering on which type is sent.
+					BOOL bOK = pDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ExInfo, NULL, NULL);
+
+					if (bOK)
+					{
+						//| Success - Created error log file.
+					}
+					else
+					{
+						//| Error - Cannot create error log file.
+						LPVOID lpMsgBuf;
+						DWORD dw = GetLastError();
+						FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+							NULL, dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)&lpMsgBuf, 0, NULL);
+					}
+
+					CloseHandle(hFile);
+				}
+				else 
+				{
+					//| Error - Cannot create error log file.
+				}
+			}
+			else 
+			{
+				//| Error - Could not locate function MiniDumpWriteDump, cannot create error log file.
+			}
+			FreeLibrary(libraryInstance);
+		}
+		else
+		{
+			//| Error - Could not locate dbghelp.dll, cannot create error log file.
+		}
+	}
+
+	return EXCEPTION_EXECUTE_HANDLER;
 }

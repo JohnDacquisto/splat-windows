@@ -99,17 +99,17 @@ void _declspec(dllexport) WriteKeyholeMarkupLanguageFile(Site source, Site desti
 
 //| Functions
 
-int SetValueInDigitalElevationModelMask(double lat, double lon, int value, DigitalElevationModelWrapper *digitalElevationModelWrapper);
+int SetValueInDigitalElevationModelMask(double latitude, double longitude, int value, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-int SetOrValueInDigitalElevationModelMask(double lat, double lon, int value, DigitalElevationModelWrapper *digitalElevationModelWrapper);
+int SetOrValueInDigitalElevationModelMask(double latitude, double longitude, int value, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-int GetValueInDigitalElevationModelMask(double lat, double lon, DigitalElevationModelWrapper *digitalElevationModelWrapper);
+int GetValueInDigitalElevationModelMask(double latitude, double longitude, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-int SetValueInDigitalElevationModelSignal(double lat, double lon, unsigned char signal, DigitalElevationModelWrapper *digitalElevationModelWrapper);
+int SetValueInDigitalElevationModelSignal(double latitude, double longitude, unsigned char signal, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-unsigned char GetValueInDigitalElevationModelSignal(double lat, double lon, DigitalElevationModelWrapper *digitalElevationModelWrapper);
+unsigned char GetValueInDigitalElevationModelSignal(double latitude, double longitude, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
-int AddUserDefinedTerrainToDigitalElevationModelData(double lat, double lon, double height, DigitalElevationModelWrapper *digitalElevationModelWrapper);
+int AddUserDefinedTerrainToDigitalElevationModelData(double latitude, double longitude, double height, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
 double ElevationAngleBetweenSites(Site source, Site destination, DigitalElevationModelWrapper *digitalElevationModelWrapper, double sphereRadius);
 

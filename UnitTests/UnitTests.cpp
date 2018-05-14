@@ -33,26 +33,22 @@ TEST(CommonTests, AzimuthAngleBetweenSitesTests)
 {
 	Site source, destination;
 
-	source.lat = 43.0;
-	source.lon = 72.4;
-	destination.lat = 45.0;
-	destination.lon = 76.9;
-
+	source.latitude = 43.0;
+	source.longitude = 72.4;
+	destination.latitude = 45.0;
+	destination.longitude = 76.9;
 	EXPECT_DOUBLE_EQ(303.25902754187035, AzimuthAngleBetweenSites(source, destination));
 
-	source.lat = 47.2;
-	source.lon = 70.8;
-
+	source.latitude = 47.2;
+	source.longitude = 70.8;
 	EXPECT_DOUBLE_EQ(244.74261202238631, AzimuthAngleBetweenSites(source, destination));
 
-	destination.lat = 50.3;
-	destination.lon = 67.1;
-
+	destination.latitude = 50.3;
+	destination.longitude = 67.1;
 	EXPECT_DOUBLE_EQ(36.822823764035398, AzimuthAngleBetweenSites(source, destination));
 
-	source.lat = 0.0;
-	source.lon = 0.0;
-
+	source.latitude = 0.0;
+	source.longitude = 0.0;
 	EXPECT_DOUBLE_EQ(322.59186048560031, AzimuthAngleBetweenSites(source, destination));
 }
 
@@ -73,26 +69,22 @@ TEST(CommonTests, GreatCircleDistanceBetweenSiteLocationsTests)
 {
 	Site site1, site2;
 
-	site1.lat = 43.0;
-	site1.lon = 72.4;
-	site2.lat = 45.0;
-	site2.lon = 76.9;
-
+	site1.latitude = 43.0;
+	site1.longitude = 72.4;
+	site2.latitude = 45.0;
+	site2.longitude = 76.9;
 	EXPECT_DOUBLE_EQ(262.8590286501888, GreatCircleDistanceBetweenSiteLocations(site1, site2));
 
-	site1.lat = 47.2;
-	site1.lon = 70.8;
-
+	site1.latitude = 47.2;
+	site1.longitude = 70.8;
 	EXPECT_DOUBLE_EQ(329.30418009139476, GreatCircleDistanceBetweenSiteLocations(site1, site2));
 
-	site2.lat = 50.3;
-	site2.lon = 67.1;
-
+	site2.latitude = 50.3;
+	site2.longitude = 67.1;
 	EXPECT_DOUBLE_EQ(272.50446636914228, GreatCircleDistanceBetweenSiteLocations(site1, site2));
 
-	site1.lat = 0.0;
-	site1.lon = 0.0;
-
+	site1.latitude = 0.0;
+	site1.longitude = 0.0;
 	EXPECT_DOUBLE_EQ(5224.3089129927603, GreatCircleDistanceBetweenSiteLocations(site1, site2));
 }
 
@@ -152,15 +144,12 @@ TEST(SplatLibTests, ConvertDecimalToDegreesMinutesSecondsTests)
 	char dmsString[255];
 
 	ConvertDecimalToDegreesMinutesSeconds(9.52, dmsString);
-
 	EXPECT_STREQ("9\xB0 31' 11\"", dmsString);
 
 	ConvertDecimalToDegreesMinutesSeconds(-61.89, dmsString);
-
 	EXPECT_STREQ("-61\xB0 53' 24\"", dmsString);
 
 	ConvertDecimalToDegreesMinutesSeconds(0.0, dmsString);
-
 	EXPECT_STREQ("0\xB0 0' 0\"", dmsString);
 }
 
@@ -328,16 +317,13 @@ TEST(ItwomTests, CurveTests)
 TEST(ItwomTests, CalculateLinearLeastSquaresFitTests)
 {
 	double z0, zn;
-
 	double z[] = { 34.0, 2.6, 1.2, 0.9, 0.6, 0.2, 0.1, 0.0 };
 
 	CalculateLinearLeastSquaresFit(z, 0.0, 34.0, z0, zn);
-
 	EXPECT_DOUBLE_EQ(9.7167578364543524e+60, z0);
 	EXPECT_DOUBLE_EQ(-3.1043538696053672e+62, zn);
 
 	CalculateLinearLeastSquaresFit(z, 34.0, 0.0, z0, zn);
-
 	EXPECT_DOUBLE_EQ(-1.0466831926419531e+61, z0);
 	EXPECT_DOUBLE_EQ(6.6289935533990367e+61, zn);
 }
@@ -346,16 +332,13 @@ TEST(ItwomTests, CalculateLinearLeastSquaresFitTests)
 TEST(ItwomTests, CalculateLinearLeastSquaresFitV2Tests)
 {
 	double z0, zn;
-
 	double z[] = { 34.0, 2.6, 1.2, 0.9, 0.6, 0.2, 0.1, 0.0 };
 
 	CalculateLinearLeastSquaresFitV2(z, 0.0, 34.0, z0, zn);
-
 	EXPECT_DOUBLE_EQ(6.9419723511988156e+60, z0);
 	EXPECT_DOUBLE_EQ(-2.9652139042977889e+62, zn);
 
 	CalculateLinearLeastSquaresFitV2(z, 34.0, 0.0, z0, zn);
-
 	EXPECT_DOUBLE_EQ(6.5820182292848243e+61, z0);
 	EXPECT_DOUBLE_EQ(-2.4888256429483241e+62, zn);
 }
@@ -404,20 +387,15 @@ TEST(ItwomTests, PointToPointCalculationLegacyTests)
 	char strMode[100];
 
 	double elev[4960];
-
 	elev[0] = 12.0;
 	elev[1] = 83.8170;
 	for (int i = 2; i < 4960; i++)
 	{
 		elev[i] = 0.0;
 	}
-
 	PointToPointCalculationLegacy(elev, 20.0, 7.620, 15.0, 0.005, 301.0, 605.0, 5, 0, 0.50, 0.90, dbLoss, strMode, 100, errNum);
-
 	EXPECT_DOUBLE_EQ(88.138262130231965, dbLoss);
-
 	EXPECT_EQ(0, errNum);
-
 	EXPECT_STREQ("Line-Of-Sight Mode", strMode);
 
 	elev[0] = 11.0;
@@ -426,13 +404,9 @@ TEST(ItwomTests, PointToPointCalculationLegacyTests)
 	{
 		elev[i] = 0.0;
 	}
-
 	PointToPointCalculationLegacy(elev, 20.0, 7.620, 15.0, 0.005, 301.0, 605.0, 5, 0, 0.50, 0.90, dbLoss, strMode, 100, errNum);
-
 	EXPECT_DOUBLE_EQ(87.445162313824255, dbLoss);
-
 	EXPECT_EQ(4, errNum);
-
 	EXPECT_STREQ("Line-Of-Sight Mode", strMode);
 }
 
@@ -444,20 +418,15 @@ TEST(ItwomTests, PointToPointCalculationTests)
 	char strMode[100];
 
 	double elev[4960];
-
 	elev[0] = 12.0;
 	elev[1] = 83.8170;
 	for (int i = 2; i < 4960; i++)
 	{
 		elev[i] = 0.0;
 	}
-
 	PointToPointCalculation(elev, 20.0, 7.620, 15.0, 0.005, 301.0, 605.0, 5, 0, 0.50, 0.90, dbLoss, strMode, 100, errNum);
-
 	EXPECT_DOUBLE_EQ(110.13892003947502, dbLoss);
-
 	EXPECT_EQ(0, errNum);
-
 	EXPECT_STREQ("L-o-S", strMode);
 
 	elev[0] = 11.0;
@@ -466,13 +435,9 @@ TEST(ItwomTests, PointToPointCalculationTests)
 	{
 		elev[i] = 0.0;
 	}
-
 	PointToPointCalculation(elev, 20.0, 7.620, 15.0, 0.005, 301.0, 605.0, 5, 0, 0.50, 0.90, dbLoss, strMode, 100, errNum);
-
 	EXPECT_DOUBLE_EQ(109.44593397671387, dbLoss);
-
 	EXPECT_EQ(4, errNum);
-
 	EXPECT_STREQ("L-o-S", strMode);
 }
 
@@ -483,22 +448,16 @@ TEST(ItwomTests, PointToPointCalculationMdhTwoTests)
 	int propMode, errNum;
 
 	double elev[4960];
-
 	elev[0] = 12.0;
 	elev[1] = 83.8170;
 	for (int i = 2; i < 4960; i++)
 	{
 		elev[i] = 0.0;
 	}
-
 	PointToPointCalculationMdhTwo(elev, 20.0, 7.620, 15.0, 0.005, 301.0, 1000.0, 10.0, 0.5, 0.0, 605.0, 5, 0, 1, 0.9, 0.5, 0.75, dbLoss, propMode, deltaH, errNum);
-
 	EXPECT_DOUBLE_EQ(115.49231165878668, dbLoss);
-
 	EXPECT_EQ(0, propMode);
-
 	EXPECT_DOUBLE_EQ(0.0, deltaH);
-
 	EXPECT_EQ(0, errNum);
 
 	elev[0] = 11.0;
@@ -507,15 +466,10 @@ TEST(ItwomTests, PointToPointCalculationMdhTwoTests)
 	{
 		elev[i] = 0.0;
 	}
-
 	PointToPointCalculationMdhTwo(elev, 20.0, 7.620, 15.0, 0.005, 301.0, 1000.0, 10.0, 0.5, 0.0, 605.0, 5, 0, 1, 0.9, 0.5, 0.75, dbLoss, propMode, deltaH, errNum);
-
 	EXPECT_DOUBLE_EQ(114.80220932417001, dbLoss);
-
 	EXPECT_EQ(0, propMode);
-
 	EXPECT_DOUBLE_EQ(0.0, deltaH);
-
 	EXPECT_EQ(4, errNum);
 }
 
@@ -526,20 +480,15 @@ TEST(ItwomTests, PointToPointCalculationDhTests)
 	int errNum;
 
 	double elev[4960];
-
 	elev[0] = 12.0;
 	elev[1] = 83.8170;
 	for (int i = 2; i < 4960; i++)
 	{
 		elev[i] = 0.0;
 	}
-
 	PointToPointCalculationDh(elev, 20.0, 7.620, 15.0, 0.005, 301.0, 1000.0, 10.0, 0.5, 0.0, 605.0, 5, 0, 1.2, 0.2, 0.0, dbLoss, deltaH, errNum);
-
 	EXPECT_DOUBLE_EQ(147.87972600143414, dbLoss);
-
 	EXPECT_DOUBLE_EQ(0.0, deltaH);
-
 	EXPECT_EQ(1, errNum);
 
 	elev[0] = 11.0;
@@ -548,13 +497,9 @@ TEST(ItwomTests, PointToPointCalculationDhTests)
 	{
 		elev[i] = 0.0;
 	}
-
 	PointToPointCalculationDh(elev, 20.0, 7.620, 15.0, 0.005, 301.0, 1000.0, 10.0, 0.5, 0.0, 605.0, 5, 0, 1.2, 0.2, 0.0, dbLoss, deltaH, errNum);
-
 	EXPECT_DOUBLE_EQ(147.20870079856931, dbLoss);
-
 	EXPECT_DOUBLE_EQ(0.0, deltaH);
-
 	EXPECT_EQ(4, errNum);
 }
 
@@ -565,9 +510,7 @@ TEST(ItwomTests, AreaCalculationTests)
 	int errNum;
 
 	AreaCalculation(3, 2.3, 20.0, 7.620, 13.0, 1, 2, 15.0, 0.005, 301.0, 1000.0, 10.0, 0.5, 0.0, 605.0, 5, 0, 0, 0.9, 0.5, 0.75, dbLoss, NULL, errNum);
-
 	EXPECT_DOUBLE_EQ(1208.8422817277913, dbLoss);
-
 	EXPECT_EQ(0, errNum);
 }
 
@@ -577,8 +520,457 @@ TEST(ItwomTests, IrregularTerrainModelAreaCalculationDbLossTests)
 	double dbLoss;
 
 	dbLoss = IrregularTerrainModelAreaCalculationDbLoss(3, 2.3, 20.0, 7.620, 13.0, 1, 2, 15.0, 0.005, 301.0, 1000.0, 10.0, 0.5, 0.0, 605.0, 5, 0, 0, 0.9, 0.5, 0.75);
-
 	EXPECT_DOUBLE_EQ(1208.8422817277913, dbLoss);
+}
+
+
+TEST(ItwomTests, CalculateClutterLossTests)
+{
+	double clutterLoss;
+	prop_type prop;
+	propa_type propa;
+	double d;
+
+	d = 0.0;
+	prop.antennaHeightAboveGroundLevel[0] = 20.0;
+	prop.antennaHeightAboveGroundLevel[1] = 7.620;
+	prop.antennaHeightAndPathElevation[0] = 21.0;
+	prop.antennaHeightAndPathElevation[1] = 8.620;
+	prop.canopyClutterHeight = 2.0;
+	prop.transmitterGroundHeight = 30.0;
+	prop.tsgh = 15.0;
+	prop.waveNumber = 100.0;
+	prop.surfaceRefractivity = 325.0;
+	prop.encc = 1000.0;
+	prop.transmitterPolarization = 0;
+	clutterLoss = CalculateClutterLoss(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.0, clutterLoss);
+
+	d = 2.0;
+	clutterLoss = CalculateClutterLoss(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.0, clutterLoss);
+
+	prop.canopyClutterHeight = 22.5;
+	clutterLoss = CalculateClutterLoss(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.02634783281894764, clutterLoss);
+
+	prop.transmitterGroundHeight = 15.0;
+	clutterLoss = CalculateClutterLoss(d, prop, propa);
+	EXPECT_DOUBLE_EQ(39.193931594212195, clutterLoss);
+
+	prop.transmitterPolarization = 1;
+	clutterLoss = CalculateClutterLoss(d, prop, propa);
+	EXPECT_DOUBLE_EQ(39.193931594212195, clutterLoss);
+
+	prop.transmitterPolarization = 2;
+	clutterLoss = CalculateClutterLoss(d, prop, propa);
+	EXPECT_DOUBLE_EQ(39.193931594212195, clutterLoss);
+}
+
+
+TEST(ItwomTests, CalculateDiffractionAttenuationTests)
+{
+	double diffractionAttenuation;
+	prop_type prop;
+	propa_type propa;
+	double d;
+	
+	d = 0.0;
+	prop.surfaceImpedanceReal = 1.0;
+	prop.surfaceImpedanceImag = 0.5;
+	prop.antennaHeightAboveGroundLevel[0] = 20.0;
+	prop.antennaHeightAboveGroundLevel[1] = 7.620;
+	prop.antennaEffectiveHeight[0] = 21.0;
+	prop.antennaEffectiveHeight[1] = 8.620;
+	prop.horizonDistance[0] = 1.0;
+	prop.horizonDistance[1] = 2.0;
+	prop.surfaceRefractivity = 325.0;
+	prop.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop.surfaceRefractivity / 179.3));
+	prop.analysisMode = -1;
+	prop.interdecileElevationRangeBetweenPoints = 1.0;
+	prop.waveNumber = 100.0;
+	propa.dla = 3.0;
+	propa.tha = 20.0;
+	propa.dlsa = 1000000.0;
+	diffractionAttenuation = CalculateDiffractionAttenuation(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.0, diffractionAttenuation);
+
+	prop.analysisMode = 0;
+	diffractionAttenuation = CalculateDiffractionAttenuation(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.0, diffractionAttenuation);
+
+	d = 4.0;
+	diffractionAttenuation = CalculateDiffractionAttenuation(d, prop, propa);
+	EXPECT_DOUBLE_EQ(94.63238012826875, diffractionAttenuation);
+}
+
+
+TEST(ItwomTests, CalculateDiffractionAttenuationV2Tests)
+{
+	double diffractionAttenuation;
+	prop_type prop;
+	propa_type propa;
+	double d;
+
+	d = 0.0;
+	prop.surfaceImpedanceReal = 1.0;
+	prop.surfaceImpedanceImag = 0.5;
+	prop.antennaHeightAboveGroundLevel[0] = 20.0;
+	prop.antennaHeightAboveGroundLevel[1] = 7.620;
+	prop.antennaEffectiveHeight[0] = 21.0;
+	prop.antennaEffectiveHeight[1] = 8.620;
+	prop.antennaHeightAndPathElevation[0] = 21.0;
+	prop.antennaHeightAndPathElevation[0] = 8.620;
+	prop.horizonDistance[0] = 1.0;
+	prop.horizonDistance[1] = 2.0;
+	prop.surfaceRefractivity = 325.0;
+	prop.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop.surfaceRefractivity / 179.3));
+	prop.analysisMode = -1;
+	prop.interdecileElevationRangeBetweenPoints = 1.0;
+	prop.waveNumber = 100.0;
+	prop.grazingAngle[0] = 0.0;
+	prop.grazingAngle[1] = 5.0;
+	prop.hht = 3300.0;
+	prop.hhr = 3200.0;
+	prop.distance = 4.0;
+	prop.canopyClutterHeight = 22.5;
+	propa.dla = 3.0;
+	propa.tha = 20.0;
+	propa.dlsa = 1000000.0;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.0, diffractionAttenuation);
+
+	prop.grazingAngle[1] = 0.1;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.0, diffractionAttenuation);
+
+	prop.analysisMode = 0;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.0, diffractionAttenuation);
+
+	d = 4.0;
+	prop.grazingAngle[1] = 5.0;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(30.800000000000001, diffractionAttenuation);
+
+	prop.hht = 3500.0;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(30.800000000000001, diffractionAttenuation);
+
+	prop.grazingAngle[1] = 1.15;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(164.12455973647732, diffractionAttenuation);
+
+	prop.grazingAngle[1] = 0.55;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(746.72778006696967, diffractionAttenuation);
+
+	prop.grazingAngle[1] = 0.15;
+	prop.hht = 3300.0;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(710.55343780728526, diffractionAttenuation);
+
+	prop.hht = 3500.0;
+	prop.hhr = 3600.0;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(746.89539287284651, diffractionAttenuation);
+
+	prop.horizonDistance[0] = 0.0;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(745.09139086327207, diffractionAttenuation);
+
+	d = 0.5;
+	prop.horizonDistance[1] = 0.0;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(5.7999999999999998, diffractionAttenuation);
+
+	prop.horizonDistance[1] = 2.0;
+	prop.hht = 3300.0;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(36.289999999999999, diffractionAttenuation);
+
+	prop.hht = 3500.0;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(669.6449002854514, diffractionAttenuation);
+
+	prop.grazingAngle[1] = 5.0;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(30.800000000000001, diffractionAttenuation);
+
+	prop.grazingAngle[1] = 1.15;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(22.0, diffractionAttenuation);
+
+	prop.grazingAngle[1] = 0.55;
+	diffractionAttenuation = CalculateDiffractionAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(669.6449002854514, diffractionAttenuation);
+}
+
+
+TEST(ItwomTests, CalculateScatterAttenuationTests)
+{
+	double scatterAttenuation;
+	prop_type prop;
+	propa_type propa;
+	double d;
+
+	d = 0.0;
+	prop.antennaEffectiveHeight[0] = 21.0;
+	prop.antennaEffectiveHeight[1] = 8.620;
+	prop.horizonDistance[0] = 1.0;
+	prop.horizonDistance[1] = 2.0;
+	prop.antennaHeightAndPathElevation[0] = 21.0;
+	prop.antennaHeightAndPathElevation[0] = 8.620;
+	prop.surfaceRefractivity = 325.0;
+	prop.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop.surfaceRefractivity / 179.3));
+	prop.grazingAngle[0] = 0.0;
+	prop.grazingAngle[1] = 5.0;
+	prop.waveNumber = 100.0;
+	propa.tha = 20.0;
+	scatterAttenuation = CalculateScatterAttenuation(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.0, scatterAttenuation);
+
+	prop.horizonDistance[0] = 3.0;
+	scatterAttenuation = CalculateScatterAttenuation(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.0, scatterAttenuation);
+
+	d = 2.0;
+	scatterAttenuation = CalculateScatterAttenuation(d, prop, propa);
+	EXPECT_DOUBLE_EQ(203.82398136037997, scatterAttenuation);
+
+	prop.antennaEffectiveHeight[0] = 0.00001;
+	prop.antennaEffectiveHeight[1] = 0.00001;
+	scatterAttenuation = CalculateScatterAttenuation(d, prop, propa);
+	EXPECT_DOUBLE_EQ(1001.0, scatterAttenuation);
+}
+
+
+TEST(ItwomTests, QlrpsTests)
+{
+	prop_type prop1, prop2;
+	Qlrps(605.0, 0.0, 325.0, 0, 12.0, 1.2, prop1);
+	EXPECT_DOUBLE_EQ(12.683438155136267, prop1.waveNumber);
+	EXPECT_DOUBLE_EQ(325.0, prop1.surfaceRefractivity);
+	EXPECT_DOUBLE_EQ(1.1213006250331002e-07, prop1.relativeCurvature);
+	EXPECT_DOUBLE_EQ(4.9138508618991086, prop1.surfaceImpedanceReal);
+	EXPECT_DOUBLE_EQ(3.6257316907055608, prop1.surfaceImpedanceImag);
+
+	Qlrps(605.0, 3.0, 325.0, 3, 12.0, 1.2, prop2);
+	EXPECT_DOUBLE_EQ(12.683438155136267, prop2.waveNumber);
+	EXPECT_DOUBLE_EQ(324.89695080147652, prop2.surfaceRefractivity);
+	EXPECT_DOUBLE_EQ(1.1215584322070243e-07, prop2.relativeCurvature);
+	EXPECT_DOUBLE_EQ(0.13309950673826831, prop2.surfaceImpedanceReal);
+	EXPECT_DOUBLE_EQ(-0.093079255757644211, prop2.surfaceImpedanceImag);
+}
+
+
+TEST(ItwomTests, CalculateLineOfSightAttenuationTests)
+{
+	double lineOfSightAttenuation;
+	prop_type prop;
+	propa_type propa;
+	double d;
+
+	d = 0.0;
+	prop.surfaceImpedanceReal = 1.0;
+	prop.surfaceImpedanceImag = 0.5;
+	prop.interdecileElevationRangeBetweenPoints = 1.0;
+	prop.waveNumber = 100.0;
+	prop.antennaEffectiveHeight[0] = 21.0;
+	prop.antennaEffectiveHeight[1] = 8.620;
+	propa.emd = 1.2;
+	propa.aed = 5.0;
+	propa.dlsa = 1000000.0;
+	lineOfSightAttenuation = CalculateLineOfSightAttenuation(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.0, lineOfSightAttenuation);
+
+	d = 2.0;
+	lineOfSightAttenuation = CalculateLineOfSightAttenuation(d, prop, propa);
+	EXPECT_DOUBLE_EQ(-3.9167149496685898, lineOfSightAttenuation);
+
+	prop.antennaEffectiveHeight[0] = 0.00001;
+	prop.antennaEffectiveHeight[1] = 0.00001;
+	lineOfSightAttenuation = CalculateLineOfSightAttenuation(d, prop, propa);
+	EXPECT_DOUBLE_EQ(77.528123150083999, lineOfSightAttenuation);
+}
+
+
+TEST(ItwomTests, CalculateLineOfSightAttenuationV2Tests)
+{
+	double lineOfSightAttenuation;
+	prop_type prop;
+	propa_type propa;
+	double d;
+
+	d = 0.0;
+	prop.surfaceImpedanceReal = 1.0;
+	prop.surfaceImpedanceImag = 0.5;
+	prop.interdecileElevationRangeBetweenPoints = 1.0;
+	prop.waveNumber = 100.0;
+	prop.antennaHeightAboveGroundLevel[0] = 20.0;
+	prop.antennaHeightAboveGroundLevel[1] = 7.620;
+	prop.antennaEffectiveHeight[0] = 21.0;
+	prop.antennaEffectiveHeight[1] = 8.620;
+	prop.antennaHeightAndPathElevation[0] = 21.0;
+	prop.antennaHeightAndPathElevation[0] = 8.620;
+	prop.horizonDistance[0] = 1.0;
+	prop.horizonDistance[1] = 2.0;
+	prop.transmitterTotalHeight = 21.0;
+	prop.receiverTotalHeight = 8.620;
+	prop.horizonHeight = 1.0;
+	prop.distance = 5.0;
+	prop.analysisMode = -1;
+	prop.canopyClutterHeight = 22.5;
+	prop.thera = 0.5;
+	prop.thenr = 0.5;
+	lineOfSightAttenuation = CalculateLineOfSightAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(0.0, lineOfSightAttenuation);
+
+	d = 4.0;
+	lineOfSightAttenuation = CalculateLineOfSightAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(22.0, lineOfSightAttenuation);
+
+	prop.analysisMode = 0;
+	lineOfSightAttenuation = CalculateLineOfSightAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(22.0, lineOfSightAttenuation);
+
+	prop.surfaceImpedanceReal = 0.25;
+	prop.surfaceImpedanceImag = 0.25;
+	lineOfSightAttenuation = CalculateLineOfSightAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(22.0, lineOfSightAttenuation);
+
+	prop.antennaHeightAboveGroundLevel[1] = 25.0;
+	lineOfSightAttenuation = CalculateLineOfSightAttenuationV2(d, prop, propa);
+	EXPECT_DOUBLE_EQ(-1.7931089645393468, lineOfSightAttenuation);
+}
+
+
+TEST(ItwomTests, QlraTests)
+{
+	int kst[2];
+	prop_type prop1, prop2, prop3;
+	propv_type propv1, propv2, propv3;
+	int mdvarx, klimx;
+
+	kst[0] = 0;
+	kst[1] = 0;
+	prop1.antennaHeightAboveGroundLevel[0] = 20.0;
+	prop1.antennaHeightAboveGroundLevel[1] = 7.620;
+	prop1.interdecileElevationRangeBetweenPoints = 1.0;
+	prop1.surfaceRefractivity = 325.0;
+	prop1.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop1.surfaceRefractivity / 179.3));
+	propv1.recomputeParameters = 0;
+	propv1.variabilityMode = 0;
+	propv1.radioClimate = 0;
+	mdvarx = -1;
+	klimx = 0;
+	Qlra(kst, klimx, mdvarx, prop1, propv1);
+	EXPECT_DOUBLE_EQ(20.0, prop1.antennaEffectiveHeight[0]);
+	EXPECT_DOUBLE_EQ(7.620, prop1.antennaEffectiveHeight[1]);
+	EXPECT_DOUBLE_EQ(18593.929486598805, prop1.horizonDistance[0]);
+	EXPECT_DOUBLE_EQ(11366.28315718191, prop1.horizonDistance[1]);
+	EXPECT_DOUBLE_EQ(-0.0021172867537533244, prop1.grazingAngle[0]);
+	EXPECT_DOUBLE_EQ(-0.0013058026177807953, prop1.grazingAngle[1]);
+	EXPECT_EQ(1, prop1.analysisMode);
+	EXPECT_EQ(3, propv1.recomputeParameters);
+	EXPECT_EQ(0, propv1.variabilityMode);
+	EXPECT_EQ(0, propv1.radioClimate);
+
+	kst[0] = 1;
+	kst[1] = 1;
+	prop2.antennaHeightAboveGroundLevel[0] = 20.0;
+	prop2.antennaHeightAboveGroundLevel[1] = 7.620;
+	prop2.interdecileElevationRangeBetweenPoints = 1.0;
+	prop2.surfaceRefractivity = 325.0;
+	prop2.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop2.surfaceRefractivity / 179.3));
+	propv2.recomputeParameters = 0;
+	propv2.variabilityMode = 0;
+	propv2.radioClimate = 0;
+	mdvarx = 2;
+	klimx = 3;
+	Qlra(kst, klimx, mdvarx, prop2, propv2);
+	EXPECT_DOUBLE_EQ(20.000000010305769, prop2.antennaEffectiveHeight[0]);
+	EXPECT_DOUBLE_EQ(7.6200012031564404, prop2.antennaEffectiveHeight[1]);
+	EXPECT_DOUBLE_EQ(18593.929491464409, prop2.horizonDistance[0]);
+	EXPECT_DOUBLE_EQ(11366.284077273896, prop2.horizonDistance[1]);
+	EXPECT_DOUBLE_EQ(-0.0021172867542992519, prop2.grazingAngle[0]);
+	EXPECT_DOUBLE_EQ(-0.0013058027212109261, prop2.grazingAngle[1]);
+	EXPECT_EQ(1, prop2.analysisMode);
+	EXPECT_EQ(5, propv2.recomputeParameters);
+	EXPECT_EQ(2, propv2.variabilityMode);
+	EXPECT_EQ(3, propv2.radioClimate);
+
+	kst[0] = 2;
+	kst[1] = 3;
+	prop3.antennaHeightAboveGroundLevel[0] = 3.0;
+	prop3.antennaHeightAboveGroundLevel[1] = 4.0;
+	prop3.interdecileElevationRangeBetweenPoints = 1.0;
+	prop3.surfaceRefractivity = 325.0;
+	prop3.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop3.surfaceRefractivity / 179.3));
+	propv3.recomputeParameters = 0;
+	propv3.variabilityMode = 0;
+	propv3.radioClimate = 0;
+	mdvarx = 3;
+	klimx = 0;
+	Qlra(kst, klimx, mdvarx, prop3, propv3);
+	EXPECT_DOUBLE_EQ(3.020526927261288, prop3.antennaEffectiveHeight[0]);
+	EXPECT_DOUBLE_EQ(4.0032068580213407, prop3.antennaEffectiveHeight[1]);
+	EXPECT_DOUBLE_EQ(7113.7689219010153, prop3.horizonDistance[0]);
+	EXPECT_DOUBLE_EQ(8189.5947891973183, prop3.horizonDistance[1]);
+	EXPECT_DOUBLE_EQ(-0.00082021716914179241, prop3.grazingAngle[0]);
+	EXPECT_DOUBLE_EQ(-0.0009450556502009612, prop3.grazingAngle[1]);
+	EXPECT_EQ(1, prop3.analysisMode);
+	EXPECT_EQ(4, propv3.recomputeParameters);
+	EXPECT_EQ(3, propv3.variabilityMode);
+	EXPECT_EQ(0, propv3.radioClimate);
+}
+
+
+TEST(ItwomTests, CalculateLongleyRicePropagationTests)
+{
+	//| JAD TODO - Finish unit tests.
+}
+
+
+TEST(ItwomTests, CalculateLongleyRicePropagationV2Tests)
+{
+	//| JAD TODO - Finish unit tests.
+}
+
+
+TEST(ItwomTests, CalculateLongleyRiceVariabilityTests)
+{
+	//| JAD TODO - Finish unit tests.
+}
+
+
+TEST(ItwomTests, CalculateHorizonDistancesTests)
+{
+	//| JAD TODO - Finish unit tests.
+}
+
+
+TEST(ItwomTests, CalculateHorizonDistancesV2Tests)
+{
+	//| JAD TODO - Finish unit tests.
+}
+
+
+TEST(ItwomTests, CalculateTerrainInterdecileRangeDeltaV2Tests)
+{
+	//| JAD TODO - Finish unit tests.
+}
+
+
+TEST(ItwomTests, PrepareForPointToPointModeAnalysisTests)
+{
+	//| JAD TODO - Finish unit tests.
+}
+
+
+TEST(ItwomTests, PrepareForPointToPointModeAnalysisV2Tests)
+{
+	//| JAD TODO - Finish unit tests.
 }
 
 
@@ -591,15 +983,12 @@ TEST(Usgs2SdfLibTests, ConvertExponentialNotationTests)
 	char usgsString[30];
 
 	snprintf(usgsString, 30, "%s", "29D14A3");
-
 	EXPECT_STREQ("29E14A3", ConvertExponentialNotation(usgsString));
 
 	snprintf(usgsString, 30, "%s", "DD314AD");
-
 	EXPECT_STREQ("EE314AE", ConvertExponentialNotation(usgsString));
 
 	snprintf(usgsString, 30, "%s", "_EDE_D");
-
 	EXPECT_STREQ("_EEE_E", ConvertExponentialNotation(usgsString));
 }
 
