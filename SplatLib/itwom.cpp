@@ -2621,7 +2621,9 @@ CalculateTerrainInterdecileRangeDelta
 
 	d1thxv = CreateQuantile(n - 1, s + 2, ka - 1) - CreateQuantile(n - 1, s + 2, kb - 1);
 	d1thxv /= 1.0 - 0.8*exp(-(x2 - x1) / 50.0e3);
+
 	delete[] s;
+	s = NULL;
 
 	return d1thxv;
 }
@@ -2693,7 +2695,10 @@ CalculateTerrainInterdecileRangeDeltaV2
 
 	d1thx2v = CreateQuantile(n - 1, s + 2, ka - 1) - CreateQuantile(n - 1, s + 2, kb - 1);
 	d1thx2v /= 1.0 - 0.8*exp(-(x2 - x1) / 50.0e3);
+
 	delete[] s;
+	s = NULL;
+
 	return d1thx2v;
 }
 

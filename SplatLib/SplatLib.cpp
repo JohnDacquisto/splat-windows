@@ -200,13 +200,13 @@ ConvertDecimalToDegreesMinutesSeconds
 //|   case meters is assumed, and is handled accordingly.
 //| 
 //| ------------------------------
-Site
+void
 LoadSplatSiteLocationFile
-   (char *filename)
+   (char *filename,
+	Site *site)
 {
 	int	x;
 	char QthString[50], qthfile[255];
-	Site tempsite;
 	FILE *fd = NULL;
 	errno_t err;
 
@@ -222,11 +222,11 @@ LoadSplatSiteLocationFile
 		strncat_s(qthfile, ".qth\0", 5);
 	}
 
-	tempsite.latitude = 91.0;
-	tempsite.longitude = 361.0;
-	tempsite.altitude = 0.0;
-	tempsite.name[0] = 0;
-	tempsite.filename[0] = 0;
+	site->latitude = 91.0;
+	site->longitude = 361.0;
+	site->altitude = 0.0;
+	site->name[0] = 0;
+	site->filename[0] = 0;
 
 	err = fopen_s(&fd, qthfile, "r");
 
@@ -237,21 +237,21 @@ LoadSplatSiteLocationFile
 
 		//| Strip <CR> and/or <LF> from end of site name
 
-		for (x = 0; (QthString[x] != 13) && (QthString[x] != 10) && (QthString[x] != 0); tempsite.name[x] = QthString[x], x++);
+		for (x = 0; (QthString[x] != 13) && (QthString[x] != 10) && (QthString[x] != 0); site->name[x] = QthString[x], x++);
 
-		tempsite.name[x] = 0;
+		site->name[x] = 0;
 
 		//| Site Latitude
 		fgets(QthString, 49, fd);
-		tempsite.latitude = BearingStringToDecimalDegrees(QthString);
+		site->latitude = BearingStringToDecimalDegrees(QthString);
 
 		//| Site Longitude
 		fgets(QthString, 49, fd);
-		tempsite.longitude = BearingStringToDecimalDegrees(QthString);
+		site->longitude = BearingStringToDecimalDegrees(QthString);
 
-		if (tempsite.longitude < 0.0)
+		if (site->longitude < 0.0)
 		{
-			tempsite.longitude += 360.0;
+			site->longitude += 360.0;
 		}
 
 		//| Antenna Height
@@ -274,24 +274,22 @@ LoadSplatSiteLocationFile
 		if ((QthString[x] == 'M') || (QthString[x] == 'm'))
 		{
 			QthString[x] = 0;
-			sscanf_s(QthString, "%f", &tempsite.altitude);
-			tempsite.altitude *= (float)FEET_PER_METER;
+			sscanf_s(QthString, "%f", &site->altitude);
+			site->altitude *= (float)FEET_PER_METER;
 		}
 		else
 		{
 			QthString[x] = 0;
-			sscanf_s(QthString, "%f", &tempsite.altitude);
+			sscanf_s(QthString, "%f", &site->altitude);
 		}
 
 		for (x = 0; (x < 254) && (qthfile[x] != 0); x++)
 		{
-			tempsite.filename[x] = qthfile[x];
+			site->filename[x] = qthfile[x];
 		}
 
-		tempsite.filename[x] = 0;
+		site->filename[x] = 0;
 	}
-
-	return tempsite;
 }
 
 
@@ -1780,14 +1778,25 @@ LoadAntennaAzimuthElevationPatternFiles
 	}
 
 	delete[] azimuth;
+	azimuth = NULL;
+
 	delete[] azimuth_pattern;
+	azimuth_pattern = NULL;
+
 	delete[] el_pattern;
+	el_pattern = NULL;
+
 	delete[] slant_angle;
+	slant_angle = NULL;
+
 	for (int i = 0; i < 361; i++)
 	{
 		delete[] elevation_pattern[i];
+		elevation_pattern[i] = NULL;
 	}
+
 	delete[] elevation_pattern;
+	elevation_pattern = NULL;
 }
 
 
@@ -1879,7 +1888,7 @@ LoadUncompressedSplatDataFile
 		if (fd == NULL)
 		{
 			//| Next, try loading SDF file from path specified
-			//| in $HOME/.splat_path file or by -d argument
+			//| by -d argument
 
 			err = strncpy_s(path_plus_name, _countof(path_plus_name), splatDataFilePath, 255);
 			strncat_s(path_plus_name, sdf_file, 254);

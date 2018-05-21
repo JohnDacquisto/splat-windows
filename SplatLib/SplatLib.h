@@ -23,7 +23,7 @@ int _declspec(dllexport) ConvertToNormalizedAngle(double angle);
 
 void _declspec(dllexport) ConvertDecimalToDegreesMinutesSeconds(double decimal, char *dmsString);
 
-Site _declspec(dllexport) LoadSplatSiteLocationFile(char *filename);
+void _declspec(dllexport) LoadSplatSiteLocationFile(char *filename, Site *site);
 
 double _declspec(dllexport) GetSiteLocationElevation(Site location, DigitalElevationModelWrapper *digitalElevationModelWrapper);
 
