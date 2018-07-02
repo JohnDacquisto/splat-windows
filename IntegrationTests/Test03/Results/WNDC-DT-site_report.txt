@@ -1,0 +1,21 @@
+
+	--==[ SPLAT v1.4.2 Site Analysis Report For: WNDC-DT ]==--
+
+---------------------------------------------------------------------------
+
+Site location: 38.9911 North / 76.9128 West (38° 59' 27" N / 76° 54' 45" W)
+Ground elevation: 44.00 meters AMSL
+Antenna height: 20.00 meters AGL / 64.00 meters AMSL
+Antenna height above average terrain: 6.08 meters
+
+Average terrain at   0 degrees azimuth: 84.41 meters AMSL
+Average terrain at  45 degrees azimuth: 48.08 meters AMSL
+Average terrain at  90 degrees azimuth: 47.85 meters AMSL
+Average terrain at 135 degrees azimuth: 39.82 meters AMSL
+Average terrain at 180 degrees azimuth: 49.90 meters AMSL
+Average terrain at 225 degrees azimuth: 28.70 meters AMSL
+Average terrain at 270 degrees azimuth: 71.91 meters AMSL
+Average terrain at 315 degrees azimuth: 92.66 meters AMSL
+
+---------------------------------------------------------------------------
+

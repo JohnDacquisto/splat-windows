@@ -1,0 +1,21 @@
+
+	--==[ SPLAT v1.4.2 Site Analysis Report For: antenna2 ]==--
+
+---------------------------------------------------------------------------
+
+Site location: 41.0330 North / 73.7350 West (41° 1' 58" N / 73° 44' 5" W)
+Ground elevation: 86.00 meters AMSL
+Antenna height: 98.50 meters AGL / 184.50 meters AMSL
+Antenna height above average terrain: 108.40 meters
+
+Average terrain at   0 degrees azimuth: 157.24 meters AMSL
+Average terrain at  45 degrees azimuth: 111.62 meters AMSL
+Average terrain at  90 degrees azimuth: 37.00 meters AMSL
+Average terrain at 135 degrees azimuth: 30.35 meters AMSL
+Average terrain at 180 degrees azimuth: 26.18 meters AMSL
+Average terrain at 225 degrees azimuth: 73.90 meters AMSL
+Average terrain at 270 degrees azimuth: 64.83 meters AMSL
+Average terrain at 315 degrees azimuth: 107.65 meters AMSL
+
+---------------------------------------------------------------------------
+

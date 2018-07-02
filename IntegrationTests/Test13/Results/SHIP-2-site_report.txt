@@ -1,0 +1,11 @@
+
+	--==[ SPLAT v1.4.2 Site Analysis Report For: SHIP-2 ]==--
+
+---------------------------------------------------------------------------
+
+Site location: 38.1000 North / 41.9000 West (38° 6' 0" N / 41° 53' 59" W)
+Ground elevation: 0.00 meters AMSL
+Antenna height: 10.00 meters AGL / 10.00 meters AMSL
+
+---------------------------------------------------------------------------
+

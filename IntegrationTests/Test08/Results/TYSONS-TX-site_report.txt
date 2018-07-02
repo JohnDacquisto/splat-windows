@@ -1,0 +1,11 @@
+
+	--==[ SPLAT v1.4.2 Site Analysis Report For: TYSONS-TX ]==--
+
+---------------------------------------------------------------------------
+
+Site location: 38.9193 North / 77.2205 West (38° 55' 9" N / 77° 13' 13" W)
+Ground elevation: 137.00 meters AMSL
+Antenna height: 97.00 meters AGL / 234.00 meters AMSL
+
+---------------------------------------------------------------------------
+

@@ -1,0 +1,63 @@
+
+		--==[ SPLAT v1.4.2 Path Analysis ]==--
+
+---------------------------------------------------------------------------
+
+Transmitter site: TYSONS-TX
+Site location: 38.9193 North / 77.2205 West (38° 55' 9" N / 77° 13' 13" W)
+Ground elevation: 137.00 meters AMSL
+Antenna height: 97.00 meters AGL / 234.00 meters AMSL
+Distance to OSAGE-RX: 27.78 kilometers
+Azimuth to OSAGE-RX: 73.20 degrees
+Depression angle to OSAGE-RX: -0.4962 degrees
+
+---------------------------------------------------------------------------
+
+Receiver site: OSAGE-RX
+Site location: 38.9911 North / 76.9128 West (38° 59' 27" N / 76° 54' 46" W)
+Ground elevation: 44.00 meters AMSL
+Antenna height: 10.00 meters AGL / 54.00 meters AMSL
+Distance to TYSONS-TX: 27.78 kilometers
+Azimuth to TYSONS-TX: 253.39 degrees
+Elevation angle to TYSONS-TX: +0.2463 degrees
+
+---------------------------------------------------------------------------
+
+ITWOM Version 3.0 Parameters Used In This Analysis:
+
+Earth's Dielectric Constant: 15.000
+Earth's Conductivity: 0.005 Siemens/meter
+Atmospheric Bending Constant (N-units): 301.000 ppm
+Frequency: 605.000 MHz
+Radio Climate: 5 (Continental Temperate)
+Polarization: 0 (Horizontal)
+Fraction of Situations: 50.0%
+Fraction of Time: 90.0%
+Transmitter ERP: 30 Watts (+44.77 dBm)
+Transmitter EIRP: 49 Watts (+46.91 dBm)
+
+---------------------------------------------------------------------------
+
+Summary For The Link Between TYSONS-TX and OSAGE-RX:
+
+Free space path loss: 116.98 dB
+ITWOM Version 3.0 path loss: 139.50 dB
+Attenuation due to terrain shielding: 22.52 dB
+Field strength at OSAGE-RX: 40.31 dBuV/meter
+Signal power level at OSAGE-RX: -92.58 dBm
+Signal power density at OSAGE-RX: -105.47 dBW per square meter
+Voltage across a 50 ohm dipole at OSAGE-RX: 6.72 uV (16.55 dBuV)
+Voltage across a 75 ohm dipole at OSAGE-RX: 8.23 uV (18.31 dBuV)
+Mode of propagation: Line of Sight
+ITWOM error number: 0 (No error)
+
+---------------------------------------------------------------------------
+
+
+No obstructions to LOS path due to terrain were detected by SPLAT
+
+Antenna at OSAGE-RX must be raised to at least 107.84 meters AGL
+to clear the first Fresnel zone.
+
+Antenna at OSAGE-RX must be raised to at least 57.85 meters AGL
+to clear 60% of the first Fresnel zone.
