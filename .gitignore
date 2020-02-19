@@ -263,3 +263,7 @@ __pycache__/
 # Miscellaneous
 desktop.ini
 *.user
+*.bak
+
+# SPLAT reference data files
+RefData/

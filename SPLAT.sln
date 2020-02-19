@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2015
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Splat", "Splat\SPLAT.vcxproj", "{DC8F99FC-526A-49F0-BF4A-E08A3B186FA7}"
 EndProject
@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CityDecoder", "CityDecoder\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Bearing", "Bearing\BEARING.vcxproj", "{247FC1AF-8C74-4F30-9D5C-23617FB32932}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Usgs2Sdf", "usgs2sdf\USGS2SDF.vcxproj", "{F44FE822-036C-405F-AE86-69DAA16A6916}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Usgs2Sdf", "Usgs2Sdf\USGS2SDF.vcxproj", "{F44FE822-036C-405F-AE86-69DAA16A6916}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Srtm2Sdf", "Srtm2Sdf\SRTM2SDF.vcxproj", "{F0FBFEF6-2DAB-4BEB-8665-E550A515F6CA}"
 EndProject
@@ -142,7 +142,6 @@ Global
 		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Debug|x86.Build.0 = Debug|Win32
 		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|Any CPU.ActiveCfg = Release|Win32
 		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|x64.ActiveCfg = Release|x64
-		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|x64.Build.0 = Release|x64
 		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|x86.ActiveCfg = Release|Win32
 		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
