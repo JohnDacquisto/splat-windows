@@ -267,3 +267,6 @@ desktop.ini
 
 # SPLAT reference data files
 RefData/
+
+# SPLAT integration test files
+IntegrationTests/
