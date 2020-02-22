@@ -20,8 +20,8 @@
 //| 
 //| ------------------------------
 int
-ReadSpaceShuttleRadarTopographyMissionDataFile
-   (char *filename,
+ReadSpaceShuttleRadarTopographyMissionDataFile(
+	char *filename,
 	char *elevationProblem,
 	char *splatDataFileName,
 	int integerPixelsPerDegree,
@@ -40,8 +40,8 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 	FILE *fd = NULL;
 	errno_t err;
 
-	bool fileExtentionHgt = false;		//| OLD NAME: hgt
-	bool fileExtentionBil = false;		//| OLD NAME: bil
+	bool fileExtentionHgt = false;		// OLD NAME: hgt
+	bool fileExtentionBil = false;		// OLD NAME: bil
 
 	if (strstr(filename, ".zip") != NULL)
 	{
@@ -84,7 +84,7 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 
 	if (fileExtentionHgt)
 	{
-		//| We obtain coordinates from the base of the .HGT filename
+		// We obtain coordinates from the base of the .HGT filename
 
 		north[0] = base[1];
 		north[1] = base[2];
@@ -129,8 +129,8 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 
 	if (fileExtentionBil)
 	{
-		//| We obtain .BIL file coordinates
-		//| from the corresponding .BLW file
+		// We obtain .BIL file coordinates
+		// from the corresponding .BLW file
 
 		err = strncpy_s(blw_filename, _countof(blw_filename), filename, 250);
 		x = (int)strlen(filename);
@@ -228,7 +228,7 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 			{
 				if (fileExtentionBil)
 				{
-					//| "little-endian" structure
+					// "little-endian" structure
 
 					byte = buffer[0] + (buffer[1] << 8);
 
@@ -240,7 +240,7 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 
 				if (fileExtentionHgt)
 				{
-					//| "big-endian" structure
+					// "big-endian" structure
 
 					byte = buffer[1] + (buffer[0] << 8);
 
@@ -250,7 +250,7 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 					}
 				}
 
-				//| Flag problem elevations here
+				// Flag problem elevations here
 
 				if (byte < -32768)
 				{
@@ -299,8 +299,8 @@ ReadSpaceShuttleRadarTopographyMissionDataFile
 //| 
 //| ------------------------------
 int
-LoadUncompressedSplatDataFileForSrtm
-   (char *name,
+LoadUncompressedSplatDataFileForSrtm(
+	char *name,
 	char *splatDataFilePath,
 	int **unitedStatesGeologicalSurveyData)
 {
@@ -365,14 +365,14 @@ LoadUncompressedSplatDataFileForSrtm
 //| 
 //| ------------------------------
 char
-LoadSplatDataFileForSrtm
-   (char *name,
+LoadSplatDataFileForSrtm(
+	char *name,
 	char *splatDataFilePath,
 	int **unitedStatesGeologicalSurveyData)
 {
 	int return_value = -1;
 
-	//| Try to load an uncompressed SDF first.
+	// Try to load an uncompressed SDF first.
 
 	return_value = LoadUncompressedSplatDataFileForSrtm(name, splatDataFilePath, unitedStatesGeologicalSurveyData);
 
@@ -393,8 +393,8 @@ LoadSplatDataFileForSrtm
 //| 
 //| ------------------------------
 int
-ReadUnitedStatesGeologicalSurveyDataFile
-   (char *splatDataFilePath,
+ReadUnitedStatesGeologicalSurveyDataFile(
+	char *splatDataFilePath,
 	int maximumLatitudeNorth,
 	int maximumLongitudeWest,
 	int minimumLatitudeNorth,
@@ -419,8 +419,8 @@ ReadUnitedStatesGeologicalSurveyDataFile
 //| 
 //| ------------------------------
 void
-AverageTerrain
-   (int y,
+AverageTerrain(
+	int y,
 	int x,
 	int z,
 	int maximumPixelIndexPerDegree,
@@ -560,8 +560,8 @@ AverageTerrain
 //| 
 //| ------------------------------
 void
-WriteSplatDataFile
-   (char *filename,
+WriteSplatDataFile(
+	char *filename,
 	int integerPixelsPerDegree,
 	int maximumPixelIndexPerDegree,
 	int minimumElevation,
@@ -584,9 +584,9 @@ WriteSplatDataFile
 
 	fprintf(outfile, "%d\n%d\n%d\n%d\n", maximumLongitudeWest, minimumLatitudeNorth, minimumLongitudeWest, maximumLatitudeNorth);
 
-	for (y = integerPixelsPerDegree; y >= 1; y--)			//| Omit the northern most edge
+	for (y = integerPixelsPerDegree; y >= 1; y--)			// Omit the northern most edge
 	{
-		for (x = maximumPixelIndexPerDegree; x >= 0; x--)	//| Omit the eastern most edge 
+		for (x = maximumPixelIndexPerDegree; x >= 0; x--)	// Omit the eastern most edge 
 		{
 			byte = spaceShuttleRadarTopographyMissionData[y][x];
 

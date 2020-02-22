@@ -6,10 +6,10 @@
 #include "DigitalElevationModel.h"
 
 
-DigitalElevationModel::DigitalElevationModel()
-	: data(NULL),
-	  mask(NULL),
-	  signal(NULL)
+DigitalElevationModel::DigitalElevationModel() : 
+	data(NULL),
+	mask(NULL),
+	signal(NULL)
 {
 }
 
@@ -20,8 +20,8 @@ DigitalElevationModel::~DigitalElevationModel()
 
 
 void 
-DigitalElevationModel::AllocateArrays
-   (int pixelsPerDegree)
+DigitalElevationModel::AllocateArrays(
+	int pixelsPerDegree)
 {
 	data = new short*[pixelsPerDegree];
 	for (int i = 0; i < pixelsPerDegree; i++)
@@ -44,8 +44,8 @@ DigitalElevationModel::AllocateArrays
 
 
 void
-DigitalElevationModel::DeallocateArrays
-   (int pixelsPerDegree)
+DigitalElevationModel::DeallocateArrays(
+	int pixelsPerDegree)
 {
 	if (data)
 	{

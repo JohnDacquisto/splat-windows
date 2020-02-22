@@ -6,19 +6,19 @@
 #include "Path.h"
 
 
-Path::Path()
-	: pathArraySize(0),
-	  latitudes(NULL),
-	  longitudes(NULL),
-	  elevations(NULL),
-	  distances(NULL)
+Path::Path() :
+	pathArraySize(0),
+	latitudes(NULL),
+	longitudes(NULL),
+	elevations(NULL),
+	distances(NULL)
 {
 }
 
 
-Path::Path
-   (long arraySize)
-	: pathArraySize(arraySize)
+Path::Path(
+	long arraySize) :
+	pathArraySize(arraySize)
 {
 	latitudes = new double[pathArraySize];
 

@@ -3,6 +3,7 @@
 ****************************************************************************/
 
 #pragma once
+
 #include "stdafx.h"
 
 
@@ -12,9 +13,9 @@ public:
 	Site();
 	~Site();
 
-	double latitude;		//| OLD NAME: lat
-	double longitude;		//| OLD NAME: lon
-	float altitude;			//| OLD NAME: alt
+	double latitude;	// OLD NAME: lat
+	double longitude;	// OLD NAME: lon
+	float altitude;		// OLD NAME: alt
 	double azimuth;
 	char name[50];
 	char filename[255];

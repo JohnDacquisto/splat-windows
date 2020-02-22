@@ -9,10 +9,11 @@
 #include "Common.h"
 #include "constants.h"
 
-typedef BOOL(WINAPI *MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hFile, MINIDUMP_TYPE DumpType,
-										CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
-										CONST PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
-										CONST PMINIDUMP_CALLBACK_INFORMATION CallbackParam);
+typedef BOOL(WINAPI *MINIDUMPWRITEDUMP)(
+	HANDLE hProcess, DWORD dwPid, HANDLE hFile, MINIDUMP_TYPE DumpType,
+	CONST PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,
+	CONST PMINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
+	CONST PMINIDUMP_CALLBACK_INFORMATION CallbackParam);
 
 
 //| ------------------------------
@@ -27,8 +28,8 @@ typedef BOOL(WINAPI *MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hFi
 //| 
 //| ------------------------------
 double
-ArcCosine
-   (double x,
+ArcCosine(
+	double x,
 	double y)
 {
 	double result = 0.0;
@@ -59,8 +60,8 @@ ArcCosine
 //| 
 //| ------------------------------
 double
-AzimuthAngleBetweenSites
-   (Site source,
+AzimuthAngleBetweenSites(
+	Site source,
 	Site destination)
 {
 	double dest_lat, dest_lon, src_lat, src_lon,
@@ -72,17 +73,17 @@ AzimuthAngleBetweenSites
 	src_lat = source.latitude * DEGREES_TO_RADIANS;
 	src_lon = source.longitude * DEGREES_TO_RADIANS;
 
-	//| Calculate Surface Distance
+	// Calculate Surface Distance
 
 	beta = acos(sin(src_lat)*sin(dest_lat) + cos(src_lat)*cos(dest_lat)*cos(src_lon - dest_lon));
 
-	//| Calculate Azimuth
+	// Calculate Azimuth
 
 	num = sin(dest_lat) - (sin(src_lat)*cos(beta));
 	den = cos(src_lat)*sin(beta);
 	fraction = num / den;
 
-	//| Trap potential problems in acos() due to rounding
+	// Trap potential problems in acos() due to rounding
 
 	if (fraction >= 1.0)
 	{
@@ -94,11 +95,11 @@ AzimuthAngleBetweenSites
 		fraction = -1.0;
 	}
 
-	//| Calculate azimuth
+	// Calculate azimuth
 
 	azimuth = acos(fraction);
 
-	//| Reference it to True North
+	// Reference it to True North
 
 	diff = dest_lon - src_lon;
 
@@ -139,15 +140,15 @@ AzimuthAngleBetweenSites
 //| 
 //| ------------------------------
 double
-BearingStringToDecimalDegrees
-   (char *input)
+BearingStringToDecimalDegrees(
+	char *input)
 {
 	double seconds, bearing = 0.0;
 	char BearingString[20];
 	int	a, b, length, degrees, minutes;
 
-	//| Copy "input" to "string", and ignore any extra
-	//| spaces that might be present in the process.
+	// Copy "input" to "string", and ignore any extra
+	// spaces that might be present in the process.
 
 	BearingString[0] = 0;
 	length = (int)strlen(input);
@@ -163,7 +164,7 @@ BearingStringToDecimalDegrees
 
 	BearingString[b] = 0;
 
-	//| Count number of spaces in the clean string.
+	// Count number of spaces in the clean string.
 
 	length = (int)strlen(BearingString);
 
@@ -175,12 +176,12 @@ BearingStringToDecimalDegrees
 		}
 	}
 
-	if (b == 0)  //| Decimal Format (40.139722)
+	if (b == 0)  // Decimal Format (40.139722)
 	{
 		sscanf_s(BearingString, "%lf", &bearing);
 	}
 
-	if (b == 2)  //| Degree, Minute, Second Format (40 08 23.xx)
+	if (b == 2)  // Degree, Minute, Second Format (40 08 23.xx)
 	{
 		sscanf_s(BearingString, "%d %d %lf", &degrees, &minutes, &seconds);
 
@@ -194,7 +195,7 @@ BearingStringToDecimalDegrees
 		}
 	}
 
-	//| Anything else returns a 0.0
+	// Anything else returns a 0.0
 
 	if ((bearing > 360.0) || (bearing < -360.0))
 	{
@@ -217,8 +218,8 @@ BearingStringToDecimalDegrees
 //| 
 //| ------------------------------
 double
-GreatCircleDistanceBetweenSiteLocations
-   (Site site1,
+GreatCircleDistanceBetweenSiteLocations(
+	Site site1,
 	Site site2)
 {
 	double lat1, lon1, lat2, lon2, distance;
@@ -253,57 +254,56 @@ GreatCircleDistanceBetweenSiteLocations
 //|   on an unhandled exception, and write a minidump to capture it.
 //| 
 //| ------------------------------
-long
-WINAPI
-CommonUnhandledExceptionFilter
-   (struct _EXCEPTION_POINTERS *ExceptionInfo)
+long WINAPI
+CommonUnhandledExceptionFilter(
+	struct _EXCEPTION_POINTERS *ExceptionInfo)
 {
-	//| Static variable ensures we pass through this only one (to prevent this
-	//| this from being called if it failed in the recovery effort as well.
+	// Static variable ensures we pass through this only one (to prevent this
+	// this from being called if it failed in the recovery effort as well.
 	static BOOL firstPass = TRUE;
 
 	if (firstPass) 
 	{
 		firstPass = FALSE;
 
-		//| Try to create a minidump file. Ideally this should be done from a separate watchdog process, to give the
-		//| best chance of successfully creating the file, rather than doing it in this process which
-		//| may be too unstable mattering on the fail scenario.
-		//| First, need to load the required library.
+		// Try to create a minidump file. Ideally this should be done from a separate watchdog process, to give the
+		// best chance of successfully creating the file, rather than doing it in this process which
+		// may be too unstable mattering on the fail scenario.
+		// First, need to load the required library.
 
 		HINSTANCE libraryInstance = LoadLibrary("dbghelp.dll");
 
 		if (libraryInstance)
 		{
-			//| Loaded the library, so find the required function address.
+			// Loaded the library, so find the required function address.
 			MINIDUMPWRITEDUMP pDump = (MINIDUMPWRITEDUMP)GetProcAddress(libraryInstance, "MiniDumpWriteDump");
 
 			if (pDump)
 			{
-				//| Found the function address, so save the minidump file.
-				//| JAD TODO - Save this to the working folder?
+				// Found the function address, so save the minidump file.
+				// JAD TODO - Save this to the working folder?
 
 				HANDLE hFile = CreateFile("C:\\Temp\\splat.dmp", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 				if (hFile != INVALID_HANDLE_VALUE)
 				{
-					//| Have a valid file handle, so write the dump.
+					// Have a valid file handle, so write the dump.
 					_MINIDUMP_EXCEPTION_INFORMATION ExInfo;
 					ExInfo.ThreadId = GetCurrentThreadId();
 					ExInfo.ExceptionPointers = ExceptionInfo;
 					ExInfo.ClientPointers = NULL;
 
-					//| Right now, uses general MiniDumpNormal when creating the file. This can be changed to give more comprehensive or useful results,
-					//| but needs to be considered carefully, because the file size can significantly increase mattering on which type is sent.
+					// Right now, uses general MiniDumpNormal when creating the file. This can be changed to give more comprehensive or useful results,
+					// but needs to be considered carefully, because the file size can significantly increase mattering on which type is sent.
 					BOOL bOK = pDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &ExInfo, NULL, NULL);
 
 					if (bOK)
 					{
-						//| Success - Created error log file.
+						// Success - Created error log file.
 					}
 					else
 					{
-						//| Error - Cannot create error log file.
+						// Error - Cannot create error log file.
 						LPVOID lpMsgBuf;
 						DWORD dw = GetLastError();
 						FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
@@ -314,18 +314,18 @@ CommonUnhandledExceptionFilter
 				}
 				else 
 				{
-					//| Error - Cannot create error log file.
+					// Error - Cannot create error log file.
 				}
 			}
 			else 
 			{
-				//| Error - Could not locate function MiniDumpWriteDump, cannot create error log file.
+				// Error - Could not locate function MiniDumpWriteDump, cannot create error log file.
 			}
 			FreeLibrary(libraryInstance);
 		}
 		else
 		{
-			//| Error - Could not locate dbghelp.dll, cannot create error log file.
+			// Error - Could not locate dbghelp.dll, cannot create error log file.
 		}
 	}
 

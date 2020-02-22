@@ -18,9 +18,9 @@
 //|   USGS data files. It returns a pointer to a string.
 //| 
 //| ------------------------------
-char
-*ConvertExponentialNotation
-   (char *UsgsString)
+char*
+ConvertExponentialNotation(
+	char *UsgsString)
 {
 	for (int x = 0; UsgsString[x] != 0; x++)
 	{

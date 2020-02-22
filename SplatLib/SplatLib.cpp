@@ -32,8 +32,8 @@
 //| 
 //| ------------------------------
 int
-LinearInterpolation
-   (int y0,
+LinearInterpolation(
+	int y0,
 	int y1,
 	int x0,
 	int x1,
@@ -83,8 +83,8 @@ LinearInterpolation
 //| 
 //| ------------------------------
 int
-ConvertToNormalizedAngle
-   (double angle)
+ConvertToNormalizedAngle(
+	double angle)
 {
 	double temp;
 
@@ -109,8 +109,8 @@ ConvertToNormalizedAngle
 //| 
 //| ------------------------------
 double
-LongitudeDifference
-   (double lon1,
+LongitudeDifference(
+	double lon1,
 	double lon2)
 {
 	double diff;
@@ -143,8 +143,8 @@ LongitudeDifference
 //| 
 //| ------------------------------
 void
-ConvertDecimalToDegreesMinutesSeconds
-   (double decimal,
+ConvertDecimalToDegreesMinutesSeconds(
+	double decimal,
 	char *dmsString)
 {
 	int	degrees, minutes, seconds, sign;
@@ -201,8 +201,8 @@ ConvertDecimalToDegreesMinutesSeconds
 //| 
 //| ------------------------------
 void
-LoadSplatSiteLocationFile
-   (char *filename,
+LoadSplatSiteLocationFile(
+	char *filename,
 	Site *site)
 {
 	int	x;
@@ -232,20 +232,20 @@ LoadSplatSiteLocationFile
 
 	if (fd != NULL)
 	{
-		//| Site Name
+		// Site Name
 		fgets(QthString, 49, fd);
 
-		//| Strip <CR> and/or <LF> from end of site name
+		// Strip <CR> and/or <LF> from end of site name
 
 		for (x = 0; (QthString[x] != 13) && (QthString[x] != 10) && (QthString[x] != 0); site->name[x] = QthString[x], x++);
 
 		site->name[x] = 0;
 
-		//| Site Latitude
+		// Site Latitude
 		fgets(QthString, 49, fd);
 		site->latitude = BearingStringToDecimalDegrees(QthString);
 
-		//| Site Longitude
+		// Site Longitude
 		fgets(QthString, 49, fd);
 		site->longitude = BearingStringToDecimalDegrees(QthString);
 
@@ -254,20 +254,20 @@ LoadSplatSiteLocationFile
 			site->longitude += 360.0;
 		}
 
-		//| Antenna Height
+		// Antenna Height
 		fgets(QthString, 49, fd);
 		fclose(fd);
 
-		//| Remove <CR> and/or <LF> from antenna height string
+		// Remove <CR> and/or <LF> from antenna height string
 		for (x = 0; (QthString[x] != 13) && (QthString[x] != 10) && (QthString[x] != 0); x++);
 
 		QthString[x] = 0;
 
-		//| Antenna height may either be in feet or meters.
-		//| If the letter 'M' or 'm' is discovered in
-		//| the string, then this is an indication that
-		//| the value given is expressed in meters, and
-		//| must be converted to feet before exiting.
+		// Antenna height may either be in feet or meters.
+		// If the letter 'M' or 'm' is discovered in
+		// the string, then this is an indication that
+		// the value given is expressed in meters, and
+		// must be converted to feet before exiting.
 
 		for (x = 0; (QthString[x] != 'M') && (QthString[x] != 'm') && (QthString[x] != 0) && (x < 48); x++);
 
@@ -308,8 +308,8 @@ LoadSplatSiteLocationFile
 //| 
 //| ------------------------------
 int
-SetValueInDigitalElevationModelMask
-   (double latitude,
+SetValueInDigitalElevationModelMask(
+	double latitude,
 	double longitude,
 	int value,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
@@ -359,8 +359,8 @@ SetValueInDigitalElevationModelMask
 //| 
 //| ------------------------------
 int
-SetOrValueInDigitalElevationModelMask
-   (double latitude,
+SetOrValueInDigitalElevationModelMask(
+	double latitude,
 	double longitude,
 	int value,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
@@ -407,8 +407,8 @@ SetOrValueInDigitalElevationModelMask
 //| 
 //| ------------------------------
 int
-GetValueInDigitalElevationModelMask
-   (double latitude,
+GetValueInDigitalElevationModelMask(
+	double latitude,
 	double longitude,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
@@ -428,8 +428,8 @@ GetValueInDigitalElevationModelMask
 //| 
 //| ------------------------------
 int
-SetValueInDigitalElevationModelSignal
-   (double latitude,
+SetValueInDigitalElevationModelSignal(
+	double latitude,
 	double longitude,
 	unsigned char signal,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
@@ -477,8 +477,8 @@ SetValueInDigitalElevationModelSignal
 //| 
 //| ------------------------------
 unsigned char
-GetValueInDigitalElevationModelSignal
-   (double latitude,
+GetValueInDigitalElevationModelSignal(
+	double latitude,
 	double longitude,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
@@ -524,8 +524,8 @@ GetValueInDigitalElevationModelSignal
 //| 
 //| ------------------------------
 double
-GetSiteLocationElevation
-   (Site location,
+GetSiteLocationElevation(
+	Site location,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
 	bool found = false;
@@ -574,8 +574,8 @@ GetSiteLocationElevation
 //| 
 //| ------------------------------
 int
-AddUserDefinedTerrainToDigitalElevationModelData
-   (double latitude,
+AddUserDefinedTerrainToDigitalElevationModelData(
+	double latitude,
 	double longitude,
 	double height,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
@@ -630,8 +630,8 @@ AddUserDefinedTerrainToDigitalElevationModelData
 //| 
 //| ------------------------------
 double
-ElevationAngleBetweenSites
-   (Site source,
+ElevationAngleBetweenSites(
+	Site source,
 	Site destination,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	double sphereRadius)
@@ -643,7 +643,7 @@ ElevationAngleBetweenSites
 
 	dx = FEET_PER_MILE * GreatCircleDistanceBetweenSiteLocations(source, destination);
 
-	//| Apply the Law of Cosines
+	// Apply the Law of Cosines
 
 	return ((180.0*(acos(((b*b) + (dx*dx) - (a*a)) / (2.0*b*dx))) / PI) - 90.0);
 }
@@ -664,8 +664,8 @@ ElevationAngleBetweenSites
 //| 
 //| ------------------------------
 void
-GeneratePathBetweenSites
-   (Site source,
+GeneratePathBetweenSites(
+	Site source,
 	Site destination,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	Path *path)
@@ -696,14 +696,14 @@ GeneratePathBetweenSites
 
 	total_distance = GreatCircleDistanceBetweenSiteLocations(source, destination);
 
-	if (total_distance > (30.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)))		//| > 0.5 pixel distance
+	if (total_distance > (30.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)))		// > 0.5 pixel distance
 	{
 		dx = samples_per_radian * acos(cos(lon1 - lon2));
 		dy = samples_per_radian * acos(cos(lat1 - lat2));
 
-		path_length = sqrt((dx*dx) + (dy*dy));		//| Total number of samples
+		path_length = sqrt((dx*dx) + (dy*dy));		// Total number of samples
 
-		miles_per_sample = total_distance / path_length;	//| Miles per sample
+		miles_per_sample = total_distance / path_length;	// Miles per sample
 	}
 	else
 	{
@@ -775,7 +775,7 @@ GeneratePathBetweenSites
 		path->distances[c] = distance;
 	}
 
-	//| Make sure exact destination point is recorded at path->length - 1
+	// Make sure exact destination point is recorded at path->length - 1
 
 	if (c < path->pathArraySize)
 	{
@@ -812,8 +812,8 @@ GeneratePathBetweenSites
 //| 
 //| ------------------------------
 double
-ObstructedElevationAngleBetweenSites
-   (Site source,
+ObstructedElevationAngleBetweenSites(
+	Site source,
 	Site destination,
 	double er,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
@@ -836,16 +836,16 @@ ObstructedElevationAngleBetweenSites
 	destination_alt = er + destination.altitude + GetSiteLocationElevation(destination, digitalElevationModelWrapper);
 	source_alt2 = source_alt * source_alt;
 
-	//| Calculate the cosine of the elevation angle of the
-	//| destination (receiver) as seen by the source (transmitter).
+	// Calculate the cosine of the elevation angle of the
+	// destination (receiver) as seen by the source (transmitter).
 
 	cos_xmtr_angle = ((source_alt2)+(distance*distance) - (destination_alt*destination_alt)) / (2.0*source_alt*distance);
 
-	//| Test all points in between source and destination locations to
-	//| see if the angle to a topographic feature generates a higher
-	//| elevation angle than that produced by the destination. Begin
-	//| at the source since we're interested in identifying the FIRST
-	//| obstruction along the path between source and destination.
+	// Test all points in between source and destination locations to
+	// see if the angle to a topographic feature generates a higher
+	// elevation angle than that produced by the destination. Begin
+	// at the source since we're interested in identifying the FIRST
+	// obstruction along the path between source and destination.
 
 	for (x = 2, block = false; (x < tempPath->pathLength) && (block == false); x++)
 	{
@@ -855,13 +855,13 @@ ObstructedElevationAngleBetweenSites
 
 		cos_test_angle = ((source_alt2)+(distance*distance) - (test_alt*test_alt)) / (2.0*source_alt*distance);
 
-		//| Compare these two angles to determine if
-		//| an obstruction exists. Since we're comparing
-		//| the cosines of these angles rather than
-		//| the angles themselves, the sense of the
-		//| following "if" statement is reversed from
-		//| what it would be if the angles themselves
-		//| were compared.
+		// Compare these two angles to determine if
+		// an obstruction exists. Since we're comparing
+		// the cosines of these angles rather than
+		// the angles themselves, the sense of the
+		// following "if" statement is reversed from
+		// what it would be if the angles themselves
+		// were compared.
 
 		if (cos_xmtr_angle >= cos_test_angle)
 		{
@@ -900,8 +900,8 @@ ObstructedElevationAngleBetweenSites
 //| 
 //| ------------------------------
 double
-AverageTerrainOverDistanceAtAzimuthFromSite
-   (Site source,
+AverageTerrainOverDistanceAtAzimuthFromSite(
+	Site source,
 	double azimuthx,
 	double start_distance,
 	double end_distance,
@@ -916,8 +916,8 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 	lat1 = source.latitude * DEGREES_TO_RADIANS;
 	lon1 = source.longitude * DEGREES_TO_RADIANS;
 
-	//| Generate a path of elevations between the source
-	//| location and the remote location provided.
+	// Generate a path of elevations between the source
+	// location and the remote location provided.
 
 	beta = end_distance / EARTH_RADIUS_MILES;
 
@@ -967,9 +967,9 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 	destination.latitude = lat2;
 	destination.longitude = lon2;
 
-	//| If SDF data is missing for the endpoint of
-	//| the radial, then the average terrain cannot
-	//| be accurately calculated. Return LOCATION_CRITICAL_ERROR
+	// If SDF data is missing for the endpoint of
+	// the radial, then the average terrain cannot
+	// be accurately calculated. Return LOCATION_CRITICAL_ERROR
 
 	if (GetSiteLocationElevation(destination, digitalElevationModelWrapper) < (LOCATION_NOT_IN_MEMORY + 1))
 	{
@@ -981,8 +981,8 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 
 		endpoint = path->pathLength;
 
-		//| Shrink the length of the radial if the
-		//| outermost portion is not over U.S. land.
+		// Shrink the length of the radial if the
+		// outermost portion is not over U.S. land.
 
 		for (c = endpoint - 1; (c >= 0) && (path->elevations[c] == 0.0); c--);
 
@@ -999,7 +999,7 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 
 		if (samples == 0)
 		{
-			terrain = LOCATION_NOT_IN_MEMORY;  //| No land
+			terrain = LOCATION_NOT_IN_MEMORY;  // No land
 		}
 		else
 		{
@@ -1025,8 +1025,8 @@ AverageTerrainOverDistanceAtAzimuthFromSite
 //| 
 //| ------------------------------
 double
-AntennaHeightAboveAverageTerrain
-   (Site antenna,
+AntennaHeightAboveAverageTerrain(
+	Site antenna,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	Path *path,
 	double groundClutterHeight)
@@ -1035,22 +1035,22 @@ AntennaHeightAboveAverageTerrain
 	bool error = false;
 	double terrain, avg_terrain, haat, sum = 0.0;
 
-	//| Calculate the average terrain between AVERAGE_TERRAIN_MIN_DISTANCE and AVERAGE_TERRAIN_MAX_DISTANCE 
-	//| from the antenna site at azimuths of 0, 45, 90, 135,
-	//| 180, 225, 270, and 315 degrees.
+	// Calculate the average terrain between AVERAGE_TERRAIN_MIN_DISTANCE and AVERAGE_TERRAIN_MAX_DISTANCE 
+	// from the antenna site at azimuths of 0, 45, 90, 135,
+	// 180, 225, 270, and 315 degrees.
 
 	for (c = 0, azi = 0; (azi <= 315) && (error == false); azi += 45)
 	{
 		terrain = AverageTerrainOverDistanceAtAzimuthFromSite(antenna, (double)azi, AVERAGE_TERRAIN_MIN_DISTANCE, AVERAGE_TERRAIN_MAX_DISTANCE, digitalElevationModelWrapper, path, groundClutterHeight);
 
-		if (terrain < (LOCATION_CRITICAL_ERROR + 1))  //| SDF data is missing
+		if (terrain < (LOCATION_CRITICAL_ERROR + 1))  // SDF data is missing
 		{
 			error = true;
 		}
 
-		if (terrain > (LOCATION_NOT_IN_MEMORY + 1))  //| It's land, not water
+		if (terrain > (LOCATION_NOT_IN_MEMORY + 1))  // It's land, not water
 		{
-			sum += terrain;  //| Sum of averages
+			sum += terrain;  // Sum of averages
 			c++;
 		}
 	}
@@ -1087,8 +1087,8 @@ AntennaHeightAboveAverageTerrain
 //| 
 //| ------------------------------
 void
-PlaceTextAndMarkerDataInMaskArrayForMaps
-   (Site location,
+PlaceTextAndMarkerDataInMaskArrayForMaps(
+	Site location,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	int minimumLatitudeNorth,
 	int maximumLatitudeNorth,
@@ -1121,7 +1121,7 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 		ok2print = false;
 		occupied = 0;
 
-		//| Is Marker Position Clear Of Text Or Other Markers?
+		// Is Marker Position Clear Of Text Or Other Markers?
 
 		for (a = 0, x = latitude - p3; (x <= xmax) && (x >= xmin) && (a < 7); x += p1, a++)
 		{
@@ -1133,30 +1133,30 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 
 		if (occupied == 0)
 		{
-			//| Determine Where Text Can Be Positioned
+			// Determine Where Text Can Be Positioned
 
-			//| label_length=length in pixels.
-			//| Each character is 8 pixels wide.
+			// label_length=length in pixels.
+			// Each character is 8 pixels wide.
 
 			label_length = p1 * (double)(strlen(location.name) << 3);
 
 			if ((LongitudeDifference(longitude + label_length, ymax) <= 0.0) && (LongitudeDifference(longitude - label_length, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))))
 			{
-				//| Default: Centered Text
+				// Default: Centered Text
 
 				texty = longitude + label_length / 2.0;
 
 				if ((latitude - p8) >= p16)
 				{
-					//| Position Text Below The Marker
+					// Position Text Below The Marker
 
 					textx = latitude - p8;
 
 					x = textx;
 					y = texty;
 
-					//| Is This Position Clear Of
-					//| Text Or Other Markers?
+					// Is This Position Clear Of
+					// Text Or Other Markers?
 
 					for (a = 0, occupied = 0; a < 16; a++)
 					{
@@ -1182,15 +1182,15 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 				}
 				else
 				{
-					//| Position Text Above The Marker
+					// Position Text Above The Marker
 
 					textx = latitude + p24;
 
 					x = textx;
 					y = texty;
 
-					//| Is This Position Clear Of
-					//| Text Or Other Markers?
+					// Is This Position Clear Of
+					// Text Or Other Markers?
 
 					for (a = 0, occupied = 0; a < 16; a++)
 					{
@@ -1220,8 +1220,8 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 			{
 				if (LongitudeDifference(longitude - label_length, ymin) >= (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)))
 				{
-					//| Position Text To The
-					//| Right Of The Marker
+					// Position Text To The
+					// Right Of The Marker
 
 					textx = latitude + p6;
 					texty = longitude - p12;
@@ -1229,8 +1229,8 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 					x = textx;
 					y = texty;
 
-					//| Is This Position Clear Of
-					//| Text Or Other Markers?
+					// Is This Position Clear Of
+					// Text Or Other Markers?
 
 					for (a = 0, occupied = 0; a < 16; a++)
 					{
@@ -1256,8 +1256,8 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 				}
 				else
 				{
-					//| Position Text To The
-					//| Left Of The Marker
+					// Position Text To The
+					// Left Of The Marker
 
 					textx = latitude + p6;
 					texty = longitude + p8 + (label_length);
@@ -1265,8 +1265,8 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 					x = textx;
 					y = texty;
 
-					//| Is This Position Clear Of
-					//| Text Or Other Markers?
+					// Is This Position Clear Of
+					// Text Or Other Markers?
 
 					for (a = 0, occupied = 0; a < 16; a++)
 					{
@@ -1292,13 +1292,13 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 				}
 			}
 
-			//| textx and texty contain the latitude and longitude
-			//| coordinates that describe the placement of the text
-			//| on the map.
+			// textx and texty contain the latitude and longitude
+			// coordinates that describe the placement of the text
+			// on the map.
 
 			if (ok2print)
 			{
-				//| Draw Text
+				// Draw Text
 
 				x = textx;
 				y = texty;
@@ -1322,8 +1322,8 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 					y = texty;
 				}
 
-				//| Draw Square Marker Centered
-				//| On Location Specified
+				// Draw Square Marker Centered
+				// On Location Specified
 
 				for (a = 0, x = latitude - p3; (x <= xmax) && (x >= xmin) && (a < 7); x += p1, a++)
 				{
@@ -1351,8 +1351,8 @@ PlaceTextAndMarkerDataInMaskArrayForMaps
 //| 
 //| ------------------------------
 void
-LoadAntennaAzimuthElevationPatternFiles
-   (char *filename,
+LoadAntennaAzimuthElevationPatternFiles(
+	char *filename,
 	IrregularTerrainModelParameters *itmParameters,
 	unsigned char *gotAntennaElevationAnglePattern,
 	unsigned char *gotAntennaAzimuthAnglePattern)
@@ -1362,7 +1362,7 @@ LoadAntennaAzimuthElevationPatternFiles
 	float az, xx, elevation, amplitude, rotation, valid1, valid2,
 		delta, tilt, mechanical_tilt = 0.0, tilt_azimuth, tilt_increment, sum;
 
-	//| Issue with stack overflow, allocate big arrays on heap instead.
+	// Issue with stack overflow, allocate big arrays on heap instead.
 	float *azimuth = new float[361];
 	float *azimuth_pattern = new float[361];
 	float *el_pattern = new float[10001];
@@ -1398,13 +1398,13 @@ LoadAntennaAzimuthElevationPatternFiles
 	*gotAntennaAzimuthAnglePattern = 0;
 	*gotAntennaElevationAnglePattern = 0;
 
-	//| Load .az antenna pattern file
+	// Load .az antenna pattern file
 
 	err = fopen_s(&fd, azfile, "r");
 
 	if (fd != NULL)
 	{
-		//| Clear azimuth pattern array
+		// Clear azimuth pattern array
 
 		for (x = 0; x <= 360; x++)
 		{
@@ -1412,9 +1412,9 @@ LoadAntennaAzimuthElevationPatternFiles
 			read_count[x] = 0;
 		}
 
-		//| Read azimuth pattern rotation
-		//| in degrees measured clockwise
-		//| from true North.
+		// Read azimuth pattern rotation
+		// in degrees measured clockwise
+		// from true North.
 
 		fgets(PatString, 254, fd);
 		pointer = strchr(PatString, ';');
@@ -1426,9 +1426,9 @@ LoadAntennaAzimuthElevationPatternFiles
 
 		sscanf_s(PatString, "%f", &rotation);
 
-		//| Read azimuth (degrees) and corresponding
-		//| normalized field radiation pattern amplitude
-		//| (0.0 to 1.0) until EOF is reached.
+		// Read azimuth (degrees) and corresponding
+		// normalized field radiation pattern amplitude
+		// (0.0 to 1.0) until EOF is reached.
 
 		fgets(PatString, 254, fd);
 		pointer = strchr(PatString, ';');
@@ -1464,7 +1464,7 @@ LoadAntennaAzimuthElevationPatternFiles
 
 		fclose(fd);
 
-		//| Handle 0 = 360 degree ambiguity
+		// Handle 0 = 360 degree ambiguity
 
 		if ((read_count[0] == 0) && (read_count[360] != 0))
 		{
@@ -1478,8 +1478,8 @@ LoadAntennaAzimuthElevationPatternFiles
 			azimuth[360] = azimuth[0];
 		}
 
-		//| Average pattern values in case more than
-		//| one was read for each degree of azimuth.
+		// Average pattern values in case more than
+		// one was read for each degree of azimuth.
 
 		for (x = 0; x <= 360; x++)
 		{
@@ -1489,8 +1489,8 @@ LoadAntennaAzimuthElevationPatternFiles
 			}
 		}
 
-		//| Interpolate missing azimuths
-		//| to completely fill the array
+		// Interpolate missing azimuths
+		// to completely fill the array
 
 		last_index = -1;
 		next_index = -1;
@@ -1527,9 +1527,9 @@ LoadAntennaAzimuthElevationPatternFiles
 			}
 		}
 
-		//| Perform azimuth pattern rotation
-		//| and load azimuth_pattern[361] with
-		//| azimuth pattern data in its final form.
+		// Perform azimuth pattern rotation
+		// and load azimuth_pattern[361] with
+		// azimuth pattern data in its final form.
 
 		for (x = 0; x < 360; x++)
 		{
@@ -1548,7 +1548,7 @@ LoadAntennaAzimuthElevationPatternFiles
 		*gotAntennaAzimuthAnglePattern = 255;
 	}
 
-	//| Read and process .el file
+	// Read and process .el file
 
 	err = fopen_s(&fd, elfile, "r");
 
@@ -1560,9 +1560,9 @@ LoadAntennaAzimuthElevationPatternFiles
 			read_count[x] = 0;
 		}
 
-		//| Read mechanical tilt (degrees) and
-		//| tilt azimuth in degrees measured
-		//| clockwise from true North.
+		// Read mechanical tilt (degrees) and
+		// tilt azimuth in degrees measured
+		// clockwise from true North.
 
 		fgets(PatString, 254, fd);
 		pointer = strchr(PatString, ';');
@@ -1574,9 +1574,9 @@ LoadAntennaAzimuthElevationPatternFiles
 
 		sscanf_s(PatString, "%f %f", &mechanical_tilt, &tilt_azimuth);
 
-		//| Read elevation (degrees) and corresponding
-		//| normalized field radiation pattern amplitude
-		//| (0.0 to 1.0) until EOF is reached.
+		// Read elevation (degrees) and corresponding
+		// normalized field radiation pattern amplitude
+		// (0.0 to 1.0) until EOF is reached.
 
 		fgets(PatString, 254, fd);
 		pointer = strchr(PatString, ';');
@@ -1590,9 +1590,9 @@ LoadAntennaAzimuthElevationPatternFiles
 
 		while (feof(fd) == 0)
 		{
-			//| Read in normalized radiated field values
-			//| for every 0.01 degrees of elevation between
-			//| -10.0 and +90.0 degrees
+			// Read in normalized radiated field values
+			// for every 0.01 degrees of elevation between
+			// -10.0 and +90.0 degrees
 
 			x = (int)rintf(100.0f*(elevation + 10.0f));
 
@@ -1615,8 +1615,8 @@ LoadAntennaAzimuthElevationPatternFiles
 
 		fclose(fd);
 
-		//| Average the field values in case more than
-		//| one was read for each 0.01 degrees of elevation.
+		// Average the field values in case more than
+		// one was read for each 0.01 degrees of elevation.
 
 		for (x = 0; x <= 10000; x++)
 		{
@@ -1626,10 +1626,10 @@ LoadAntennaAzimuthElevationPatternFiles
 			}
 		}
 
-		//| Interpolate between missing elevations (if
-		//| any) to completely fill the array and provide
-		//| radiated field values for every 0.01 degrees of
-		//| elevation.
+		// Interpolate between missing elevations (if
+		// any) to completely fill the array and provide
+		// radiated field values for every 0.01 degrees of
+		// elevation.
 
 		last_index = -1;
 		next_index = -1;
@@ -1666,9 +1666,9 @@ LoadAntennaAzimuthElevationPatternFiles
 			}
 		}
 
-		//| Fill slant_angle[] array with offset angles based
-		//| on the antenna's mechanical beam tilt (if any)
-		//| and tilt direction (azimuth).
+		// Fill slant_angle[] array with offset angles based
+		// on the antenna's mechanical beam tilt (if any)
+		// and tilt direction (azimuth).
 
 		if (mechanical_tilt == 0.0)
 		{
@@ -1708,21 +1708,21 @@ LoadAntennaAzimuthElevationPatternFiles
 			}
 		}
 
-		slant_angle[360] = slant_angle[0];   //| 360 degree wrap-around
+		slant_angle[360] = slant_angle[0];   // 360 degree wrap-around
 
 		for (w = 0; w <= 360; w++)
 		{
 			tilt = slant_angle[w];
 
-			//| Convert tilt angle to
-			//| an array index offset
+			// Convert tilt angle to
+			// an array index offset
 
 			y = (int)rintf(100.0f*tilt);
 
-			//| Copy shifted el_pattern[10001] field
-			//| values into elevation_pattern[361][1001]
-			//| at the corresponding azimuth, downsampling
-			//| (averaging) along the way in chunks of 10.
+			// Copy shifted el_pattern[10001] field
+			// values into elevation_pattern[361][1001]
+			// at the corresponding azimuth, downsampling
+			// (averaging) along the way in chunks of 10.
 
 			for (x = y, z = 0; z <= 1000; x += 10, z++)
 			{
@@ -1815,8 +1815,8 @@ LoadAntennaAzimuthElevationPatternFiles
 //| 
 //| ------------------------------
 int
-LoadUncompressedSplatDataFile
-   (char *name,
+LoadUncompressedSplatDataFile(
+	char *name,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	int *maximumElevation,
 	int *minimumElevation,
@@ -1839,7 +1839,7 @@ LoadUncompressedSplatDataFile
 
 	sdf_file[x] = 0;
 
-	//| Parse filename for minimum latitude and longitude values
+	// Parse filename for minimum latitude and longitude values
 
 	sscanf_s(sdf_file, "%dx%dx%dx%d", &minlat, &maxlat, &minlon, &maxlon);
 
@@ -1849,7 +1849,7 @@ LoadUncompressedSplatDataFile
 	sdf_file[x + 3] = 'f';
 	sdf_file[x + 4] = 0;
 
-	//| Is it already in memory?
+	// Is it already in memory?
 
 	for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false); indx++)
 	{
@@ -1862,7 +1862,7 @@ LoadUncompressedSplatDataFile
 		}
 	}
 
-	//| Is room available to load it?
+	// Is room available to load it?
 
 	if (found == false)
 	{
@@ -1879,7 +1879,7 @@ LoadUncompressedSplatDataFile
 
 	if (free_page && (found == false) && (indx >= 0) && (indx < digitalElevationModelWrapper->maxPages))
 	{
-		//| Search for SDF file in current working directory first
+		// Search for SDF file in current working directory first
 
 		err = strncpy_s(path_plus_name, _countof(path_plus_name), sdf_file, 255);
 
@@ -1887,8 +1887,8 @@ LoadUncompressedSplatDataFile
 
 		if (fd == NULL)
 		{
-			//| Next, try loading SDF file from path specified
-			//| by -d argument
+			// Next, try loading SDF file from path specified
+			// by -d argument
 
 			err = strncpy_s(path_plus_name, _countof(path_plus_name), splatDataFilePath, 255);
 			strncat_s(path_plus_name, sdf_file, 254);
@@ -2043,8 +2043,8 @@ LoadUncompressedSplatDataFile
 //| 
 //| ------------------------------
 char
-LoadSplatDataFile
-   (char *name,
+LoadSplatDataFile(
+	char *name,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	int *maximumElevation,
 	int *minimumElevation,
@@ -2058,20 +2058,20 @@ LoadSplatDataFile
 	bool found, free_page = false;
 	int	return_value = -1;
 
-	//| Try to load an uncompressed SDF first.
+	// Try to load an uncompressed SDF first.
 
 	return_value = LoadUncompressedSplatDataFile(name, digitalElevationModelWrapper, maximumElevation, minimumElevation,
 		minimumLatitudeNorth, maximumLatitudeNorth, minimumLongitudeWest, maximumLongitudeWest, splatDataFilePath);
 
-	//| If neither format can be found, then assume the area is water.
+	// If neither format can be found, then assume the area is water.
 
 	if ((return_value == 0) || (return_value == -1))
 	{
-		//| Parse SDF name for minimum latitude and longitude values
+		// Parse SDF name for minimum latitude and longitude values
 
 		sscanf_s(name, "%dx%dx%dx%d", &minlat, &maxlat, &minlon, &maxlon);
 
-		//| Is it already in memory?
+		// Is it already in memory?
 
 		for (indx = 0, found = false; (indx < digitalElevationModelWrapper->maxPages) && (found == false); indx++)
 		{
@@ -2084,7 +2084,7 @@ LoadSplatDataFile
 			}
 		}
 
-		//| Is room available to load it?
+		// Is room available to load it?
 
 		if (found == false)
 		{
@@ -2109,7 +2109,7 @@ LoadSplatDataFile
 			digitalElevationModelWrapper->digitalElevationModel[indx].minimumLongitudeWest = minlon;
 			digitalElevationModelWrapper->digitalElevationModel[indx].maximumLatitudeNorth = maxlat;
 
-			//| Fill DEM with sea-level topography
+			// Fill DEM with sea-level topography
 
 			for (x = 0; x < digitalElevationModelWrapper->demPixelsPerDegree; x++)
 			{
@@ -2222,8 +2222,8 @@ LoadSplatDataFile
 //| 
 //| ------------------------------
 void
-LoadAndPlotCitiesAndSitesOnMaps
-   (char *filename,
+LoadAndPlotCitiesAndSitesOnMaps(
+	char *filename,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	int minimumLatitudeNorth,
 	int maximumLatitudeNorth,
@@ -2247,7 +2247,7 @@ LoadAndPlotCitiesAndSitesOnMaps
 
 		while ((fd != NULL) && (feof(fd) == 0))
 		{
-			//| Parse line for name, latitude, and longitude
+			// Parse line for name, latitude, and longitude
 
 			for (x = 0, y = 0, z = 0; (x < 78) && (input[x] != 0) && (z < 3); x++)
 			{
@@ -2308,8 +2308,8 @@ LoadAndPlotCitiesAndSitesOnMaps
 //| 
 //| ------------------------------
 void
-LoadUserDefinedTerrainFile
-   (char *filename,
+LoadUserDefinedTerrainFile(
+	char *filename,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper)
 {
 	int	i, x, y, z, ypix, xpix, tempxpix, tempypix;
@@ -2342,7 +2342,7 @@ LoadUserDefinedTerrainFile
 
 		while (feof(fd1) == 0)
 		{
-			//| Parse line for latitude, longitude, height
+			// Parse line for latitude, longitude, height
 
 			for (x = 0, y = 0, z = 0; (x < 78) && (input[x] != 0) && (z < 3); x++)
 			{
@@ -2367,18 +2367,18 @@ LoadUserDefinedTerrainFile
 				longitude += 360.0;
 			}
 
-			//| Remove <CR> and/or <LF> from antenna height string
+			// Remove <CR> and/or <LF> from antenna height string
 
 			for (i = 0; (str[2][i] != 13) && (str[2][i] != 10) && (str[2][i] != 0); i++);
 
 			str[2][i] = 0;
 
-			//| The terrain feature may be expressed in either
-			//| feet or meters. If the letter 'M' or 'm' is
-			//| discovered in the string, then this is an
-			//| indication that the value given is expressed
-			//| in meters. Otherwise the height is interpreted
-			//| as being expressed in feet.
+			// The terrain feature may be expressed in either
+			// feet or meters. If the letter 'M' or 'm' is
+			// discovered in the string, then this is an
+			// indication that the value given is expressed
+			// in meters. Otherwise the height is interpreted
+			// as being expressed in feet.
 
 			for (i = 0; (str[2][i] != 'M') && (str[2][i] != 'm') && (str[2][i] != 0) && (i < 48); i++);
 
@@ -2432,7 +2432,7 @@ LoadUserDefinedTerrainFile
 			{
 				if ((x > y) && (xpix == tempxpix) && (ypix == tempypix))
 				{
-					z = 1;  //| Dupe
+					z = 1;  // Dupe
 
 					if (tempheight > height)
 					{
@@ -2447,7 +2447,7 @@ LoadUserDefinedTerrainFile
 
 			} while ((feof(fd2) == 0) && (z == 0));
 
-			if (z == 0)  //| No duplicate found
+			if (z == 0)  // No duplicate found
 			{
 				AddUserDefinedTerrainToDigitalElevationModelData(xpix * (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)), ypix * (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)), height, digitalElevationModelWrapper);
 			}
@@ -2486,8 +2486,8 @@ LoadUserDefinedTerrainFile
 //| 
 //| ------------------------------
 void
-LoadCartographicBoundaryFiles
-   (char *filename,
+LoadCartographicBoundaryFiles(
+	char *filename,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	Path *path)
 {
@@ -2569,8 +2569,8 @@ LoadCartographicBoundaryFiles
 //| 
 //| ------------------------------
 char
-ReadLongleyRiceParameterDataForSite
-   (Site txsite,
+ReadLongleyRiceParameterDataForSite(
+	Site txsite,
 	char forced_read,
 	IrregularTerrainModelParameters *itmParameters,
 	unsigned char *gotAntennaElevationAnglePattern,
@@ -2586,7 +2586,7 @@ ReadLongleyRiceParameterDataForSite
 	FILE *fd = NULL, *outfile = NULL;
 	errno_t err;
 
-	//| Default parameters
+	// Default parameters
 
 	itmParameters->dielectricRelativePermittivityConstant = 0.0;
 	itmParameters->conductivitySiemensPerMeter = 0.0;
@@ -2598,7 +2598,7 @@ ReadLongleyRiceParameterDataForSite
 	itmParameters->fractionOfTime = 0.0;
 	itmParameters->effectiveRadiatedPower = 0.0;
 
-	//| Generate .lrp filename from txsite filename.
+	// Generate .lrp filename from txsite filename.
 
 	for (x = 0; (txsite.filename[x] != '.') && (txsite.filename[x] != 0) && (x < 250); x++)
 	{
@@ -2615,7 +2615,7 @@ ReadLongleyRiceParameterDataForSite
 
 	if (fd == NULL)
 	{
-		//| Load default "splat.lrp" file
+		// Load default "splat.lrp" file
 		if (lrpFilePath != NULL)
 		{
 			ok = snprintf(filename, 253, "%s%s", lrpFilePath, "splat.lrp\0");
@@ -2772,11 +2772,11 @@ ReadLongleyRiceParameterDataForSite
 					itmParameters->effectiveRadiatedPower = din;
 				}
 
-				//| ERP in SPLAT is referenced to 1 Watt
-				//| into a dipole (0 dBd). If ERP is
-				//| expressed in dBm (referenced to a
-				//| 0 dBi radiator), convert dBm in EIRP
-				//| to ERP.
+				// ERP in SPLAT is referenced to 1 Watt
+				// into a dipole (0 dBd). If ERP is
+				// expressed in dBm (referenced to a
+				// 0 dBi radiator), convert dBm in EIRP
+				// to ERP.
 
 				if ((strstr(LrString, "dBm") != NULL) || (strstr(LrString, "dbm") != NULL))
 				{
@@ -2805,8 +2805,8 @@ ReadLongleyRiceParameterDataForSite
 
 	if ((fd == NULL) && forced_read)
 	{
-		//| Assign some default parameters
-		//| for use in this run.
+		// Assign some default parameters
+		// for use in this run.
 
 		itmParameters->dielectricRelativePermittivityConstant = 15.0;
 		itmParameters->conductivitySiemensPerMeter = 0.005;
@@ -2818,7 +2818,7 @@ ReadLongleyRiceParameterDataForSite
 		itmParameters->fractionOfTime = 0.50;
 		itmParameters->effectiveRadiatedPower = 0.0;
 
-		//| Write them to a .lrp file.
+		// Write them to a .lrp file.
 
 		err = fopen_s(&outfile, filename, "w");
 
@@ -2890,8 +2890,8 @@ ReadLongleyRiceParameterDataForSite
 //| 
 //| ------------------------------
 void
-AnalyzeAndPlotLineOfSightCoverageBetweenSites
-   (Site source,
+AnalyzeAndPlotLineOfSightCoverageBetweenSites(
+	Site source,
 	Site destination,
 	char mask_value,
 	FILE *fd,
@@ -2909,8 +2909,8 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 
 	for (y = 0; y < path->pathLength; y++)
 	{
-		//| Test this point only if it hasn't been already
-		//| tested and found to be free of obstructions.
+		// Test this point only if it hasn't been already
+		// tested and found to be free of obstructions.
 
 		if ((GetValueInDigitalElevationModelMask(path->latitudes[y], path->longitudes[y], digitalElevationModelWrapper) & mask_value) == 0)
 		{
@@ -2918,8 +2918,8 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 			tx_alt = sphereRadius + source.altitude + path->elevations[0];
 			rx_alt = sphereRadius + destination.altitude + path->elevations[y];
 
-			//| Calculate the cosine of the elevation of the
-			//| transmitter as seen at the temp rx point.
+			// Calculate the cosine of the elevation of the
+			// transmitter as seen at the temp rx point.
 
 			cos_xmtr_angle = ((rx_alt*rx_alt) + (distance*distance) - (tx_alt*tx_alt)) / (2.0*rx_alt*distance);
 
@@ -2930,12 +2930,12 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 
 				cos_test_angle = ((rx_alt*rx_alt) + (distance*distance) - (test_alt*test_alt)) / (2.0*rx_alt*distance);
 
-				//| Compare these two angles to determine if
-				//| an obstruction exists. Since we're comparing
-				//| the cosines of these angles rather than
-				//| the angles themselves, the following "if"
-				//| statement is reversed from what it would
-				//| be if the actual angles were compared.
+				// Compare these two angles to determine if
+				// an obstruction exists. Since we're comparing
+				// the cosines of these angles rather than
+				// the angles themselves, the following "if"
+				// statement is reversed from what it would
+				// be if the actual angles were compared.
 
 				if (cos_xmtr_angle >= cos_test_angle)
 				{
@@ -2975,8 +2975,8 @@ AnalyzeAndPlotLineOfSightCoverageBetweenSites
 //| 
 //| ------------------------------
 void
-AnalyzeAndPlotPathLossBetweenSites
-   (Site source,
+AnalyzeAndPlotPathLossBetweenSites(
+	Site source,
 	Site destination,
 	unsigned char mask_value,
 	FILE *fd,
@@ -3004,32 +3004,32 @@ AnalyzeAndPlotPathLossBetweenSites
 
 	four_thirds_earth = FOUR_THIRDS * EARTH_RADIUS_FEET;
 
-	//| Copy elevations plus clutter along path into the pathElevation[] array.
+	// Copy elevations plus clutter along path into the pathElevation[] array.
 
 	for (x = 1; x < path->pathLength - 1; x++)
 	{
 		pathElevation[x + 2] = (path->elevations[x] == 0.0 ? path->elevations[x] * METERS_PER_FOOT : (groundClutterHeight + path->elevations[x]) * METERS_PER_FOOT);
 	}
 
-	//| Copy ending points without clutter
+	// Copy ending points without clutter
 
 	pathElevation[2] = path->elevations[0] * METERS_PER_FOOT;
 	pathElevation[path->pathLength + 1] = path->elevations[path->pathLength - 1] * METERS_PER_FOOT;
 
-	//| Since the only energy the propagation model considers
-	//| reaching the destination is based on what is scattered
-	//| or deflected from the first obstruction along the path,
-	//| we first need to find the location and elevation angle
-	//| of that first obstruction (if it exists). This is done
-	//| using a 4/3rds Earth radius to match the radius used by
-	//| the irregular terrain propagation model. This information
-	//| is required for properly integrating the antenna's elevation
-	//| pattern into the calculation for overall path loss.
+	// Since the only energy the propagation model considers
+	// reaching the destination is based on what is scattered
+	// or deflected from the first obstruction along the path,
+	// we first need to find the location and elevation angle
+	// of that first obstruction (if it exists). This is done
+	// using a 4/3rds Earth radius to match the radius used by
+	// the irregular terrain propagation model. This information
+	// is required for properly integrating the antenna's elevation
+	// pattern into the calculation for overall path loss.
 
 	for (y = 2; (y < (path->pathLength - 1)) && (path->distances[y] <= maximumAnalysisDistance); y++)
 	{
-		//| Process this point only if it
-		//| has not already been processed.
+		// Process this point only if it
+		// has not already been processed.
 
 		if ((GetValueInDigitalElevationModelMask(path->latitudes[y], path->longitudes[y], digitalElevationModelWrapper) & 248) != (mask_value << 3))
 		{
@@ -3039,8 +3039,8 @@ AnalyzeAndPlotPathLossBetweenSites
 			dest_alt2 = dest_alt * dest_alt;
 			xmtr_alt2 = xmtr_alt * xmtr_alt;
 
-			//| Calculate the cosine of the elevation of
-			//| the receiver as seen by the transmitter.
+			// Calculate the cosine of the elevation of
+			// the receiver as seen by the transmitter.
 
 			cos_rcvr_angle = (xmtr_alt2 + (distance*distance) - dest_alt2) / (2.0 * xmtr_alt * distance);
 
@@ -3056,9 +3056,9 @@ AnalyzeAndPlotPathLossBetweenSites
 
 			if (gotAntennaElevationAnglePattern || (fd != NULL))
 			{
-				//| Determine the elevation angle to the first obstruction
-				//| along the path IF elevation pattern data is available
-				//| or an output (.ano) file has been designated.
+				// Determine the elevation angle to the first obstruction
+				// along the path IF elevation pattern data is available
+				// or an output (.ano) file has been designated.
 
 				for (x = 2, block = false; (x < y) && (block == false); x++)
 				{
@@ -3066,9 +3066,9 @@ AnalyzeAndPlotPathLossBetweenSites
 
 					test_alt = four_thirds_earth + (path->elevations[x] == 0.0 ? path->elevations[x] : path->elevations[x] + groundClutterHeight);
 
-					//| Calculate the cosine of the elevation
-					//| angle of the terrain (test point)
-					//| as seen by the transmitter.
+					// Calculate the cosine of the elevation
+					// angle of the terrain (test point)
+					// as seen by the transmitter.
 
 					cos_test_angle = (xmtr_alt2 + (distance*distance) - (test_alt*test_alt)) / (2.0 * xmtr_alt * distance);
 
@@ -3082,13 +3082,13 @@ AnalyzeAndPlotPathLossBetweenSites
 						cos_test_angle = -1.0;
 					}
 
-					//| Compare these two angles to determine if
-					//| an obstruction exists. Since we're comparing
-					//| the cosines of these angles rather than
-					//| the angles themselves, the sense of the
-					//| following "if" statement is reversed from
-					//| what it would be if the angles themselves
-					//| were compared.
+					// Compare these two angles to determine if
+					// an obstruction exists. Since we're comparing
+					// the cosines of these angles rather than
+					// the angles themselves, the sense of the
+					// following "if" statement is reversed from
+					// what it would be if the angles themselves
+					// were compared.
 
 					if (cos_rcvr_angle >= cos_test_angle)
 					{
@@ -3106,15 +3106,15 @@ AnalyzeAndPlotPathLossBetweenSites
 				}
 			}
 
-			//| Determine attenuation for each point along
-			//| the path using ITWOM's PointToPointCalculation mode
-			//| starting at y=2 (number_of_points = 1), the
-			//| shortest distance terrain can play a role in
-			//| path loss.
+			// Determine attenuation for each point along
+			// the path using ITWOM's PointToPointCalculation mode
+			// starting at y=2 (number_of_points = 1), the
+			// shortest distance terrain can play a role in
+			// path loss.
 
-			pathElevation[0] = y - 1;  //| (number of points - 1)
+			pathElevation[0] = y - 1;  // (number of points - 1)
 
-									   //| Distance between elevation samples
+			// Distance between elevation samples
 
 			pathElevation[1] = METERS_PER_MILE * (path->distances[y] - path->distances[y - 1]);
 
@@ -3145,17 +3145,17 @@ AnalyzeAndPlotPathLossBetweenSites
 				fprintf(fd, "%.7f, %.7f, %.3f, %.3f, ", path->latitudes[y], path->longitudes[y], azimuth, elevation);
 			}
 
-			//| If ERP == 0, write path loss to alphanumeric
-			//| output file. Otherwise, write field strength
-			//| or received power level (below), as appropriate.
+			// If ERP == 0, write path loss to alphanumeric
+			// output file. Otherwise, write field strength
+			// or received power level (below), as appropriate.
 
 			if ((fd != NULL) && (itmParameters->effectiveRadiatedPower == 0.0))
 			{
 				fprintf(fd, "%.2f", loss);
 			}
 
-			//| Integrate the antenna's radiation
-			//| pattern into the overall path loss.
+			// Integrate the antenna's radiation
+			// pattern into the overall path loss.
 
 			x = (int)rint(10.0 * (10.0 - elevation));
 
@@ -3176,7 +3176,7 @@ AnalyzeAndPlotPathLossBetweenSites
 			{
 				if (plotSignalPowerLevelContours != 0)
 				{
-					//| dBm is based on EIRP (ERP + DIPOLE_TO_ISOTROPIC_ANTENNA)
+					// dBm is based on EIRP (ERP + DIPOLE_TO_ISOTROPIC_ANTENNA)
 
 					rxp = itmParameters->effectiveRadiatedPower / pow(10.0, (loss - DIPOLE_TO_ISOTROPIC_ANTENNA) / 10.0);
 
@@ -3187,7 +3187,7 @@ AnalyzeAndPlotPathLossBetweenSites
 						fprintf(fd, "%.3f", dBm);
 					}
 
-					//| Scale roughly between 0 and 255
+					// Scale roughly between 0 and 255
 
 					ifs = 200 + (int)rint(dBm);
 
@@ -3271,7 +3271,7 @@ AnalyzeAndPlotPathLossBetweenSites
 				fprintf(fd, "\n");
 			}
 
-			//| Mark this point as having been analyzed
+			// Mark this point as having been analyzed
 
 			SetValueInDigitalElevationModelMask(path->latitudes[y], path->longitudes[y], (GetValueInDigitalElevationModelMask(path->latitudes[y], path->longitudes[y], digitalElevationModelWrapper) & 7) + (mask_value << 3), digitalElevationModelWrapper);
 		}
@@ -3297,8 +3297,8 @@ AnalyzeAndPlotPathLossBetweenSites
 //| 
 //| ------------------------------
 void
-PlotLineOfSightCoverageFromSiteAtAltitude
-   (Site source,
+PlotLineOfSightCoverageFromSiteAtAltitude(
+	Site source,
 	double altitude,
 	char *plo_filename,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
@@ -3343,13 +3343,13 @@ PlotLineOfSightCoverageFromSiteAtAltitude
 
 	if (fd != NULL)
 	{
-		//| Write header information to output file
+		// Write header information to output file
 		fprintf(fd, "%d, %d\t; max_west, min_west\n%d, %d\t; max_north, min_north\n\n", maximumLongitudeWest, minimumLongitudeWest, maximumLatitudeNorth, minimumLatitudeNorth);
 		fprintf(fd, "Latitude, Longitude\n");
 	}
 
-	//| th=pixels/degree divided by 64 loops per
-	//| progress indicator symbol (.oOo) printed.
+	// th=pixels/degree divided by 64 loops per
+	// progress indicator symbol (.oOo) printed.
 
 	th = ((double)digitalElevationModelWrapper->demPixelsPerDegree) / 64.0;
 
@@ -3498,7 +3498,7 @@ PlotLineOfSightCoverageFromSiteAtAltitude
 	fprintf(stdout, "\nDone\n");
 	fflush(stdout);
 
-	//| Assign next mask value
+	// Assign next mask value
 
 	switch (mask_value)
 	{
@@ -3534,8 +3534,8 @@ PlotLineOfSightCoverageFromSiteAtAltitude
 //| 
 //| ------------------------------
 void
-PlotAttenuationFromSiteAtAltitude
-   (Site source,
+PlotAttenuationFromSiteAtAltitude(
+	Site source,
 	double altitude,
 	char *plo_filename,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
@@ -3613,7 +3613,7 @@ PlotAttenuationFromSiteAtAltitude
 
 	if (fd != NULL)
 	{
-		//| Write header information to output file
+		// Write header information to output file
 		fprintf(fd, "%d, %d\t; max_west, min_west\n%d, %d\t; max_north, min_north\n\n", maximumLongitudeWest, minimumLongitudeWest, maximumLatitudeNorth, minimumLatitudeNorth);
 		fprintf(fd, "Latitude, Longitude, AzimuthAngle, ElevationAngle, ");
 		if (itmParameters->effectiveRadiatedPower == 0.0)
@@ -3633,8 +3633,8 @@ PlotAttenuationFromSiteAtAltitude
 		}
 	}
 
-	//| th=pixels/degree divided by 64 loops per
-	//| progress indicator symbol (.oOo) printed.
+	// th=pixels/degree divided by 64 loops per
+	// progress indicator symbol (.oOo) printed.
 
 	th = ((double)digitalElevationModelWrapper->demPixelsPerDegree) / 64.0;
 
@@ -3800,8 +3800,8 @@ PlotAttenuationFromSiteAtAltitude
 //| 
 //| ------------------------------
 void
-LoadSplatSignalColorsForSite
-   (Site xmtr,
+LoadSplatSignalColorsForSite(
+	Site xmtr,
 	ColorRegion *region)
 {
 	int x, y, ok, val[4];
@@ -3817,10 +3817,10 @@ LoadSplatSignalColorsForSite
 	filename[x] = '.';
 	filename[x + 1] = 's';
 	filename[x + 2] = 'c';
-	filename[x + 3] = 'm'; //| Can't use .scf files in Windows.
+	filename[x + 3] = 'm'; // Can't use .scf files in Windows.
 	filename[x + 4] = 0;
 
-	//| Default values
+	// Default values
 
 	region->level[0] = 128;
 	region->color[0][0] = 255;
@@ -3889,7 +3889,7 @@ LoadSplatSignalColorsForSite
 
 	region->levels = 13;
 
-	err = fopen_s(&fd, "splat.scm", "r");	//| Can't use .scf files in Windows.
+	err = fopen_s(&fd, "splat.scm", "r");	// Can't use .scf files in Windows.
 
 	if (fd == NULL)
 	{
@@ -3974,8 +3974,8 @@ LoadSplatSignalColorsForSite
 //| 
 //| ------------------------------
 void
-LoadSplatLossColorsForSite
-   (Site xmtr,
+LoadSplatLossColorsForSite(
+	Site xmtr,
 	ColorRegion *region)
 {
 	int x, y, ok, val[4];
@@ -3994,7 +3994,7 @@ LoadSplatLossColorsForSite
 	filename[x + 3] = 'f';
 	filename[x + 4] = 0;
 
-	//| Default values
+	// Default values
 
 	region->level[0] = 80;
 	region->color[0][0] = 255;
@@ -4163,8 +4163,8 @@ LoadSplatLossColorsForSite
 //| 
 //| ------------------------------
 void
-LoadSplatPowerColorsForSite
-   (Site xmtr,
+LoadSplatPowerColorsForSite(
+	Site xmtr,
 	ColorRegion *region)
 {
 	int x, y, ok, val[4];
@@ -4183,7 +4183,7 @@ LoadSplatPowerColorsForSite
 	filename[x + 3] = 'f';
 	filename[x + 4] = 0;
 
-	//| Default values
+	// Default values
 
 	region->level[0] = 0;
 	region->color[0][0] = 255;
@@ -4369,8 +4369,8 @@ LoadSplatPowerColorsForSite
 //| 
 //| ------------------------------
 void
-WritePortablePixMapLineOfSightCoverageFile
-   (char *filename,
+WritePortablePixMapLineOfSightCoverageFile(
+	char *filename,
 	unsigned char geo,
 	unsigned char kml,
 	unsigned char ngs,
@@ -4403,7 +4403,7 @@ WritePortablePixMapLineOfSightCoverageFile
 	if (filename[0] == 0)
 	{
 		err = strncpy_s(filename, 255, xmtr[0].filename, 254);
-		filename[strlen(filename) - 4] = 0;  //| Remove .qth
+		filename[strlen(filename) - 4] = 0;  // Remove .qth
 	}
 
 	y = (int)strlen(filename);
@@ -4556,12 +4556,12 @@ WritePortablePixMapLineOfSightCoverageFile
 
 				if (mask & 2)
 				{
-					//| Text Labels: Red
+					// Text Labels: Red
 					fprintf(fd, "%c%c%c", 255, 0, 0);
 				}
 				else if (mask & 4)
 				{
-					//| County Boundaries: Light Cyan
+					// County Boundaries: Light Cyan
 					fprintf(fd, "%c%c%c", 128, 128, 255);
 				}
 				else
@@ -4569,95 +4569,95 @@ WritePortablePixMapLineOfSightCoverageFile
 					switch (mask & 57)
 					{
 					case 1:
-						//| TX1: Green
+						// TX1: Green
 						fprintf(fd, "%c%c%c", 0, 255, 0);
 						break;
 
 					case 8:
-						//| TX2: Cyan
+						// TX2: Cyan
 						fprintf(fd, "%c%c%c", 0, 255, 255);
 						break;
 
 					case 9:
-						//| TX1 + TX2: Yellow
+						// TX1 + TX2: Yellow
 						fprintf(fd, "%c%c%c", 255, 255, 0);
 						break;
 
 					case 16:
-						//| TX3: Medium Violet
+						// TX3: Medium Violet
 						fprintf(fd, "%c%c%c", 147, 112, 219);
 						break;
 
 					case 17:
-						//| TX1 + TX3: Pink
+						// TX1 + TX3: Pink
 						fprintf(fd, "%c%c%c", 255, 192, 203);
 						break;
 
 					case 24:
-						//| TX2 + TX3: Orange
+						// TX2 + TX3: Orange
 						fprintf(fd, "%c%c%c", 255, 165, 0);
 						break;
 
 					case 25:
-						//| TX1 + TX2 + TX3: Dark Green
+						// TX1 + TX2 + TX3: Dark Green
 						fprintf(fd, "%c%c%c", 0, 100, 0);
 						break;
 
 					case 32:
-						//| TX4: Sienna 1
+						// TX4: Sienna 1
 						fprintf(fd, "%c%c%c", 255, 130, 71);
 						break;
 
 					case 33:
-						//| TX1 + TX4: Green Yellow
+						// TX1 + TX4: Green Yellow
 						fprintf(fd, "%c%c%c", 173, 255, 47);
 						break;
 
 					case 40:
-						//| TX2 + TX4: Dark Sea Green 1
+						// TX2 + TX4: Dark Sea Green 1
 						fprintf(fd, "%c%c%c", 193, 255, 193);
 						break;
 
 					case 41:
-						//| TX1 + TX2 + TX4: Blanched Almond
+						// TX1 + TX2 + TX4: Blanched Almond
 						fprintf(fd, "%c%c%c", 255, 235, 205);
 						break;
 
 					case 48:
-						//| TX3 + TX4: Dark Turquoise
+						// TX3 + TX4: Dark Turquoise
 						fprintf(fd, "%c%c%c", 0, 206, 209);
 						break;
 
 					case 49:
-						//| TX1 + TX3 + TX4: Medium Spring Green
+						// TX1 + TX3 + TX4: Medium Spring Green
 						fprintf(fd, "%c%c%c", 0, 250, 154);
 						break;
 
 					case 56:
-						//| TX2 + TX3 + TX4: Tan
+						// TX2 + TX3 + TX4: Tan
 						fprintf(fd, "%c%c%c", 210, 180, 140);
 						break;
 
 					case 57:
-						//| TX1 + TX2 + TX3 + TX4: Gold2
+						// TX1 + TX2 + TX3 + TX4: Gold2
 						fprintf(fd, "%c%c%c", 238, 201, 0);
 						break;
 
 					default:
-						if (ngs)  //| No terrain
+						if (ngs)  // No terrain
 						{
 							fprintf(fd, "%c%c%c", 255, 255, 255);
 						}
 						else
 						{
-							//| Sea-level: Medium Blue
+							// Sea-level: Medium Blue
 							if (digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] == 0)
 							{
 								fprintf(fd, "%c%c%c", 0, 0, 170);
 							}
 							else
 							{
-								//| Elevation: Greyscale
+								// Elevation: Greyscale
 								terrain = (unsigned)(0.5 + pow((double)(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
 								fprintf(fd, "%c%c%c", terrain, terrain, terrain);
 							}
@@ -4667,8 +4667,8 @@ WritePortablePixMapLineOfSightCoverageFile
 			}
 			else
 			{
-				//| We should never get here, but if
-				//| we do, display the region as black
+				// We should never get here, but if
+				// we do, display the region as black
 
 				fprintf(fd, "%c%c%c", 0, 0, 0);
 			}
@@ -4696,8 +4696,8 @@ WritePortablePixMapLineOfSightCoverageFile
 //| 
 //| ------------------------------
 void
-WritePortablePixMapAttenuationFile
-   (char *filename,
+WritePortablePixMapAttenuationFile(
+	char *filename,
 	unsigned char geo,
 	unsigned char kml,
 	unsigned char ngs,
@@ -4736,7 +4736,7 @@ WritePortablePixMapAttenuationFile
 	if (filename[0] == 0)
 	{
 		err = strncpy_s(filename, 255, xmtr[0].filename, 254);
-		filename[strlen(filename) - 4] = 0;  //| Remove .qth
+		filename[strlen(filename) - 4] = 0;  // Remove .qth
 	}
 
 	y = (int)strlen(filename);
@@ -4798,11 +4798,11 @@ WritePortablePixMapAttenuationFile
 
 	if (kml || geo)
 	{
-		south = (double)minimumLatitudeNorth;	//| No bottom legend
+		south = (double)minimumLatitudeNorth;	// No bottom legend
 	}
 	else
 	{
-		south = (double)minimumLatitudeNorth - (30.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)); //| 30 pixels for bottom legend
+		south = (double)minimumLatitudeNorth - (30.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)); // 30 pixels for bottom legend
 	}
 
 	east = (minwest < 180.0 ? -minwest : 360.0 - minimumLongitudeWest);
@@ -4895,14 +4895,14 @@ WritePortablePixMapAttenuationFile
 
 	if (kml || geo)
 	{
-		//| No bottom legend
+		// No bottom legend
 
 		fprintf(fd, "P6\n%u %u\n255\n", width, height);
 		fprintf(stdout, "\nWriting \"%s\" (%ux%u pixmap image)... ", mapfile, width, height);
 	}
 	else
 	{
-		//| Allow space for bottom legend
+		// Allow space for bottom legend
 
 		fprintf(fd, "P6\n%u %u\n255\n", width, height + 30);
 		fprintf(stdout, "\nWriting \"%s\" (%ux%u pixmap image)... ", mapfile, width, height + 30);
@@ -4979,7 +4979,7 @@ WritePortablePixMapAttenuationFile
 
 				if (mask & 2)
 				{
-					//| Text Labels: Red or otherwise
+					// Text Labels: Red or otherwise
 
 					if ((red >= 180) && (green <= 75) && (blue <= 75) && (loss != 0))
 					{
@@ -4993,7 +4993,7 @@ WritePortablePixMapAttenuationFile
 				}
 				else if (mask & 4)
 				{
-					//| County Boundaries: Black
+					// County Boundaries: Black
 
 					fprintf(fd, "%c%c%c", 0, 0, 0);
 
@@ -5004,13 +5004,13 @@ WritePortablePixMapAttenuationFile
 				{
 					if ((loss == 0) || ((contourDisplayThreshold != 0) && (loss > abs(contourDisplayThreshold))))
 					{
-						if (ngs)  //| No terrain
+						if (ngs)  // No terrain
 						{
 							fprintf(fd, "%c%c%c", 255, 255, 255);
 						}
 						else
 						{
-							//| Display land or sea elevation
+							// Display land or sea elevation
 
 							if (digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] == 0)
 							{
@@ -5025,13 +5025,13 @@ WritePortablePixMapAttenuationFile
 					}
 					else
 					{
-						//| Plot path loss in color
+						// Plot path loss in color
 
 						if ((red != 0) || (green != 0) || (blue != 0))
 						{
 							fprintf(fd, "%c%c%c", red, green, blue);
 						}
-						else  //| terrain / sea-level
+						else  // terrain / sea-level
 						{
 							if (digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] == 0)
 							{
@@ -5039,7 +5039,7 @@ WritePortablePixMapAttenuationFile
 							}
 							else
 							{
-								//| Elevation: Greyscale
+								// Elevation: Greyscale
 								terrain = (unsigned)(0.5 + pow((double)(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
 								fprintf(fd, "%c%c%c", terrain, terrain, terrain);
 							}
@@ -5049,8 +5049,8 @@ WritePortablePixMapAttenuationFile
 			}
 			else
 			{
-				//| We should never get here, but if
-				//| we do, display the region as black
+				// We should never get here, but if
+				// we do, display the region as black
 
 				fprintf(fd, "%c%c%c", 0, 0, 0);
 			}
@@ -5059,8 +5059,8 @@ WritePortablePixMapAttenuationFile
 
 	if ((kml == 0) && (geo == 0))
 	{
-		//| Display legend along bottom of image
-		//| if not generating .kml or .geo output.
+		// Display legend along bottom of image
+		// if not generating .kml or .geo output.
 
 		colorwidth = (int)rint((float)width / (float)region->levels);
 
@@ -5157,7 +5157,7 @@ WritePortablePixMapAttenuationFile
 
 	if (kml)
 	{
-		//| Write colorkey image file
+		// Write colorkey image file
 
 		err = fopen_s(&fd, ckfile, "wb");
 
@@ -5277,8 +5277,8 @@ WritePortablePixMapAttenuationFile
 //| 
 //| ------------------------------
 void
-WritePortablePixMapSignalStrengthFile
-   (char *filename,
+WritePortablePixMapSignalStrengthFile(
+	char *filename,
 	unsigned char geo,
 	unsigned char kml,
 	unsigned char ngs,
@@ -5317,7 +5317,7 @@ WritePortablePixMapSignalStrengthFile
 	if (filename[0] == 0)
 	{
 		err = strncpy_s(filename, 255, xmtr[0].filename, 254);
-		filename[strlen(filename) - 4] = 0;  //| Remove .qth
+		filename[strlen(filename) - 4] = 0;  // Remove .qth
 	}
 
 	y = (int)strlen(filename);
@@ -5379,11 +5379,11 @@ WritePortablePixMapSignalStrengthFile
 
 	if (kml || geo)
 	{
-		south = (double)minimumLatitudeNorth;	//| No bottom legend
+		south = (double)minimumLatitudeNorth;	// No bottom legend
 	}
 	else
 	{
-		south = (double)minimumLatitudeNorth - (30.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree));	//| 30 pixels for bottom legend
+		south = (double)minimumLatitudeNorth - (30.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree));	// 30 pixels for bottom legend
 	}
 
 	east = (minwest<180.0 ? -minwest : 360.0 - minimumLongitudeWest);
@@ -5476,14 +5476,14 @@ WritePortablePixMapSignalStrengthFile
 
 	if (kml || geo)
 	{
-		//| No bottom legend
+		// No bottom legend
 
 		fprintf(fd, "P6\n%u %u\n255\n", width, height);
 		fprintf(stdout, "\nWriting \"%s\" (%ux%u pixmap image)... ", mapfile, width, height);
 	}
 	else
 	{
-		//| Allow space for bottom legend
+		// Allow space for bottom legend
 
 		fprintf(fd, "P6\n%u %u\n255\n", width, height + 30);
 		fprintf(stdout, "\nWriting \"%s\" (%ux%u pixmap image)... ", mapfile, width, height + 30);
@@ -5560,7 +5560,7 @@ WritePortablePixMapSignalStrengthFile
 
 				if (mask & 2)
 				{
-					//| Text Labels: Red or otherwise
+					// Text Labels: Red or otherwise
 
 					if ((red >= 180) && (green <= 75) && (blue <= 75))
 					{
@@ -5575,7 +5575,7 @@ WritePortablePixMapSignalStrengthFile
 				}
 				else if (mask & 4)
 				{
-					//| County Boundaries: Black
+					// County Boundaries: Black
 
 					fprintf(fd, "%c%c%c", 0, 0, 0);
 
@@ -5592,7 +5592,7 @@ WritePortablePixMapSignalStrengthFile
 						}
 						else
 						{
-							//| Display land or sea elevation
+							// Display land or sea elevation
 
 							if (digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] == 0)
 							{
@@ -5607,13 +5607,13 @@ WritePortablePixMapSignalStrengthFile
 					}
 					else
 					{
-						//| Plot field strength regions in color
+						// Plot field strength regions in color
 
 						if ((red != 0) || (green != 0) || (blue != 0))
 						{
 							fprintf(fd, "%c%c%c", red, green, blue);
 						}
-						else  //| terrain / sea-level
+						else  // terrain / sea-level
 						{
 							if (ngs)
 							{
@@ -5627,7 +5627,7 @@ WritePortablePixMapSignalStrengthFile
 								}
 								else
 								{
-									//| Elevation: Greyscale
+									// Elevation: Greyscale
 									terrain = (unsigned)(0.5 + pow((double)(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
 									fprintf(fd, "%c%c%c", terrain, terrain, terrain);
 								}
@@ -5638,8 +5638,8 @@ WritePortablePixMapSignalStrengthFile
 			}
 			else
 			{
-				//| We should never get here, but if
-				//| we do, display the region as black
+				// We should never get here, but if
+				// we do, display the region as black
 
 				fprintf(fd, "%c%c%c", 0, 0, 0);
 			}
@@ -5648,8 +5648,8 @@ WritePortablePixMapSignalStrengthFile
 
 	if ((kml == 0) && (geo == 0))
 	{
-		//| Display legend along bottom of image
-		//| if not generating .kml or .geo output.
+		// Display legend along bottom of image
+		// if not generating .kml or .geo output.
 
 		colorwidth = (int)rint((float)width / (float)region->levels);
 
@@ -5778,7 +5778,7 @@ WritePortablePixMapSignalStrengthFile
 
 	if (kml)
 	{
-		//| Write colorkey image file
+		// Write colorkey image file
 
 		err = fopen_s(&fd, ckfile, "wb");
 
@@ -5930,8 +5930,8 @@ WritePortablePixMapSignalStrengthFile
 //| 
 //| ------------------------------
 void
-WritePortablePixMapPowerLevelFile
-   (char *filename,
+WritePortablePixMapPowerLevelFile(
+	char *filename,
 	unsigned char geo,
 	unsigned char kml,
 	unsigned char ngs,
@@ -5970,7 +5970,7 @@ WritePortablePixMapPowerLevelFile
 	if (filename[0] == 0)
 	{
 		err = strncpy_s(filename, 255, xmtr[0].filename, 254);
-		filename[strlen(filename) - 4] = 0;  //| Remove .qth
+		filename[strlen(filename) - 4] = 0;  // Remove .qth
 	}
 
 	y = (int)strlen(filename);
@@ -6032,11 +6032,11 @@ WritePortablePixMapPowerLevelFile
 
 	if (kml || geo)
 	{
-		south = (double)minimumLatitudeNorth;	//| No bottom legend
+		south = (double)minimumLatitudeNorth;	// No bottom legend
 	}
 	else
 	{
-		south = (double)minimumLatitudeNorth - (30.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree));	//| 30 pixels for bottom legend
+		south = (double)minimumLatitudeNorth - (30.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree));	// 30 pixels for bottom legend
 	}
 
 	east = (minwest < 180.0 ? -minwest : 360.0 - minimumLongitudeWest);
@@ -6129,14 +6129,14 @@ WritePortablePixMapPowerLevelFile
 
 	if (kml || geo)
 	{
-		//| No bottom legend
+		// No bottom legend
 
 		fprintf(fd, "P6\n%u %u\n255\n", width, height);
 		fprintf(stdout, "\nWriting \"%s\" (%ux%u pixmap image)... ", mapfile, width, height);
 	}
 	else
 	{
-		//| Allow for bottom legend
+		// Allow for bottom legend
 
 		fprintf(fd, "P6\n%u %u\n255\n", width, height + 30);
 		fprintf(stdout, "\nWriting \"%s\" (%ux%u pixmap image)... ", mapfile, width, height + 30);
@@ -6213,7 +6213,7 @@ WritePortablePixMapPowerLevelFile
 
 				if (mask & 2)
 				{
-					//| Text Labels: Red or otherwise
+					// Text Labels: Red or otherwise
 
 					if ((red >= 180) && (green <= 75) && (blue <= 75) && (dBm != 0))
 					{
@@ -6228,7 +6228,7 @@ WritePortablePixMapPowerLevelFile
 				}
 				else if (mask & 4)
 				{
-					//| County Boundaries: Black
+					// County Boundaries: Black
 
 					fprintf(fd, "%c%c%c", 0, 0, 0);
 
@@ -6239,13 +6239,13 @@ WritePortablePixMapPowerLevelFile
 				{
 					if ((contourDisplayThreshold != 0) && (dBm < contourDisplayThreshold))
 					{
-						if (ngs) //| No terrain
+						if (ngs) // No terrain
 						{
 							fprintf(fd, "%c%c%c", 255, 255, 255);
 						}
 						else
 						{
-							//| Display land or sea elevation
+							// Display land or sea elevation
 
 							if (digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] == 0)
 							{
@@ -6260,13 +6260,13 @@ WritePortablePixMapPowerLevelFile
 					}
 					else
 					{
-						//| Plot signal power level regions in color
+						// Plot signal power level regions in color
 
 						if ((red != 0) || (green != 0) || (blue != 0))
 						{
 							fprintf(fd, "%c%c%c", red, green, blue);
 						}
-						else  //| terrain / sea-level
+						else  // terrain / sea-level
 						{
 							if (ngs)
 							{
@@ -6280,7 +6280,7 @@ WritePortablePixMapPowerLevelFile
 								}
 								else
 								{
-									//| Elevation: Greyscale
+									// Elevation: Greyscale
 									terrain = (unsigned)(0.5 + pow((double)(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
 									fprintf(fd, "%c%c%c", terrain, terrain, terrain);
 								}
@@ -6291,8 +6291,8 @@ WritePortablePixMapPowerLevelFile
 			}
 			else
 			{
-				//| We should never get here, but if
-				//| we do, display the region as black
+				// We should never get here, but if
+				// we do, display the region as black
 
 				fprintf(fd, "%c%c%c", 0, 0, 0);
 			}
@@ -6301,8 +6301,8 @@ WritePortablePixMapPowerLevelFile
 
 	if ((kml == 0) && (geo == 0))
 	{
-		//| Display legend along bottom of image
-		//| if not generating .kml or .geo output.
+		// Display legend along bottom of image
+		// if not generating .kml or .geo output.
 
 		colorwidth = (int)rint((float)width / (float)region->levels);
 
@@ -6477,7 +6477,7 @@ WritePortablePixMapPowerLevelFile
 
 	if (kml)
 	{
-		//| Write colorkey image file
+		// Write colorkey image file
 
 		err = fopen_s(&fd, ckfile, "wb");
 
@@ -6677,8 +6677,8 @@ WritePortablePixMapPowerLevelFile
 //| 
 //| ------------------------------
 void
-GenerateGnuPlotTerrainProfileBetweenSites
-   (Site source,
+GenerateGnuPlotTerrainProfileBetweenSites(
+	Site source,
 	Site destination,
 	char *name,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
@@ -6753,7 +6753,7 @@ GenerateGnuPlotTerrainProfileBetweenSites
 
 	if (name[0] == '.')
 	{
-		//| Default filename and output file type
+		// Default filename and output file type
 
 		err = strncpy_s(basename, _countof(basename), "profile\0", 8);
 		err = strncpy_s(term, _countof(term), "png\0", 4);
@@ -6761,7 +6761,7 @@ GenerateGnuPlotTerrainProfileBetweenSites
 	}
 	else
 	{
-		//| Extract extension and terminal type from "name"
+		// Extract extension and terminal type from "name"
 
 		ext[0] = 0;
 		y = (int)strlen(name);
@@ -6769,7 +6769,7 @@ GenerateGnuPlotTerrainProfileBetweenSites
 
 		for (x = y - 1; (x > 0) && (name[x] != '.'); x--);
 
-		if (x > 0)  //| Extension found
+		if (x > 0)  // Extension found
 		{
 			for (z = x + 1; (z <= y) && ((z - (x + 1)) < 10); z++)
 			{
@@ -6777,20 +6777,20 @@ GenerateGnuPlotTerrainProfileBetweenSites
 				term[z - (x + 1)] = name[z];
 			}
 
-			ext[z - (x + 1)] = 0;  //| Ensure an ending 0
+			ext[z - (x + 1)] = 0;  // Ensure an ending 0
 			term[z - (x + 1)] = 0;
 			basename[x] = 0;
 		}
 
-		if (ext[0] == 0)	//| No extension -- Default is png
+		if (ext[0] == 0)	// No extension -- Default is png
 		{
 			err = strncpy_s(term, _countof(term), "png\0", 4);
 			err = strncpy_s(ext, _countof(ext), "png\0", 4);
 		}
 	}
 
-	//| Either .ps or .postscript may be used
-	//| as an extension for postscript output.
+	// Either .ps or .postscript may be used
+	// as an extension for postscript output.
 
 	if (strncmp(term, "postscript", 10) == 0)
 	{
@@ -6803,8 +6803,8 @@ GenerateGnuPlotTerrainProfileBetweenSites
 
 	if (maxheight < 1.0)
 	{
-		maxheight = 1.0;	//| Avoid a gnuplot y-range error
-		minheight = -1.0;	//| over a completely sea-level path
+		maxheight = 1.0;	// Avoid a gnuplot y-range error
+		minheight = -1.0;	// over a completely sea-level path
 	}
 	else
 	{
@@ -6852,7 +6852,7 @@ GenerateGnuPlotTerrainProfileBetweenSites
 	char gnuPlotAndSplat[335];
 	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
 
-	//| Invokve gnuplot and run the splat.gp script.
+	// Invokve gnuplot and run the splat.gp script.
 
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -6906,8 +6906,8 @@ GenerateGnuPlotTerrainProfileBetweenSites
 //| 
 //| ------------------------------
 void
-GenerateGnuPlotElevationProfileBetweenSites
-   (Site source,
+GenerateGnuPlotElevationProfileBetweenSites(
+	Site source,
 	Site destination,
 	char *name,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
@@ -6926,7 +6926,7 @@ GenerateGnuPlotElevationProfileBetweenSites
 	FILE *fd = NULL, *fd1 = NULL, *fd2 = NULL;
 	errno_t err;
 
-	GeneratePathBetweenSites(destination, source, digitalElevationModelWrapper, path);  //| destination=RX, source=TX
+	GeneratePathBetweenSites(destination, source, digitalElevationModelWrapper, path);  // destination=RX, source=TX
 	refangle = ElevationAngleBetweenSites(destination, source, digitalElevationModelWrapper, sphereRadius);
 	distance = GreatCircleDistanceBetweenSiteLocations(source, destination);
 
@@ -7036,7 +7036,7 @@ GenerateGnuPlotElevationProfileBetweenSites
 
 	if (name[0] == '.')
 	{
-		//| Default filename and output file type
+		// Default filename and output file type
 
 		err = strncpy_s(basename, _countof(basename), "profile\0", 8);
 		err = strncpy_s(term, _countof(term), "png\0", 4);
@@ -7044,7 +7044,7 @@ GenerateGnuPlotElevationProfileBetweenSites
 	}
 	else
 	{
-		//| Extract extension and terminal type from "name"
+		// Extract extension and terminal type from "name"
 
 		ext[0] = 0;
 		y = (int)strlen(name);
@@ -7052,7 +7052,7 @@ GenerateGnuPlotElevationProfileBetweenSites
 
 		for (x = y - 1; (x > 0) && (name[x] != '.'); x--);
 
-		if (x > 0)  //| Extension found
+		if (x > 0)  // Extension found
 		{
 			for (z = x + 1; (z <= y) && ((z - (x + 1)) < 10); z++)
 			{
@@ -7060,20 +7060,20 @@ GenerateGnuPlotElevationProfileBetweenSites
 				term[z - (x + 1)] = name[z];
 			}
 
-			ext[z - (x + 1)] = 0;  //| Ensure an ending 0
+			ext[z - (x + 1)] = 0;  // Ensure an ending 0
 			term[z - (x + 1)] = 0;
 			basename[x] = 0;
 		}
 
-		if (ext[0] == 0)	//| No extension -- Default is png
+		if (ext[0] == 0)	// No extension -- Default is png
 		{
 			err = strncpy_s(term, _countof(term), "png\0", 4);
 			err = strncpy_s(ext, _countof(ext), "png\0", 4);
 		}
 	}
 
-	//| Either .ps or .postscript may be used
-	//| as an extension for postscript output.
+	// Either .ps or .postscript may be used
+	// as an extension for postscript output.
 
 	if (strncmp(term, "postscript", 10) == 0)
 	{
@@ -7134,7 +7134,7 @@ GenerateGnuPlotElevationProfileBetweenSites
 	char gnuPlotAndSplat[335];
 	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
 
-	//| Invokve gnuplot and run the splat.gp script.
+	// Invokve gnuplot and run the splat.gp script.
 
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -7196,8 +7196,8 @@ GenerateGnuPlotElevationProfileBetweenSites
 //| 
 //| ------------------------------
 void
-GenerateGnuPlotHeightProfileBetweenSites
-   (Site source,
+GenerateGnuPlotHeightProfileBetweenSites(
+	Site source,
 	Site destination,
 	char *name,
 	unsigned char fresnel_plot,
@@ -7223,13 +7223,13 @@ GenerateGnuPlotHeightProfileBetweenSites
 	FILE *fd = NULL, *fd1 = NULL, *fd2 = NULL, *fd3 = NULL, *fd4 = NULL, *fd5 = NULL;
 	errno_t err;
 
-	GeneratePathBetweenSites(destination, source, digitalElevationModelWrapper, path);  //| destination=RX, source=TX
+	GeneratePathBetweenSites(destination, source, digitalElevationModelWrapper, path);  // destination=RX, source=TX
 	azimuth = AzimuthAngleBetweenSites(destination, source);
 	distance = GreatCircleDistanceBetweenSiteLocations(destination, source);
 	refangle = ElevationAngleBetweenSites(destination, source, digitalElevationModelWrapper, sphereRadius);
 	b = GetSiteLocationElevation(destination, digitalElevationModelWrapper) + destination.altitude + sphereRadius;
 
-	//| Wavelength and path distance (great circle) in feet.
+	// Wavelength and path distance (great circle) in feet.
 
 	if (fresnel_plot)
 	{
@@ -7292,7 +7292,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 
 		if (x == 0)
 		{
-			terrain += destination.altitude;  //| RX antenna spike
+			terrain += destination.altitude;  // RX antenna spike
 		}
 
 		a = terrain + sphereRadius;
@@ -7301,13 +7301,13 @@ GenerateGnuPlotHeightProfileBetweenSites
 
 		height = a - c;
 
-		//| Per Fink and Christiansen, Electronics
-		//| Engineers' Handbook, 1989:
-		//| 
-		//| H = sqrt(lamba * d1 * (d - d1)/d)
-		//| 
-		//| where H is the distance from the LOS
-		//| path to the first Fresnel zone boundary.
+		// Per Fink and Christiansen, Electronics
+		// Engineers' Handbook, 1989:
+		// 
+		// H = sqrt(lamba * d1 * (d - d1)/d)
+		// 
+		// where H is the distance from the LOS
+		// path to the first Fresnel zone boundary.
 
 		if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
 		{
@@ -7464,7 +7464,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 
 	if (name[0] == '.')
 	{
-		//| Default filename and output file type
+		// Default filename and output file type
 
 		err = strncpy_s(basename, _countof(basename), "profile\0", 8);
 		err = strncpy_s(term, _countof(term), "png\0", 4);
@@ -7472,7 +7472,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 	}
 	else
 	{
-		//| Extract extension and terminal type from "name"
+		// Extract extension and terminal type from "name"
 
 		ext[0] = 0;
 		y = (int)strlen(name);
@@ -7480,7 +7480,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 
 		for (x = y - 1; (x > 0) && (name[x] != '.'); x--);
 
-		if (x > 0)  //| Extension found
+		if (x > 0)  // Extension found
 		{
 			for (z = x + 1; (z <= y) && ((z - (x + 1)) < 10); z++)
 			{
@@ -7488,20 +7488,20 @@ GenerateGnuPlotHeightProfileBetweenSites
 				term[z - (x + 1)] = name[z];
 			}
 
-			ext[z - (x + 1)] = 0;  //| Ensure an ending 0
+			ext[z - (x + 1)] = 0;  // Ensure an ending 0
 			term[z - (x + 1)] = 0;
 			basename[x] = 0;
 		}
 
-		if (ext[0] == 0)	//| No extension -- Default is png
+		if (ext[0] == 0)	// No extension -- Default is png
 		{
 			err = strncpy_s(term, _countof(term), "png\0", 4);
 			err = strncpy_s(ext, _countof(ext), "png\0", 4);
 		}
 	}
 
-	//| Either .ps or .postscript may be used
-	//| as an extension for postscript output.
+	// Either .ps or .postscript may be used
+	// as an extension for postscript output.
 
 	if (strncmp(term, "postscript", 10) == 0)
 	{
@@ -7626,7 +7626,7 @@ GenerateGnuPlotHeightProfileBetweenSites
 	char gnuPlotAndSplat[335];
 	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
 
-	//| Invokve gnuplot and run the splat.gp script.
+	// Invokve gnuplot and run the splat.gp script.
 
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -7688,8 +7688,8 @@ GenerateGnuPlotHeightProfileBetweenSites
 //| 
 //| ------------------------------
 void
-PerformObstructionAnalysisBetweenSites
-   (Site xmtr,
+PerformObstructionAnalysisBetweenSites(
+	Site xmtr,
 	Site rcvr,
 	double f,
 	FILE *outfile,
@@ -7739,19 +7739,19 @@ PerformObstructionAnalysisBetweenSites
 		fprintf(outfile, " to account for ground clutter.\n\n");
 	}
 
-	//| At each point along the path calculate the cosine
-	//| of a sort of "inverse elevation angle" at the receiver.
-	//| From the antenna, 0 deg. looks at the ground, and 90 deg.
-	//| is parallel to the ground.
-	//|
-	//| Start at the receiver. If this is the lowest antenna,
-	//| then terrain obstructions will be nearest to it. Plus,
-	//| that's the way SPLAT's original los() did it.
-	//|
-	//| Calculate cosines only. That's sufficient to compare
-	//| angles and it saves the extra computational burden of
-	//| acos(). However, note the inverted comparison: if
-	//| acos(A) > acos(B), then B > A.
+	// At each point along the path calculate the cosine
+	// of a sort of "inverse elevation angle" at the receiver.
+	// From the antenna, 0 deg. looks at the ground, and 90 deg.
+	// is parallel to the ground.
+	//
+	// Start at the receiver. If this is the lowest antenna,
+	// then terrain obstructions will be nearest to it. Plus,
+	// that's the way SPLAT's original los() did it.
+	//
+	// Calculate cosines only. That's sufficient to compare
+	// angles and it saves the extra computational burden of
+	// acos(). However, note the inverted comparison: if
+	// acos(A) > acos(B), then B > A.
 
 	for (x = path->pathLength - 1; x > 0; x--)
 	{
@@ -7762,7 +7762,7 @@ PerformObstructionAnalysisBetweenSites
 		h_x = GetSiteLocationElevation(site_x, digitalElevationModelWrapper) + sphereRadius + groundClutterHeight;
 		d_x = FEET_PER_MILE * GreatCircleDistanceBetweenSiteLocations(rcvr, site_x);
 
-		//| Deal with the LOS path first.
+		// Deal with the LOS path first.
 
 		cos_test_angle = ((h_r*h_r) + (d_x*d_x) - (h_x*h_x)) / (2.0*h_r*d_x);
 
@@ -7806,7 +7806,7 @@ PerformObstructionAnalysisBetweenSites
 
 		if (f)
 		{
-			//| Now clear the first Fresnel zone,
+			// Now clear the first Fresnel zone,
 
 			cos_tx_angle_f1 = ((h_r_f1*h_r_f1) + (d_tx*d_tx) - (h_t*h_t)) / (2.0*h_r_f1*d_tx);
 			h_los = sqrt(h_r_f1*h_r_f1 + d_x * d_x - 2 * h_r_f1*d_x*cos_tx_angle_f1);
@@ -7820,7 +7820,7 @@ PerformObstructionAnalysisBetweenSites
 				h_f = h_los - sqrt(lambda*d_x*(d_tx - d_x) / d_tx);
 			}
 
-			//| and clear the 60% F1 zone.
+			// and clear the 60% F1 zone.
 
 			cos_tx_angle_fpt6 = ((h_r_fpt6*h_r_fpt6) + (d_tx*d_tx) - (h_t*h_t)) / (2.0*h_r_fpt6*d_tx);
 			h_los = sqrt(h_r_fpt6*h_r_fpt6 + d_x * d_x - 2 * h_r_fpt6*d_x*cos_tx_angle_fpt6);
@@ -7915,8 +7915,8 @@ PerformObstructionAnalysisBetweenSites
 //| 
 //| ------------------------------
 void
-WriteSplatPathReport
-   (Site source,
+WriteSplatPathReport(
+	Site source,
 	Site destination,
 	char *name,
 	char graph_it,
@@ -7950,7 +7950,7 @@ WriteSplatPathReport
 
 	char dmsString[255];
 
-	char lineOfDashes[80];	//| OLD NAME: dashes
+	char lineOfDashes[80];	// OLD NAME: dashes
 	err = strncpy_s(lineOfDashes, _countof(lineOfDashes), "---------------------------------------------------------------------------\0", 76);
 
 	sprintf_s(report_name, _countof(report_name), "%s-to-%s.txt", source.name, destination.name);
@@ -8075,7 +8075,7 @@ WriteSplatPathReport
 
 	fprintf(fd2, "\n%s\n\n", lineOfDashes);
 
-	//| Receiver
+	// Receiver
 
 	fprintf(fd2, "Receiver site: %s\n", destination.name);
 
@@ -8253,7 +8253,7 @@ WriteSplatPathReport
 			dBm = 10.0 * log10(itmParameters->effectiveRadiatedPower * 1000.0);
 			fprintf(fd2, " (%+.2f dBm)\n", dBm);
 
-			//| EIRP = ERP + DIPOLE_TO_ISOTROPIC_ANTENNA (dB)
+			// EIRP = ERP + DIPOLE_TO_ISOTROPIC_ANTENNA (dB)
 
 			fprintf(fd2, "Transmitter EIRP: ");
 
@@ -8292,17 +8292,17 @@ WriteSplatPathReport
 			fprintf(fd2, "%s antenna pattern towards %s: %.3f (%.2f dB)\n", source.name, destination.name, pattern, patterndB);
 		}
 
-		GeneratePathBetweenSites(source, destination, digitalElevationModelWrapper, path);  //| source=TX, destination=RX
+		GeneratePathBetweenSites(source, destination, digitalElevationModelWrapper, path);  // source=TX, destination=RX
 
-		//| Copy elevations plus clutter along
-		//| path into the pathElevation[] array.
+		// Copy elevations plus clutter along
+		// path into the pathElevation[] array.
 
 		for (x = 1; x < path->pathLength - 1; x++)
 		{
 			pathElevation[x + 2] = METERS_PER_FOOT * (path->elevations[x] == 0.0 ? path->elevations[x] : (groundClutterHeight + path->elevations[x]));
 		}
 
-		//| Copy ending points without clutter
+		// Copy ending points without clutter
 
 		pathElevation[2] = path->elevations[0] * METERS_PER_FOOT;
 		pathElevation[path->pathLength + 1] = path->elevations[path->pathLength - 1] * METERS_PER_FOOT;
@@ -8311,7 +8311,7 @@ WriteSplatPathReport
 
 		azimuth = rint(AzimuthAngleBetweenSites(source, destination));
 
-		for (y = 2; y < (path->pathLength - 1); y++)  //| path->length-1 avoids itmParameters error
+		for (y = 2; y < (path->pathLength - 1); y++)  // path->length-1 avoids itmParameters error
 		{
 			distance = FEET_PER_MILE * path->distances[y];
 			source_alt = four_thirds_earth + source.altitude + path->elevations[0];
@@ -8319,35 +8319,35 @@ WriteSplatPathReport
 			dest_alt2 = dest_alt * dest_alt;
 			source_alt2 = source_alt * source_alt;
 
-			//| Calculate the cosine of the elevation of
-			//| the receiver as seen by the transmitter.
+			// Calculate the cosine of the elevation of
+			// the receiver as seen by the transmitter.
 
 			cos_xmtr_angle = (source_alt2 + (distance*distance) - dest_alt2) / (2.0 * source_alt * distance);
 
 			if (gotAntennaElevationAnglePattern)
 			{
-				//| If an antenna elevation pattern is available, the
-				//| following code determines the elevation angle to
-				//| the first obstruction along the path.
+				// If an antenna elevation pattern is available, the
+				// following code determines the elevation angle to
+				// the first obstruction along the path.
 
 				for (x = 2, block = false; (x < y) && (block == false); x++)
 				{
 					distance = FEET_PER_MILE * (path->distances[y] - path->distances[x]);
 					test_alt = four_thirds_earth + path->elevations[x];
 
-					//| Calculate the cosine of the elevation
-					//| angle of the terrain (test point)
-					//| as seen by the transmitter.
+					// Calculate the cosine of the elevation
+					// angle of the terrain (test point)
+					// as seen by the transmitter.
 
 					cos_test_angle = (source_alt2 + (distance*distance) - (test_alt*test_alt)) / (2.0 * source_alt * distance);
 
-					//| Compare these two angles to determine if
-					//| an obstruction exists. Since we're comparing
-					//| the cosines of these angles rather than
-					//| the angles themselves, the sense of the
-					//| following "if" statement is reversed from
-					//| what it would be if the angles themselves
-					//| were compared.
+					// Compare these two angles to determine if
+					// an obstruction exists. Since we're comparing
+					// the cosines of these angles rather than
+					// the angles themselves, the sense of the
+					// following "if" statement is reversed from
+					// what it would be if the angles themselves
+					// were compared.
 
 					if (cos_xmtr_angle >= cos_test_angle)
 					{
@@ -8355,19 +8355,19 @@ WriteSplatPathReport
 					}
 				}
 
-				//| At this point, we have the elevation angle
-				//| to the first obstruction (if it exists).
+				// At this point, we have the elevation angle
+				// to the first obstruction (if it exists).
 			}
 
-			//| Determine path loss for each point along
-			//| the path using ITWOM's PointToPointCalculation mode
-			//| starting at x=2 (number_of_points = 1), the
-			//| shortest distance terrain can play a role in
-			//| path loss.
+			// Determine path loss for each point along
+			// the path using ITWOM's PointToPointCalculation mode
+			// starting at x=2 (number_of_points = 1), the
+			// shortest distance terrain can play a role in
+			// path loss.
 
-			pathElevation[0] = y - 1;	//| (number of points - 1)
+			pathElevation[0] = y - 1;	// (number of points - 1)
 
-			//| Distance between elevation samples
+			// Distance between elevation samples
 
 			pathElevation[1] = METERS_PER_MILE * (path->distances[y] - path->distances[y - 1]);
 
@@ -8397,8 +8397,8 @@ WriteSplatPathReport
 				elevation = ((acos(cos_xmtr_angle)) / DEGREES_TO_RADIANS) - 90.0;
 			}
 
-			//| Integrate the antenna's radiation
-			//| pattern into the overall path loss.
+			// Integrate the antenna's radiation
+			// pattern into the overall path loss.
 
 			x = (int)rint(10.0*(10.0 - elevation));
 
@@ -8472,12 +8472,12 @@ WriteSplatPathReport
 		{
 			field_strength = (FIELD_STRENGTH_MAGIC_NUMBER + (20.0*log10(itmParameters->referenceFrequency)) - total_loss) + (10.0*log10(itmParameters->effectiveRadiatedPower / 1000.0));
 
-			//| dBm is referenced to EIRP
+			// dBm is referenced to EIRP
 
 			rxp = eirp / (pow(10.0, (total_loss / 10.0)));
 			dBm = 10.0 * log10(rxp*1000.0);
 			power_density = eirp / (pow(10.0, (total_loss - free_space_loss) / 10.0));
-			//| divide by 4*PI*distance_in_meters squared
+			// divide by 4*PI*distance_in_meters squared
 			power_density /= (4.0 * PI * distance * distance * POWER_DENSITY_MAGIC_NUMBER);
 
 			fprintf(fd2, "Field strength at %s: %.2f dBuV/meter\n", destination.name, field_strength);
@@ -8582,13 +8582,13 @@ WriteSplatPathReport
 
 	fclose(fd2);
 
-	//| Skip plotting the graph if ONLY a path-loss report is needed.
+	// Skip plotting the graph if ONLY a path-loss report is needed.
 
 	if (graph_it)
 	{
 		if (name[0] == '.')
 		{
-			//| Default filename and output file type
+			// Default filename and output file type
 
 			err = strncpy_s(basename, _countof(basename), "profile\0", 8);
 			err = strncpy_s(term, _countof(term), "png\0", 4);
@@ -8596,7 +8596,7 @@ WriteSplatPathReport
 		}
 		else
 		{
-			//| Extract extension and terminal type from "name"
+			// Extract extension and terminal type from "name"
 
 			ext[0] = 0;
 			y = (int)strlen(name);
@@ -8604,7 +8604,7 @@ WriteSplatPathReport
 
 			for (x = y - 1; (x > 0) && (name[x] != '.'); x--);
 
-			if (x > 0)  //| Extension found
+			if (x > 0)  // Extension found
 			{
 				for (z = x + 1; (z <= y) && ((z - (x + 1)) < 10); z++)
 				{
@@ -8612,20 +8612,20 @@ WriteSplatPathReport
 					term[z - (x + 1)] = name[z];
 				}
 
-				ext[z - (x + 1)] = 0;  //| Ensure an ending 0
+				ext[z - (x + 1)] = 0;  // Ensure an ending 0
 				term[z - (x + 1)] = 0;
 				basename[x] = 0;
 			}
 		}
 
-		if (ext[0] == 0)	//| No extension -- Default is png
+		if (ext[0] == 0)	// No extension -- Default is png
 		{
 			err = strncpy_s(term, _countof(term), "png\0", 4);
 			err = strncpy_s(ext, _countof(ext), "png\0", 4);
 		}
 
-		//| Either .ps or .postscript may be used
-		//| as an extension for postscript output.
+		// Either .ps or .postscript may be used
+		// as an extension for postscript output.
 
 		if (strncmp(term, "postscript", 10) == 0)
 		{
@@ -8677,7 +8677,7 @@ WriteSplatPathReport
 		char gnuPlotAndSplat[335];
 		sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
 
-		//| Invokve gnuplot and run the splat.gp script.
+		// Invokve gnuplot and run the splat.gp script.
 
 		STARTUPINFO si;
 		PROCESS_INFORMATION pi;
@@ -8731,8 +8731,8 @@ WriteSplatPathReport
 //| 
 //| ------------------------------
 void
-WriteSplatSiteReport
-   (Site xmtr,
+WriteSplatSiteReport(
+	Site xmtr,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	Path *path,
 	unsigned char useMetricUnits,
@@ -8747,7 +8747,7 @@ WriteSplatSiteReport
 
 	char dmsString[255];
 
-	char lineOfDashes[80];	//| OLD NAME: dashes
+	char lineOfDashes[80];	// OLD NAME: dashes
 	err = strncpy_s(lineOfDashes, _countof(lineOfDashes), "---------------------------------------------------------------------------\0", 76);
 
 	sprintf_s(report_name, _countof(report_name), "%s-site_report.txt", xmtr.name);
@@ -8809,9 +8809,9 @@ WriteSplatSiteReport
 			fprintf(fd, "Antenna height above average terrain: %.2f feet\n\n", terrain);
 		}
 
-		//| Display the average terrain between AVERAGE_TERRAIN_MIN_DISTANCE and AVERAGE_TERRAIN_MAX_DISTANCE 
-		//| from the transmitter site at azimuths of 0, 45, 90,
-		//| 135, 180, 225, 270, and 315 degrees.
+		// Display the average terrain between AVERAGE_TERRAIN_MIN_DISTANCE and AVERAGE_TERRAIN_MAX_DISTANCE 
+		// from the transmitter site at azimuths of 0, 45, 90,
+		// 135, 180, 225, 270, and 315 degrees.
 
 		for (azi = 0; azi <= 315; azi += 45)
 		{
@@ -8854,8 +8854,8 @@ WriteSplatSiteReport
 //| 
 //| ------------------------------
 void
-LoadSplatDataFilesForRegion
-   (int max_lon,
+LoadSplatDataFilesForRegion(
+	int max_lon,
 	int min_lon,
 	int max_lat,
 	int min_lat,
@@ -8869,7 +8869,7 @@ LoadSplatDataFilesForRegion
 	char *splatDataFilePath)
 {
 	int x, y, width, ymin, ymax;
-	char nameString[255];	//| OLD NAME: string
+	char nameString[255];	// OLD NAME: string
 
 	width = ConvertToNormalizedAngle(max_lon - min_lon);
 
@@ -8976,8 +8976,8 @@ LoadSplatDataFilesForRegion
 //| 
 //| ------------------------------
 int
-LoadSplatAlphanumericOutputFile
-   (char *filename,
+LoadSplatAlphanumericOutputFile(
+	char *filename,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	IrregularTerrainModelParameters *itmParameters,
 	unsigned char plotSignalPowerLevelContours,
@@ -9042,7 +9042,7 @@ LoadSplatAlphanumericOutputFile
 		{
 			if (itmParameters->effectiveRadiatedPower == 0.0)
 			{
-				//| Path loss
+				// Path loss
 
 				if ((contourDisplayThreshold == 0) || (fabs(ano) <= (double)contourDisplayThreshold))
 				{
@@ -9059,7 +9059,7 @@ LoadSplatAlphanumericOutputFile
 
 			if ((itmParameters->effectiveRadiatedPower != 0.0) && (plotSignalPowerLevelContours != 0))
 			{
-				//| signal power level in dBm
+				// signal power level in dBm
 
 				if ((contourDisplayThreshold == 0) || (ano >= (double)contourDisplayThreshold))
 				{
@@ -9081,7 +9081,7 @@ LoadSplatAlphanumericOutputFile
 
 			if ((itmParameters->effectiveRadiatedPower != 0.0) && (plotSignalPowerLevelContours == 0))
 			{
-				//| field strength dBuV/m
+				// field strength dBuV/m
 
 				if ((contourDisplayThreshold == 0) || (ano >= (double)contourDisplayThreshold))
 				{
@@ -9129,8 +9129,8 @@ LoadSplatAlphanumericOutputFile
 //| 
 //| ------------------------------
 void
-WriteKeyholeMarkupLanguageFile
-   (Site source,
+WriteKeyholeMarkupLanguageFile(
+	Site source,
 	Site destination,
 	DigitalElevationModelWrapper *digitalElevationModelWrapper,
 	Path *path,
@@ -9317,7 +9317,7 @@ WriteKeyholeMarkupLanguageFile
 	fprintf(fd, "    <altitudeMode>relativeToGround</altitudeMode>\n");
 	fprintf(fd, "    <coordinates>\n");
 
-	//| Walk across the "path", indentifying obstructions along the way
+	// Walk across the "path", indentifying obstructions along the way
 
 	for (y = 0; y < path->pathLength; y++)
 	{
@@ -9325,8 +9325,8 @@ WriteKeyholeMarkupLanguageFile
 		tx_alt = sphereRadius + source.altitude + path->elevations[0];
 		rx_alt = sphereRadius + destination.altitude + path->elevations[y];
 
-		//| Calculate the cosine of the elevation of the
-		//| transmitter as seen at the temp rx point.
+		// Calculate the cosine of the elevation of the
+		// transmitter as seen at the temp rx point.
 
 		cos_xmtr_angle = ((rx_alt*rx_alt) + (distance*distance) - (tx_alt*tx_alt)) / (2.0*rx_alt*distance);
 
@@ -9337,12 +9337,12 @@ WriteKeyholeMarkupLanguageFile
 
 			cos_test_angle = ((rx_alt*rx_alt) + (distance*distance) - (test_alt*test_alt)) / (2.0*rx_alt*distance);
 
-			//| Compare these two angles to determine if
-			//| an obstruction exists. Since we're comparing
-			//| the cosines of these angles rather than
-			//| the angles themselves, the following "if"
-			//| statement is reversed from what it would
-			//| be if the actual angles were compared.
+			// Compare these two angles to determine if
+			// an obstruction exists. Since we're comparing
+			// the cosines of these angles rather than
+			// the angles themselves, the following "if"
+			// statement is reversed from what it would
+			// be if the actual angles were compared.
 
 			if (cos_xmtr_angle >= cos_test_angle)
 			{

@@ -3,6 +3,7 @@
 ****************************************************************************/
 
 #pragma once
+
 #include "stdafx.h"
 
 
@@ -13,7 +14,7 @@ public:
 	~propv_type();
 
 	double sgc;
-	int recomputeParameters;	//| OLD NAME: lvar
-	int variabilityMode;		//| OLD NAME: mdvar
-	int radioClimate;			//| OLD NAME: klim
+	int recomputeParameters;	// OLD NAME: lvar
+	int variabilityMode;		// OLD NAME: mdvar
+	int radioClimate;			// OLD NAME: klim
 };

@@ -6,22 +6,22 @@
 #include "DigitalElevationModelWrapper.h"
 
 
-DigitalElevationModelWrapper::DigitalElevationModelWrapper()
-	: demPixelsPerDegree(0),
-	  maxPages(0),
-	  digitalElevationModel(NULL)
+DigitalElevationModelWrapper::DigitalElevationModelWrapper() :
+	demPixelsPerDegree(0),
+	maxPages(0),
+	digitalElevationModel(NULL)
 {
 }
 
 
-DigitalElevationModelWrapper::DigitalElevationModelWrapper
-   (int pages,
+DigitalElevationModelWrapper::DigitalElevationModelWrapper(
+	int pages,
 	int pixelsPerDegree)
 {
 	maxPages = pages;
 	demPixelsPerDegree = pixelsPerDegree;
 
-	digitalElevationModel = new DigitalElevationModel[maxPages];	//| OLD NAME: dem
+	digitalElevationModel = new DigitalElevationModel[maxPages];	// OLD NAME: dem
 
 	for (int i = 0; i < maxPages; i++)
 	{

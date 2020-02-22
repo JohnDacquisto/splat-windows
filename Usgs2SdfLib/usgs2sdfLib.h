@@ -3,9 +3,12 @@
 *****************************************************************************/
 
 #pragma once
+
 #include "stdafx.h"
 
 
-//| Export functions
+// Export functions
 
-char _declspec(dllexport) *ConvertExponentialNotation(char *UsgsString);
+char _declspec(dllexport)*
+ConvertExponentialNotation(
+	char *UsgsString);

@@ -6,10 +6,9 @@
 #include "..\Usgs2SdfLib\usgs2sdfLib.h"
 
 
-//| CommonTests
+// CommonTests
 
-
-TEST(CommonTests, ArcCosineTests) 
+TEST(CommonTests, ArcCosineTests)
 {
 	EXPECT_DOUBLE_EQ(0.0, ArcCosine(0.0, 0.0));
 
@@ -27,7 +26,6 @@ TEST(CommonTests, ArcCosineTests)
 
 	EXPECT_DOUBLE_EQ(5.2741333517637212, ArcCosine(10.6, -19.9));
 }
-
 
 TEST(CommonTests, AzimuthAngleBetweenSitesTests)
 {
@@ -52,7 +50,6 @@ TEST(CommonTests, AzimuthAngleBetweenSitesTests)
 	EXPECT_DOUBLE_EQ(322.59186048560031, AzimuthAngleBetweenSites(source, destination));
 }
 
-
 TEST(CommonTests, BearingStringToDecimalDegreesTests)
 {
 	EXPECT_DOUBLE_EQ(40.139721999999999, BearingStringToDecimalDegrees("40.139722"));
@@ -63,7 +60,6 @@ TEST(CommonTests, BearingStringToDecimalDegreesTests)
 
 	EXPECT_DOUBLE_EQ(0.0, BearingStringToDecimalDegrees("0.0"));
 }
-
 
 TEST(CommonTests, GreatCircleDistanceBetweenSiteLocationsTests)
 {
@@ -89,9 +85,7 @@ TEST(CommonTests, GreatCircleDistanceBetweenSiteLocationsTests)
 }
 
 
-
-//| SplatLibTests
-
+// SplatLibTests
 
 TEST(SplatLibTests, LinearInterpolationTests)
 {
@@ -108,7 +102,6 @@ TEST(SplatLibTests, LinearInterpolationTests)
 	EXPECT_EQ(7, LinearInterpolation(2, 10, 1, 9, 6));
 }
 
-
 TEST(SplatLibTests, LongitudeDifferenceTests)
 {
 	EXPECT_DOUBLE_EQ(-168.89999999999998, LongitudeDifference(12.3, 181.2));
@@ -121,7 +114,6 @@ TEST(SplatLibTests, LongitudeDifferenceTests)
 
 	EXPECT_DOUBLE_EQ(97.759999999999991, LongitudeDifference(-719.02, -456.78));
 }
-
 
 TEST(SplatLibTests, ConvertToNormalizedAnglTests)
 {
@@ -136,10 +128,9 @@ TEST(SplatLibTests, ConvertToNormalizedAnglTests)
 	EXPECT_EQ(180, ConvertToNormalizedAngle(179.999));
 }
 
-
 TEST(SplatLibTests, ConvertDecimalToDegreesMinutesSecondsTests)
 {
-	//| \xB0 is unicode for degree symbol.
+	// \xB0 is unicode for degree symbol.
 
 	char dmsString[255];
 
@@ -154,9 +145,7 @@ TEST(SplatLibTests, ConvertDecimalToDegreesMinutesSecondsTests)
 }
 
 
-
-//| ItwomTests
-
+// ItwomTests
 
 TEST(ItwomTests, MinimumIntegerTests)
 {
@@ -171,7 +160,6 @@ TEST(ItwomTests, MinimumIntegerTests)
 	EXPECT_EQ(-3, MinimumInteger(3, -3));
 }
 
-
 TEST(ItwomTests, MaximumIntegerTests)
 {
 	EXPECT_EQ(0, MaximumInteger(0, 0));
@@ -184,7 +172,6 @@ TEST(ItwomTests, MaximumIntegerTests)
 
 	EXPECT_EQ(3, MaximumInteger(3, -3));
 }
-
 
 TEST(ItwomTests, MinimumDoubleTests)
 {
@@ -199,7 +186,6 @@ TEST(ItwomTests, MinimumDoubleTests)
 	EXPECT_DOUBLE_EQ(-3.21, MinimumDouble(3.21, -3.21));
 }
 
-
 TEST(ItwomTests, MaximumDoubleTests)
 {
 	EXPECT_DOUBLE_EQ(0.0, MaximumDouble(0.0, 0.0));
@@ -212,7 +198,6 @@ TEST(ItwomTests, MaximumDoubleTests)
 
 	EXPECT_DOUBLE_EQ(3.21, MaximumDouble(3.21, -3.21));
 }
-
 
 TEST(ItwomTests, PositiveDifferenceOrZeroTests)
 {
@@ -231,7 +216,6 @@ TEST(ItwomTests, PositiveDifferenceOrZeroTests)
 	EXPECT_DOUBLE_EQ(0.0, PositiveDifferenceOrZero(-1.8, 3.2));
 }
 
-
 TEST(ItwomTests, AttenuationFromSingleKnifeEdgeTests)
 {
 	EXPECT_DOUBLE_EQ(19.048675701455156, AttenuationFromSingleKnifeEdge(3.8912));
@@ -240,7 +224,6 @@ TEST(ItwomTests, AttenuationFromSingleKnifeEdgeTests)
 
 	EXPECT_DOUBLE_EQ(6.9182999999999995, AttenuationFromSingleKnifeEdge(0.01));
 }
-
 
 TEST(ItwomTests, HeightGainOverSmoothSphereTests)
 {
@@ -253,7 +236,6 @@ TEST(ItwomTests, HeightGainOverSmoothSphereTests)
 	EXPECT_DOUBLE_EQ(132.94092511472209, HeightGainOverSmoothSphere(2914.03, 0.0));
 }
 
-
 TEST(ItwomTests, H01ScatterFieldsTests)
 {
 	EXPECT_DOUBLE_EQ(5.1365065331287685, H01ScatterFields(3.4, -2.1));
@@ -265,7 +247,6 @@ TEST(ItwomTests, H01ScatterFieldsTests)
 	EXPECT_DOUBLE_EQ(28.413081749794216, H01ScatterFields(0.92, 4.13));
 }
 
-
 TEST(ItwomTests, FThetaDScatterFieldsTests)
 {
 	EXPECT_DOUBLE_EQ(96.983764191385063, FThetaDScatterFields(8.2e3));
@@ -274,7 +255,6 @@ TEST(ItwomTests, FThetaDScatterFieldsTests)
 
 	EXPECT_DOUBLE_EQ(111.21997454574499, FThetaDScatterFields(92.9e3));
 }
-
 
 TEST(ItwomTests, AbsoluteValueOfComplexNumberTests)
 {
@@ -297,7 +277,6 @@ TEST(ItwomTests, AbsoluteValueOfComplexNumberTests)
 	EXPECT_DOUBLE_EQ(12.999999999999998, AbsoluteValueOfComplexNumber(complex<double>(-1.2, 3.4)));
 }
 
-
 TEST(ItwomTests, StandardNormalTailDistributionFunctionInverseTests)
 {
 	EXPECT_DOUBLE_EQ(-4.7532584794995731, StandardNormalTailDistributionFunctionInverse(1.2));
@@ -305,14 +284,12 @@ TEST(ItwomTests, StandardNormalTailDistributionFunctionInverseTests)
 	EXPECT_DOUBLE_EQ(0.84145678947617653, StandardNormalTailDistributionFunctionInverse(0.2));
 }
 
-
 TEST(ItwomTests, CurveTests)
 {
 	EXPECT_DOUBLE_EQ(1.2117610438486284, Curve(1.3, -0.2, 1.1, 1.3, -0.2, 4.1));
 
 	EXPECT_DOUBLE_EQ(0.34671811760647009, Curve(0.4, -0.9, -0.8, 4.4, 1.5, -3.3));
 }
-
 
 TEST(ItwomTests, CalculateLinearLeastSquaresFitTests)
 {
@@ -328,7 +305,6 @@ TEST(ItwomTests, CalculateLinearLeastSquaresFitTests)
 	EXPECT_DOUBLE_EQ(6.6289935533990367e+61, zn);
 }
 
-
 TEST(ItwomTests, CalculateLinearLeastSquaresFitV2Tests)
 {
 	double z0, zn;
@@ -343,7 +319,6 @@ TEST(ItwomTests, CalculateLinearLeastSquaresFitV2Tests)
 	EXPECT_DOUBLE_EQ(-2.4888256429483241e+62, zn);
 }
 
-
 TEST(ItwomTests, CreateQuantileTests)
 {
 	double a[] = { 2.0, 6.0, 4.0, 5.0, 3.0, 0.0, -2.0, 0.8, 5.1 };
@@ -352,7 +327,6 @@ TEST(ItwomTests, CreateQuantileTests)
 
 	EXPECT_DOUBLE_EQ(6.0, CreateQuantile(8, a, -2));
 }
-
 
 TEST(ItwomTests, StandardNormalTailDistributionFunctionTests)
 {
@@ -369,7 +343,6 @@ TEST(ItwomTests, StandardNormalTailDistributionFunctionTests)
 	EXPECT_DOUBLE_EQ(1.4934676229806036e-14, StandardNormalTailDistributionFunction(7.6));
 }
 
-
 TEST(ItwomTests, CalculateTerrainInterdecileRangeDeltaTests)
 {
 	double pf1[] = { 3.0, 5.0, 2.3, 4.9, 8.4, 0.1, 2.1, 0.0, 9.3 };
@@ -378,7 +351,6 @@ TEST(ItwomTests, CalculateTerrainInterdecileRangeDeltaTests)
 
 	EXPECT_DOUBLE_EQ(40.672045536691222, CalculateTerrainInterdecileRangeDelta(pf1, 3.1, 25.2));
 }
-
 
 TEST(ItwomTests, PointToPointCalculationLegacyTests)
 {
@@ -410,7 +382,6 @@ TEST(ItwomTests, PointToPointCalculationLegacyTests)
 	EXPECT_STREQ("Line-Of-Sight Mode", strMode);
 }
 
-
 TEST(ItwomTests, PointToPointCalculationTests)
 {
 	double dbLoss;
@@ -440,7 +411,6 @@ TEST(ItwomTests, PointToPointCalculationTests)
 	EXPECT_EQ(4, errNum);
 	EXPECT_STREQ("L-o-S", strMode);
 }
-
 
 TEST(ItwomTests, PointToPointCalculationMdhTwoTests)
 {
@@ -473,7 +443,6 @@ TEST(ItwomTests, PointToPointCalculationMdhTwoTests)
 	EXPECT_EQ(4, errNum);
 }
 
-
 TEST(ItwomTests, PointToPointCalculationDhTests)
 {
 	double dbLoss, deltaH;
@@ -503,7 +472,6 @@ TEST(ItwomTests, PointToPointCalculationDhTests)
 	EXPECT_EQ(4, errNum);
 }
 
-
 TEST(ItwomTests, AreaCalculationTests)
 {
 	double dbLoss;
@@ -514,7 +482,6 @@ TEST(ItwomTests, AreaCalculationTests)
 	EXPECT_EQ(0, errNum);
 }
 
-
 TEST(ItwomTests, IrregularTerrainModelAreaCalculationDbLossTests)
 {
 	double dbLoss;
@@ -522,7 +489,6 @@ TEST(ItwomTests, IrregularTerrainModelAreaCalculationDbLossTests)
 	dbLoss = IrregularTerrainModelAreaCalculationDbLoss(3, 2.3, 20.0, 7.620, 13.0, 1, 2, 15.0, 0.005, 301.0, 1000.0, 10.0, 0.5, 0.0, 605.0, 5, 0, 0, 0.9, 0.5, 0.75);
 	EXPECT_DOUBLE_EQ(1208.8422817277913, dbLoss);
 }
-
 
 TEST(ItwomTests, CalculateClutterLossTests)
 {
@@ -567,14 +533,13 @@ TEST(ItwomTests, CalculateClutterLossTests)
 	EXPECT_DOUBLE_EQ(39.193931594212195, clutterLoss);
 }
 
-
 TEST(ItwomTests, CalculateDiffractionAttenuationTests)
 {
 	double diffractionAttenuation;
 	prop_type prop;
 	propa_type propa;
 	double d;
-	
+
 	d = 0.0;
 	prop.surfaceImpedanceReal = 1.0;
 	prop.surfaceImpedanceImag = 0.5;
@@ -585,7 +550,7 @@ TEST(ItwomTests, CalculateDiffractionAttenuationTests)
 	prop.horizonDistance[0] = 1.0;
 	prop.horizonDistance[1] = 2.0;
 	prop.surfaceRefractivity = 325.0;
-	prop.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop.surfaceRefractivity / 179.3));
+	prop.relativeCurvature = 157e-9 * (1.0 - 0.04665 * exp(prop.surfaceRefractivity / 179.3));
 	prop.analysisMode = -1;
 	prop.interdecileElevationRangeBetweenPoints = 1.0;
 	prop.waveNumber = 100.0;
@@ -603,7 +568,6 @@ TEST(ItwomTests, CalculateDiffractionAttenuationTests)
 	diffractionAttenuation = CalculateDiffractionAttenuation(d, prop, propa);
 	EXPECT_DOUBLE_EQ(94.63238012826875, diffractionAttenuation);
 }
-
 
 TEST(ItwomTests, CalculateDiffractionAttenuationV2Tests)
 {
@@ -624,7 +588,7 @@ TEST(ItwomTests, CalculateDiffractionAttenuationV2Tests)
 	prop.horizonDistance[0] = 1.0;
 	prop.horizonDistance[1] = 2.0;
 	prop.surfaceRefractivity = 325.0;
-	prop.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop.surfaceRefractivity / 179.3));
+	prop.relativeCurvature = 157e-9 * (1.0 - 0.04665 * exp(prop.surfaceRefractivity / 179.3));
 	prop.analysisMode = -1;
 	prop.interdecileElevationRangeBetweenPoints = 1.0;
 	prop.waveNumber = 100.0;
@@ -706,7 +670,6 @@ TEST(ItwomTests, CalculateDiffractionAttenuationV2Tests)
 	EXPECT_DOUBLE_EQ(669.6449002854514, diffractionAttenuation);
 }
 
-
 TEST(ItwomTests, CalculateScatterAttenuationTests)
 {
 	double scatterAttenuation;
@@ -722,7 +685,7 @@ TEST(ItwomTests, CalculateScatterAttenuationTests)
 	prop.antennaHeightAndPathElevation[0] = 21.0;
 	prop.antennaHeightAndPathElevation[0] = 8.620;
 	prop.surfaceRefractivity = 325.0;
-	prop.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop.surfaceRefractivity / 179.3));
+	prop.relativeCurvature = 157e-9 * (1.0 - 0.04665 * exp(prop.surfaceRefractivity / 179.3));
 	prop.grazingAngle[0] = 0.0;
 	prop.grazingAngle[1] = 5.0;
 	prop.waveNumber = 100.0;
@@ -744,7 +707,6 @@ TEST(ItwomTests, CalculateScatterAttenuationTests)
 	EXPECT_DOUBLE_EQ(1001.0, scatterAttenuation);
 }
 
-
 TEST(ItwomTests, QlrpsTests)
 {
 	prop_type prop1, prop2;
@@ -762,7 +724,6 @@ TEST(ItwomTests, QlrpsTests)
 	EXPECT_DOUBLE_EQ(0.13309950673826831, prop2.surfaceImpedanceReal);
 	EXPECT_DOUBLE_EQ(-0.093079255757644211, prop2.surfaceImpedanceImag);
 }
-
 
 TEST(ItwomTests, CalculateLineOfSightAttenuationTests)
 {
@@ -793,7 +754,6 @@ TEST(ItwomTests, CalculateLineOfSightAttenuationTests)
 	lineOfSightAttenuation = CalculateLineOfSightAttenuation(d, prop, propa);
 	EXPECT_DOUBLE_EQ(77.528123150083999, lineOfSightAttenuation);
 }
-
 
 TEST(ItwomTests, CalculateLineOfSightAttenuationV2Tests)
 {
@@ -844,7 +804,6 @@ TEST(ItwomTests, CalculateLineOfSightAttenuationV2Tests)
 	EXPECT_DOUBLE_EQ(-1.7931089645393468, lineOfSightAttenuation);
 }
 
-
 TEST(ItwomTests, QlraTests)
 {
 	int kst[2];
@@ -858,7 +817,7 @@ TEST(ItwomTests, QlraTests)
 	prop1.antennaHeightAboveGroundLevel[1] = 7.620;
 	prop1.interdecileElevationRangeBetweenPoints = 1.0;
 	prop1.surfaceRefractivity = 325.0;
-	prop1.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop1.surfaceRefractivity / 179.3));
+	prop1.relativeCurvature = 157e-9 * (1.0 - 0.04665 * exp(prop1.surfaceRefractivity / 179.3));
 	propv1.recomputeParameters = 0;
 	propv1.variabilityMode = 0;
 	propv1.radioClimate = 0;
@@ -882,7 +841,7 @@ TEST(ItwomTests, QlraTests)
 	prop2.antennaHeightAboveGroundLevel[1] = 7.620;
 	prop2.interdecileElevationRangeBetweenPoints = 1.0;
 	prop2.surfaceRefractivity = 325.0;
-	prop2.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop2.surfaceRefractivity / 179.3));
+	prop2.relativeCurvature = 157e-9 * (1.0 - 0.04665 * exp(prop2.surfaceRefractivity / 179.3));
 	propv2.recomputeParameters = 0;
 	propv2.variabilityMode = 0;
 	propv2.radioClimate = 0;
@@ -906,7 +865,7 @@ TEST(ItwomTests, QlraTests)
 	prop3.antennaHeightAboveGroundLevel[1] = 4.0;
 	prop3.interdecileElevationRangeBetweenPoints = 1.0;
 	prop3.surfaceRefractivity = 325.0;
-	prop3.relativeCurvature = 157e-9 * (1.0 - 0.04665*exp(prop3.surfaceRefractivity / 179.3));
+	prop3.relativeCurvature = 157e-9 * (1.0 - 0.04665 * exp(prop3.surfaceRefractivity / 179.3));
 	propv3.recomputeParameters = 0;
 	propv3.variabilityMode = 0;
 	propv3.radioClimate = 0;
@@ -925,58 +884,48 @@ TEST(ItwomTests, QlraTests)
 	EXPECT_EQ(0, propv3.radioClimate);
 }
 
-
 TEST(ItwomTests, CalculateLongleyRicePropagationTests)
 {
-	//| JAD TODO - Finish unit tests.
+	// JAD TODO - Finish unit tests.
 }
-
 
 TEST(ItwomTests, CalculateLongleyRicePropagationV2Tests)
 {
-	//| JAD TODO - Finish unit tests.
+	// JAD TODO - Finish unit tests.
 }
-
 
 TEST(ItwomTests, CalculateLongleyRiceVariabilityTests)
 {
-	//| JAD TODO - Finish unit tests.
+	// JAD TODO - Finish unit tests.
 }
-
 
 TEST(ItwomTests, CalculateHorizonDistancesTests)
 {
-	//| JAD TODO - Finish unit tests.
+	// JAD TODO - Finish unit tests.
 }
-
 
 TEST(ItwomTests, CalculateHorizonDistancesV2Tests)
 {
-	//| JAD TODO - Finish unit tests.
+	// JAD TODO - Finish unit tests.
 }
-
 
 TEST(ItwomTests, CalculateTerrainInterdecileRangeDeltaV2Tests)
 {
-	//| JAD TODO - Finish unit tests.
+	// JAD TODO - Finish unit tests.
 }
-
 
 TEST(ItwomTests, PrepareForPointToPointModeAnalysisTests)
 {
-	//| JAD TODO - Finish unit tests.
+	// JAD TODO - Finish unit tests.
 }
-
 
 TEST(ItwomTests, PrepareForPointToPointModeAnalysisV2Tests)
 {
-	//| JAD TODO - Finish unit tests.
+	// JAD TODO - Finish unit tests.
 }
 
 
-
-//| Usgs2SdfLibTests
-
+// Usgs2SdfLibTests
 
 TEST(Usgs2SdfLibTests, ConvertExponentialNotationTests)
 {
@@ -993,7 +942,6 @@ TEST(Usgs2SdfLibTests, ConvertExponentialNotationTests)
 }
 
 
-
 //| ------------------------------
 //| 
 //| FUNCTION: main
@@ -1002,9 +950,9 @@ TEST(Usgs2SdfLibTests, ConvertExponentialNotationTests)
 //| 
 //| ------------------------------
 int
-main
-   (int argc,
-	char *argv[])
+main(
+	int argc,
+	char* argv[])
 {
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();

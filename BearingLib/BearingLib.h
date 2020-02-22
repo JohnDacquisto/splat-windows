@@ -3,10 +3,13 @@
 ****************************************************************************/
 
 #pragma once
+
 #include "stdafx.h"
 #include "..\Common\Site.h"
 
 
-//| Export functions
+// Export functions
 
-Site _declspec(dllexport) LoadSplatSiteLocationFileForBearing(char *filename);
+Site _declspec(dllexport)
+LoadSplatSiteLocationFileForBearing(
+	char *filename);

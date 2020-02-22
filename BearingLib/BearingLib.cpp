@@ -27,8 +27,8 @@
 //| 
 //| ------------------------------
 Site
-LoadSplatSiteLocationFileForBearing
-   (char *filename)
+LoadSplatSiteLocationFileForBearing(
+	char *filename)
 {
 	int	x;
 	char QthString[50], qthfile[255];
@@ -56,20 +56,20 @@ LoadSplatSiteLocationFileForBearing
 
 	if (fd != NULL)
 	{
-		//| Site Name
+		// Site Name
 		fgets(QthString, 49, fd);
 
-		//| Strip <CR> and/or <LF> from end of site name
+		// Strip <CR> and/or <LF> from end of site name
 
 		for (x = 0; (QthString[x] != 13) && (QthString[x] != 10) && (QthString[x] != 0); tempsite.name[x] = QthString[x], x++);
 
 		tempsite.name[x] = 0;
 
-		//| Site Latitude
+		// Site Latitude
 		fgets(QthString, 49, fd);
 		tempsite.latitude = BearingStringToDecimalDegrees(QthString);
 
-		//| Site Longitude
+		// Site Longitude
 		fgets(QthString, 49, fd);
 		tempsite.longitude = BearingStringToDecimalDegrees(QthString);
 

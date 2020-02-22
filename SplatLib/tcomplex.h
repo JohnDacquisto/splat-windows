@@ -3,6 +3,7 @@
 ****************************************************************************/
 
 #pragma once
+
 #include "stdafx.h"
 
 
@@ -12,6 +13,6 @@ public:
 	tcomplex();
 	~tcomplex();
 
-	double complexReal;		//| OLD NAME: tcreal
-	double complexImag;		//| OLD NAME: tcimag
+	double complexReal;		// OLD NAME: tcreal
+	double complexImag;		// OLD NAME: tcimag
 };

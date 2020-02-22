@@ -3,10 +3,14 @@
 ****************************************************************************/
 
 #pragma once
+
 #include "stdafx.h"
 #include "..\Usgs2SdfLib\usgs2sdfLib.h"
 
 
-//| Functions
+// Functions
 
-int main(int argc, char *argv[]);
+int
+main(
+	int argc,
+	char *argv[]);

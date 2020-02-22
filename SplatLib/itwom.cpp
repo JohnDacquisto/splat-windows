@@ -56,9 +56,9 @@ using namespace std;
 //| NOTES: 
 //| 
 //| ------------------------------
-int 
-MinimumInteger
-   (const int &i, 
+int
+MinimumInteger(
+	const int &i,
 	const int &j)
 {
 	if (i < j)
@@ -81,9 +81,9 @@ MinimumInteger
 //| NOTES: 
 //| 
 //| ------------------------------
-int 
-MaximumInteger
-   (const int &i, 
+int
+MaximumInteger(
+	const int &i,
 	const int &j)
 {
 	if (i > j)
@@ -106,9 +106,9 @@ MaximumInteger
 //| NOTES: 
 //| 
 //| ------------------------------
-double 
-MinimumDouble
-   (const double &a, 
+double
+MinimumDouble(
+	const double &a,
 	const double &b)
 {
 	if (a < b)
@@ -131,9 +131,9 @@ MinimumDouble
 //| NOTES: 
 //| 
 //| ------------------------------
-double 
-MaximumDouble
-   (const double &a, 
+double
+MaximumDouble(
+	const double &a,
 	const double &b)
 {
 	if (a > b)
@@ -158,9 +158,9 @@ MaximumDouble
 //|   if x is greater than y; otherwise result is 0.0
 //| 
 //| ------------------------------
-double 
-PositiveDifferenceOrZero
-   (const double &x, 
+double
+PositiveDifferenceOrZero(
+	const double &x,
 	const double &y)
 {
 	if (x > y)
@@ -186,9 +186,9 @@ PositiveDifferenceOrZero
 //|   The approximation is given in Alg 6.1.
 //| 
 //| ------------------------------
-double 
-AttenuationFromSingleKnifeEdge
-   (const double &v2)
+double
+AttenuationFromSingleKnifeEdge(
+	const double &v2)
 {
 	double a;
 
@@ -217,9 +217,9 @@ AttenuationFromSingleKnifeEdge
 //|   The approximation is that given in Alg 6.4.
 //| 
 //| ------------------------------
-double 
-HeightGainOverSmoothSphere
-   (const double &x, 
+double
+HeightGainOverSmoothSphere(
+	const double &x,
 	const double &pk)
 {
 	double w, fhtv;
@@ -266,9 +266,9 @@ HeightGainOverSmoothSphere
 //|   This is the H01 function for scatter fields as defined in Alg 6.
 //| 
 //| ------------------------------
-double 
-H01ScatterFields
-   (double r, 
+double
+H01ScatterFields(
+	double r,
 	double et)
 {
 	double a[5] = { 25.0, 80.0, 177.0, 395.0, 705.0 };
@@ -320,8 +320,8 @@ H01ScatterFields
 //| 
 //| ------------------------------
 double 
-FThetaDScatterFields
-   (double td)
+FThetaDScatterFields(
+	double td)
 {
 	int i;
 	double a[3] = { 133.4,    104.6,     71.8 };
@@ -355,8 +355,8 @@ FThetaDScatterFields
 //| 
 //| ------------------------------
 double 
-AbsoluteValueOfComplexNumber
-   (complex<double> r)
+AbsoluteValueOfComplexNumber(
+	complex<double> r)
 {
 	return r.real()*r.real() + r.imag()*r.imag();
 }
@@ -372,9 +372,9 @@ AbsoluteValueOfComplexNumber
 //| 
 //| ------------------------------
 double 
-CalculateClutterLoss
-   (double d, 
-	prop_type &prop, 
+CalculateClutterLoss(
+	double d,
+	prop_type &prop,
 	propa_type &propa)
 {
 	double ensa, encca, q, dp, dx, tde, hc, ucrpc, ctip, tip, tic, stic, ctic, sta;
@@ -401,11 +401,11 @@ CalculateClutterLoss
 		tsp = 1.0;
 		rsp = 0.0;
 		d1a = pd;
-		//| at first, hone is transmitter antenna height
-		//| relative to receive site ground level.
+		// at first, hone is transmitter antenna height
+		// relative to receive site ground level.
 		hone = prop.transmitterGroundHeight + prop.tsgh - (prop.antennaHeightAndPathElevation[1] - prop.antennaHeightAboveGroundLevel[1]);
 
-		if (prop.transmitterGroundHeight > prop.canopyClutterHeight)  //| for TX ant above all clutter height
+		if (prop.transmitterGroundHeight > prop.canopyClutterHeight)  // for TX ant above all clutter height
 		{
 			ensa = 1 + prop.surfaceRefractivity*0.000001;
 			encca = 1 + prop.encc*0.000001;
@@ -438,31 +438,31 @@ CalculateClutterLoss
 
 			ctic = cos(tic);
 
-			//| if the ucrpc path touches the canopy before reaching the
-			//| end of the ucrpc, the entry point moves toward the
-			//| transmitter, extending the crpc and d1a. Estimating the d1a:
+			// if the ucrpc path touches the canopy before reaching the
+			// end of the ucrpc, the entry point moves toward the
+			// transmitter, extending the crpc and d1a. Estimating the d1a:
 
 			if (ssnps <= 0.0)
 			{
 				d1a = MinimumDouble(0.1*pd, 600.0);
 				crpc = d1a;
-				//| hone must be redefined as being barely above
-				//| the canopy height with respect to the receiver
-				//| canopy height, which despite the earth curvature
-				//| is at or above the transmitter antenna height.
+				// hone must be redefined as being barely above
+				// the canopy height with respect to the receiver
+				// canopy height, which despite the earth curvature
+				// is at or above the transmitter antenna height.
 				hone = prop.canopyClutterHeight + 1;
 				rsp = .997;
 				tsp = 1 - rsp;
 			}
 			else
 			{
-				if (prop.transmitterPolarization >= 1)  //|vertical or circular
+				if (prop.transmitterPolarization >= 1)  // vertical or circular
 				{
 					q = ((ensa*cttc - encca * ctic) / (ensa*cttc + encca * ctic));
 					rsp = q * q;
 					tsp = 1 - rsp;
 
-					if (prop.transmitterPolarization == 2)  //| circular - new
+					if (prop.transmitterPolarization == 2)  // circular - new
 					{
 						q = ((ensa*ctic - encca * cttc) / (ensa*ctic + encca * cttc));
 						rsp = ((ensa*cttc - encca * ctic) / (ensa*cttc + encca * ctic));
@@ -470,14 +470,14 @@ CalculateClutterLoss
 						tsp = 1 - rsp;
 					}
 				}
-				else	//| horizontal, or undefined
+				else	// horizontal, or undefined
 				{
 					q = ((ensa*ctic - encca * cttc) / (ensa*ctic + encca * cttc));
 					rsp = q * q;
 					tsp = 1 - rsp;
 				}
 			}
-			//| tvsr is defined as tx ant height above receiver ant height
+			// tvsr is defined as tx ant height above receiver ant height
 			tvsr = MaximumDouble(0.0, prop.transmitterGroundHeight + prop.tsgh - prop.antennaHeightAndPathElevation[1]);
 
 			if (d1a < 50.0)
@@ -520,7 +520,7 @@ CalculateClutterLoss
 				}
 			}
 		}
-		else  //| for TX at or below clutter height
+		else  // for TX at or below clutter height
 		{
 			q = (prop.canopyClutterHeight - prop.transmitterGroundHeight)*(2.06943 - 1.56184*exp(1 / prop.canopyClutterHeight - prop.transmitterGroundHeight));
 			q = q + (17.98 - 0.84224*(prop.canopyClutterHeight - prop.transmitterGroundHeight))*exp(-0.00000061*pd);
@@ -546,10 +546,10 @@ CalculateClutterLoss
 //|   diffraction. A call with d = 0 sets up initial constants.
 //| 
 //| ------------------------------
-double 
-CalculateDiffractionAttenuation
-   (double d, 
-	prop_type &prop, 
+double
+CalculateDiffractionAttenuation(
+	double d,
+	prop_type &prop,
 	propa_type &propa)
 {
 	complex<double> prop_zgnd(prop.surfaceImpedanceReal, prop.surfaceImpedanceImag);
@@ -618,10 +618,10 @@ CalculateDiffractionAttenuation
 //| NOTES: 
 //| 
 //| ------------------------------
-double 
-CalculateDiffractionAttenuationV2
-   (double d, 
-	prop_type &prop, 
+double
+CalculateDiffractionAttenuationV2(
+	double d,
+	prop_type &prop,
 	propa_type &propa)
 {
 	complex<double> prop_zgnd(prop.surfaceImpedanceReal, prop.surfaceImpedanceImag);
@@ -632,13 +632,13 @@ CalculateDiffractionAttenuationV2
 	//static double dhec;
 	//double dfdh, ar, wd, sf1, ec;
 
-	//sf1 = 1.0;	//| average empirical hilltop foliage scatter factor for 1 obstruction
-	sf2 = 1.0;		//| average empirical hilltop foliage scatter factor for 2 obstructions
+	//sf1 = 1.0;	// average empirical hilltop foliage scatter factor for 1 obstruction
+	sf2 = 1.0;		// average empirical hilltop foliage scatter factor for 2 obstructions
 
 	//dfdh = prop.interdecileElevationRangeBetweenPoints;
 	//ec = 0.5*prop.relativeCurvature;
 
-	//| CalculateDiffractionAttenuationV2 must first be run with d == 0.0 to set up coefficients
+	// CalculateDiffractionAttenuationV2 must first be run with d == 0.0 to set up coefficients
 	if (d == 0)
 	{
 		q = prop.antennaHeightAboveGroundLevel[0] * prop.antennaHeightAboveGroundLevel[1];
@@ -650,7 +650,7 @@ CalculateDiffractionAttenuationV2
 			q += 10.0;
 		}
 
-		//| coefficients for a standard four radii, rounded earth computation are prepared
+		// coefficients for a standard four radii, rounded earth computation are prepared
 		wd1 = sqrt(1.0 + qk / q);
 		xd1 = propa.dla + propa.tha / prop.relativeCurvature;
 		q = (1.0 - 0.8*exp(-propa.dlsa / 50e3)) * prop.interdecileElevationRangeBetweenPoints;
@@ -713,7 +713,7 @@ CalculateDiffractionAttenuationV2
 		dhh2 = sqrt((prop.distance - propa.dla)*(prop.distance - propa.dla) + roho * roho);
 		dhh2 += prop.relativeCurvature * (prop.distance - propa.dla);
 
-		//| for 1 obst tree base path
+		// for 1 obst tree base path
 		dtof = sqrt(prop.horizonDistance[0] * prop.horizonDistance[0] + (toh - prop.canopyClutterHeight)*(toh - prop.canopyClutterHeight));
 		dtof += prop.relativeCurvature * prop.horizonDistance[0];
 		dto1f = sqrt(prop.horizonDistance[0] * prop.horizonDistance[0] + (toho - prop.canopyClutterHeight)*(toho - prop.canopyClutterHeight));
@@ -723,32 +723,32 @@ CalculateDiffractionAttenuationV2
 		dro2f = sqrt(prop.horizonDistance[1] * prop.horizonDistance[1] + (roho - prop.canopyClutterHeight)*(roho - prop.canopyClutterHeight));
 		dro2f += prop.relativeCurvature * prop.horizonDistance[1];
 
-		//| CalculateClutterLoss coefficients preset for post-obstacle receive path
+		// CalculateClutterLoss coefficients preset for post-obstacle receive path
 		prop.transmitterGroundHeight = prop.canopyClutterHeight + 1.0;
 		prop.tsgh = prop.hhr;
 		rd = prop.horizonDistance[1];
 
-		//| two obstacle diffraction calculation
-		if (int(ds) > 0)	//| there are 2 obstacles
+		// two obstacle diffraction calculation
+		if (int(ds) > 0)	// there are 2 obstacles
 		{
-			if (int(prop.horizonDistance[1]) > 0.0)	//| receive site past 2nd peak
+			if (int(prop.horizonDistance[1]) > 0.0)	// receive site past 2nd peak
 			{
-				//| rounding attenuation
+				// rounding attenuation
 				q = (1.607 - pk)*151.0*wa*th + xht;
 				//ar = 0.05751*q - 10*log10(q) - aht;
 
-				//| knife edge vs round weighting
+				// knife edge vs round weighting
 				q = (1.0 - 0.8*exp(-d / 50e3))*prop.interdecileElevationRangeBetweenPoints;
 				q = (wd1 + xd1 / d)*MinimumDouble((q * prop.waveNumber), 6283.2);
 				//wd = 25.1/(25.1+sqrt(q));
 
 				q = 0.6365 * prop.waveNumber;
 
-				if (prop.grazingAngle[1] < 0.2)  //| receive grazing angle below 0.2 rad
+				if (prop.grazingAngle[1] < 0.2)  // receive grazing angle below 0.2 rad
 				{
-					//| knife edge attenuation for two obstructions
+					// knife edge attenuation for two obstructions
 
-					if (prop.hht < 3400)	//| if below tree line, foliage top loss
+					if (prop.hht < 3400)	// if below tree line, foliage top loss
 					{
 						vv = q * abs(dto1 + dhh1 - dtro);
 						adiffv2 = -18.0 + sf2 * AttenuationFromSingleKnifeEdge(vv);
@@ -770,13 +770,13 @@ CalculateDiffractionAttenuationV2
 						adiffv2 += AttenuationFromSingleKnifeEdge(vv);
 					}
 
-					//| finally, add clutter loss
+					// finally, add clutter loss
 					closs = CalculateClutterLoss(rd, prop, propa);
 					adiffv2 += MinimumDouble(22.0, closs);
 				}
-				else	//| rcvr site too close to 2nd obs
+				else	// rcvr site too close to 2nd obs
 				{
-					//| knife edge attenuation for 1st obs
+					// knife edge attenuation for 1st obs
 
 					if (prop.hht < 3400)
 					{
@@ -789,19 +789,19 @@ CalculateDiffractionAttenuationV2
 						adiffv2 = AttenuationFromSingleKnifeEdge(vv);
 					}
 
-					//| weighted calc. of knife vs rounded edge
+					// weighted calc. of knife vs rounded edge
 					//adiffv2 = ar*wd + (1.0 - wd)*adiffv2;
 
-					//| clutter path loss past 2nd peak
+					// clutter path loss past 2nd peak
 					if (prop.grazingAngle[1] < 1.22)
 					{
 						rd = prop.horizonDistance[1];
 
-						if (prop.grazingAngle[1] > 0.6)	//| through foliage downhill
+						if (prop.grazingAngle[1] > 0.6)	// through foliage downhill
 						{
 							prop.transmitterGroundHeight = prop.canopyClutterHeight;
 						}
-						else	//| close to foliage, rcvr in foliage downslope
+						else	// close to foliage, rcvr in foliage downslope
 						{
 							vv = 0.6365 * prop.waveNumber * abs(dro2 + dhh2 - drto);
 						}
@@ -809,23 +809,23 @@ CalculateDiffractionAttenuationV2
 						closs = CalculateClutterLoss(rd, prop, propa);
 						adiffv2 += MinimumDouble(closs, 22.0);
 					}
-					else	//| rcvr very close to bare cliff or skyscraper
+					else	// rcvr very close to bare cliff or skyscraper
 					{
 						adiffv2 = 5.8 + 25.0;
 					}
 				}
 			}
-			else	//| receive site is atop a 2nd peak
+			else	// receive site is atop a 2nd peak
 			{
 				vv = 0.6365 * prop.waveNumber * abs(dto + dro - dtr);
 				adiffv2 = 5.8 + AttenuationFromSingleKnifeEdge(vv);
 			}
 		}
-		else	//| for single obstacle
+		else	// for single obstacle
 		{
-			if (int(prop.horizonDistance[1]) > 0.0)	//| receive site past 1st peak
+			if (int(prop.horizonDistance[1]) > 0.0)	// receive site past 1st peak
 			{
-				if (prop.grazingAngle[1] < 0.2)	//| receive grazing angle less than 0.2 radians
+				if (prop.grazingAngle[1] < 0.2)	// receive grazing angle less than 0.2 radians
 				{
 					vv = 0.6365 * prop.waveNumber * abs(dto + dro - dtr);
 
@@ -833,18 +833,18 @@ CalculateDiffractionAttenuationV2
 					{
 						sdl = 18.0;
 						sdl = pow(10, (-sdl / 20));
-						//| ke phase difference with respect to direct t-r line
+						// ke phase difference with respect to direct t-r line
 						kedr = 0.159155 * prop.waveNumber * abs(dto + dro - dtr);
 						arp = abs(kedr - (int(kedr)));
 						kem = AttenuationFromSingleKnifeEdge(vv);
 						kem = pow(10, (-kem / 20));
-						//| scatter path phase with respect to direct t-r line
+						// scatter path phase with respect to direct t-r line
 						sdr = 0.5 + 0.159155*prop.waveNumber*abs(dtof + drof - dtr);
 						srp = abs(sdr - (int(sdr)));
-						//| difference between scatter and ke phase in radians
+						// difference between scatter and ke phase in radians
 						pd = 6.283185307*abs(srp - arp);
-						//| report pd prior to restriction
-						//| keep pd between 0 and pi radians and adjust for 3&4 quadrant
+						// report pd prior to restriction
+						// keep pd between 0 and pi radians and adjust for 3&4 quadrant
 						if (pd >= 3.141592654)
 						{
 							pd = 6.283185307 - pd;
@@ -861,21 +861,21 @@ CalculateDiffractionAttenuationV2
 					{
 						adiffv2 = AttenuationFromSingleKnifeEdge(vv);
 					}
-					//| finally, add clutter loss
+					// finally, add clutter loss
 					closs = CalculateClutterLoss(rd, prop, propa);
 					adiffv2 += MinimumDouble(closs, 22.0);
 				}
-				else	//| receive grazing angle too high
+				else	// receive grazing angle too high
 				{
 					if (prop.grazingAngle[1] < 1.22)
 					{
 						rd = prop.horizonDistance[1];
 
-						if (prop.grazingAngle[1] > 0.6)	//| through foliage downhill
+						if (prop.grazingAngle[1] > 0.6)	// through foliage downhill
 						{
 							prop.transmitterGroundHeight = prop.canopyClutterHeight;
 						}
-						else	//| downhill slope just above foliage
+						else	// downhill slope just above foliage
 						{
 							vv = 0.6365 * prop.waveNumber * abs(dto + dro - dtr);
 							adiffv2 = AttenuationFromSingleKnifeEdge(vv);
@@ -883,13 +883,13 @@ CalculateDiffractionAttenuationV2
 						closs = CalculateClutterLoss(rd, prop, propa);
 						adiffv2 += MinimumDouble(22.0, closs);
 					}
-					else	//| receiver very close to bare cliff or skyscraper
+					else	// receiver very close to bare cliff or skyscraper
 					{
 						adiffv2 = 5.8 + 25.0;
 					}
 				}
 			}
-			else	//| if occurs, receive site atop first peak
+			else	// if occurs, receive site atop first peak
 			{
 				adiffv2 = 5.8;
 			}
@@ -914,10 +914,10 @@ CalculateDiffractionAttenuationV2
 //|   A call with d=0 sets up initial constants.
 //| 
 //| ------------------------------
-double 
-CalculateScatterAttenuation
-   (double d, 
-	prop_type &prop, 
+double
+CalculateScatterAttenuation(
+	double d,
+	prop_type &prop,
 	propa_type &propa)
 {
 	static double ad, rr, etq, h0s;
@@ -1009,9 +1009,9 @@ CalculateScatterAttenuation
 //|   Univ. Press, 1955) and the maximum error should be 4.5 x 10 e-4
 //| 
 //| ------------------------------
-double 
-StandardNormalTailDistributionFunctionInverse
-   (double q)
+double
+StandardNormalTailDistributionFunctionInverse(
+	double q)
 {
 	double x, t, v;
 	double c0 = 2.515516698;
@@ -1058,14 +1058,14 @@ StandardNormalTailDistributionFunctionInverse
 //|     zgnd - surface impedance
 //| 
 //| ------------------------------
-void 
-Qlrps
-   (double fmhz, 
-	double zsys, 
-	double en0, 
-	int ipol, 
-	double eps, 
-	double sgm, 
+void
+Qlrps(
+	double fmhz,
+	double zsys,
+	double en0,
+	int ipol,
+	double eps,
+	double sgm,
 	prop_type &prop)
 {
 	double gma = 157e-9;
@@ -1105,10 +1105,10 @@ Qlrps
 //|   fields and diffracted fields. A call with d = 0 sets up initial constants.
 //| 
 //| ------------------------------
-double 
-CalculateLineOfSightAttenuation
-   (double d, 
-	prop_type &prop, 
+double
+CalculateLineOfSightAttenuation(
+	double d,
+	prop_type &prop,
 	propa_type &propa)
 {
 	complex<double> prop_zgnd(prop.surfaceImpedanceReal, prop.surfaceImpedanceImag);
@@ -1160,10 +1160,10 @@ CalculateLineOfSightAttenuation
 //| NOTES: 
 //| 
 //| ------------------------------
-double 
-CalculateLineOfSightAttenuationV2
-   (double d, 
-	prop_type &prop, 
+double
+CalculateLineOfSightAttenuationV2(
+	double d,
+	prop_type &prop,
 	propa_type &propa)
 {
 	complex<double> prop_zgnd(prop.surfaceImpedanceReal, prop.surfaceImpedanceImag);
@@ -1205,7 +1205,7 @@ CalculateLineOfSightAttenuationV2
 				drh = 6378137.0 - sqrt(-(0.5*pd)*(0.5*pd) + 6378137.0*6378137.0 + (dr - 0.5*pd)*(dr - 0.5*pd));
 			}
 
-			if ((sps < 0.05) && (prop.canopyClutterHeight > hrg) && (prop.distance < prop.horizonDistance[0]))	//| if far from transmitter and receiver below canopy
+			if ((sps < 0.05) && (prop.canopyClutterHeight > hrg) && (prop.distance < prop.horizonDistance[0]))	// if far from transmitter and receiver below canopy
 			{
 				clutterDensity = MaximumDouble(0.01, pd*(prop.canopyClutterHeight - hrg) / (htg - hrg));
 				cr = MaximumDouble(0.01, pd - dr + dr * (prop.canopyClutterHeight - drh) / htg);
@@ -1240,12 +1240,12 @@ CalculateLineOfSightAttenuationV2
 			q = (1 - q)*3.1415926535897;
 		}
 
-		//| no longer valid complex conjugate removed
-		//| by removing minus sign from in front of sin function
+		// no longer valid complex conjugate removed
+		// by removing minus sign from in front of sin function
 		re = AbsoluteValueOfComplexNumber(complex<double>(cos(q), sin(q)) + r);
 		alosv = -10 * log10(re);
-		prop.transmitterGroundHeight = prop.antennaHeightAboveGroundLevel[0];					//| tx above gnd hgt set to antenna height AGL
-		prop.tsgh = prop.antennaHeightAndPathElevation[0] - prop.antennaHeightAboveGroundLevel[0];	//| tsgh set to tx site gl AMSL
+		prop.transmitterGroundHeight = prop.antennaHeightAboveGroundLevel[0];						// tx above gnd hgt set to antenna height AGL
+		prop.tsgh = prop.antennaHeightAndPathElevation[0] - prop.antennaHeightAboveGroundLevel[0];	// tsgh set to tx site gl AMSL
 
 		if ((prop.antennaHeightAboveGroundLevel[1] < prop.canopyClutterHeight) && (prop.thera < 0.785) && (prop.thenr < 0.785))
 		{
@@ -1273,12 +1273,12 @@ CalculateLineOfSightAttenuationV2
 //| NOTES: 
 //| 
 //| ------------------------------
-void 
-Qlra
-   (int kst[], 
-	int klimx, 
-	int mdvarx, 
-	prop_type &prop, 
+void
+Qlra(
+	int kst[],
+	int klimx,
+	int mdvarx,
+	prop_type &prop,
 	propv_type &propv)
 {
 	double q;
@@ -1342,13 +1342,13 @@ Qlra
 //|   distances.
 //| 
 //| ------------------------------
-void 
-CalculateLongleyRicePropagation
-   (double d, 
-	prop_type &prop, 
+void
+CalculateLongleyRicePropagation(
+	double d,
+	prop_type &prop,
 	propa_type &propa)
 {
-	//| PaulM_lrprop used for ITM
+	// PaulM_lrprop used for ITM
 	static bool wlos, wscat;
 	static double dmin, xae;
 	complex<double> prop_zgnd(prop.surfaceImpedanceReal, prop.surfaceImpedanceImag);
@@ -1407,8 +1407,8 @@ CalculateLongleyRicePropagation
 
 		dmin = abs(prop.antennaEffectiveHeight[0] - prop.antennaEffectiveHeight[1]) / 200e-3;
 		q = CalculateDiffractionAttenuation(0.0, prop, propa);
-		//xae = pow(prop.waveNumber * pow(prop.relativeCurvature, 2.), -ONE_THIRD);	//| JDM made argument 2 a double
-		xae = pow(prop.waveNumber * (prop.relativeCurvature * prop.relativeCurvature), -ONE_THIRD);		//| No 2nd pow()
+		//xae = pow(prop.waveNumber * pow(prop.relativeCurvature, 2.), -ONE_THIRD);	// JDM made argument 2 a double
+		xae = pow(prop.waveNumber * (prop.relativeCurvature * prop.relativeCurvature), -ONE_THIRD);		// No 2nd pow()
 		d3 = MaximumDouble(propa.dlsa, 1.3787*xae + propa.dla);
 		d4 = d3 + 2.7574*xae;
 		a3 = CalculateDiffractionAttenuation(d3, prop, propa);
@@ -1566,13 +1566,13 @@ CalculateLongleyRicePropagation
 //| NOTES: 
 //| 
 //| ------------------------------
-void 
-CalculateLongleyRicePropagationV2
-   (double d, 
-	prop_type &prop, 
+void
+CalculateLongleyRicePropagationV2(
+	double d,
+	prop_type &prop,
 	propa_type &propa)
 {
-	//| ITWOM_lrprop2
+	// ITWOM_lrprop2
 	static bool wlos, wscat;
 	static double dmin, xae;
 	complex<double> prop_zgnd(prop.surfaceImpedanceReal, prop.surfaceImpedanceImag);
@@ -1587,7 +1587,7 @@ CalculateLongleyRicePropagationV2
 	pd1 = prop.distance;
 	propa.dx = 2000000.0;
 
-	if (prop.analysisMode != 0)	//| if oper. mode is not 0, i.e. not area mode ongoing
+	if (prop.analysisMode != 0)	// if oper. mode is not 0, i.e. not area mode ongoing
 	{
 		for (j = 0; j < 2; j++)
 		{
@@ -1601,7 +1601,7 @@ CalculateLongleyRicePropagationV2
 		wlos = false;
 		wscat = false;
 
-		//| checking for parameters-in-range, error codes set if not
+		// checking for parameters-in-range, error codes set if not
 
 		if ((prop.waveNumber < 0.838) || (prop.waveNumber > 210.0))
 		{
@@ -1658,15 +1658,15 @@ CalculateLongleyRicePropagationV2
 		propa.aed = a3 - propa.emd*d3;
 	}
 
-	if (prop.analysisMode >= 0)	//| if initializing the area mode
+	if (prop.analysisMode >= 0)	// if initializing the area mode
 	{
-		prop.analysisMode = 0;	//| area mode is initialized
+		prop.analysisMode = 0;	// area mode is initialized
 		prop.distance = d;
 	}
 
 	if (prop.distance > 0.0)
 	{
-		if (prop.distance > 1000e3)	//| prop.dist being in meters, if greater than 1000 km, errorCode = 1
+		if (prop.distance > 1000e3)	// prop.dist being in meters, if greater than 1000 km, errorCode = 1
 		{
 			prop.errorCode = MaximumInteger(prop.errorCode, 1);
 		}
@@ -1684,7 +1684,7 @@ CalculateLongleyRicePropagationV2
 
 	if (prop.distance < propa.dlsa)
 	{
-		if (iw <= 0.0)	//| if interval width is zero or less, used for area mode
+		if (iw <= 0.0)	// if interval width is zero or less, used for area mode
 		{
 			if (!wlos)
 			{
@@ -1751,25 +1751,25 @@ CalculateLongleyRicePropagationV2
 				}
 			}
 		}
-		else	//| for ITWOM point-to-point mode
+		else	// for ITWOM point-to-point mode
 		{
 			if (!wlos)
 			{
-				q = CalculateLineOfSightAttenuationV2(0.0, prop, propa);	//| coefficient setup
+				q = CalculateLineOfSightAttenuationV2(0.0, prop, propa);	// coefficient setup
 				wlos = true;
 			}
 
-			if (prop.lineOfSight == 1)	//| if line of sight
+			if (prop.lineOfSight == 1)	// if line of sight
 			{
 				prop.referenceAttenuation = CalculateLineOfSightAttenuationV2(pd1, prop, propa);
 			}
 			else
 			{
-				if (int(prop.distance - prop.horizonDistance[0]) == 0)	//| if at 1st horiz
+				if (int(prop.distance - prop.horizonDistance[0]) == 0)	// if at 1st horiz
 				{
 					prop.referenceAttenuation = 5.8 + CalculateLineOfSightAttenuationV2(pd1, prop, propa);
 				}
-				else if (int(prop.distance - prop.horizonDistance[0]) > 0.0)	//| if past 1st horiz
+				else if (int(prop.distance - prop.horizonDistance[0]) > 0.0)	// if past 1st horiz
 				{
 					q = CalculateDiffractionAttenuationV2(0.0, prop, propa);
 					prop.referenceAttenuation = CalculateDiffractionAttenuationV2(pd1, prop, propa);
@@ -1782,10 +1782,10 @@ CalculateLongleyRicePropagationV2
 		}
 	}
 
-	//| lineOfSight and diff. range coefficents done. Starting troposcatter
+	// lineOfSight and diff. range coefficents done. Starting troposcatter
 	if ((prop.distance <= 0.0) || (prop.distance >= propa.dlsa))
 	{
-		if (iw == 0.0)	//| area mode
+		if (iw == 0.0)	// area mode
 		{
 			if (!wscat)
 			{
@@ -1819,7 +1819,7 @@ CalculateLongleyRicePropagationV2
 				prop.referenceAttenuation = propa.aed + propa.emd*prop.distance;
 			}
 		}
-		else	//| ITWOM mode q used to preset coefficients with zero input
+		else	// ITWOM mode q used to preset coefficients with zero input
 		{
 			if (!wscat)
 			{
@@ -1857,13 +1857,13 @@ CalculateLongleyRicePropagationV2
 //| NOTES: 
 //| 
 //| ------------------------------
-double 
-Curve
-   (double const &c1, 
-	double const &c2, 
+double
+Curve(
+	double const &c1,
+	double const &c2,
 	double const &x1,
-	double const &x2, 
-	double const &x3, 
+	double const &x2,
+	double const &x3,
 	double const &de)
 {
 	//return (c1+c2/(1.0+pow((de-x2)/x3,2.0)))*pow(de/x1,2.0)/(1.0+pow(de/x1,2.0));
@@ -1901,12 +1901,12 @@ Curve
 //|   recomputeParameters, the more parameters will be recomputed.
 //| 
 //| ------------------------------
-double 
-CalculateLongleyRiceVariability
-   (double zzt, 
-	double zzl, 
-	double zzc, 
-	prop_type &prop, 
+double
+CalculateLongleyRiceVariability(
+	double zzt,
+	double zzl,
+	double zzc,
+	prop_type &prop,
 	propv_type &propv)
 {
 	static int kdv;
@@ -2143,12 +2143,12 @@ CalculateLongleyRiceVariability
 //|   distances equal to distance.
 //| 
 //| ------------------------------
-void 
-CalculateHorizonDistances
-   (double pfl[], 
+void
+CalculateHorizonDistances(
+	double pfl[],
 	prop_type &prop)
 {
-	//| Used only with ITM 1.2.2
+	// Used only with ITM 1.2.2
 	bool wq;
 	int np;
 	double xi, za, zb, qc, q, sb, sa;
@@ -2208,10 +2208,10 @@ CalculateHorizonDistances
 //| NOTES: 
 //| 
 //| ------------------------------
-void 
-CalculateHorizonDistancesV2
-   (double pfl[], 
-	prop_type &prop, 
+void
+CalculateHorizonDistancesV2(
+	double pfl[],
+	prop_type &prop,
 	propa_type &propa)
 {
 	bool wq;
@@ -2282,16 +2282,16 @@ CalculateHorizonDistancesV2
 	{
 		dshh = prop.distance - prop.horizonDistance[0] - prop.horizonDistance[1];
 
-		if (int(dshh) == 0)	//| one obstacle
+		if (int(dshh) == 0)	// one obstacle
 		{
 			dr = prop.horizonDistance[1] / (1 + zb / prop.hht);
 		}
-		else	//| two obstacles
+		else	// two obstacles
 		{
 			dr = prop.horizonDistance[1] / (1 + zb / prop.hhr);
 		}
 	}
-	else	//| line of sight
+	else	// line of sight
 	{
 		dr = (prop.distance) / (1 + zb / za);
 	}
@@ -2315,15 +2315,15 @@ CalculateHorizonDistancesV2
 //|   Changes suggested by IEEE Broadcast Technology Society Newsletter, Vol. 17, Number 1, Spring 2009
 //| 
 //| ------------------------------
-void 
-CalculateLinearLeastSquaresFit
-   (double z[], 
-	const double &x1, 
-	const double &x2, 
-	double &z0, 
+void
+CalculateLinearLeastSquaresFit(
+	double z[],
+	const double &x1,
+	const double &x2,
+	double &z0,
 	double &zn)
 {
-	//| Used only with ITM 1.2.2
+	// Used only with ITM 1.2.2
 	double xn, xa, xb, x, a, b;
 	int n, ja, jb;
 
@@ -2370,15 +2370,15 @@ CalculateLinearLeastSquaresFit
 //| NOTES: 
 //| 
 //| ------------------------------
-void 
-CalculateLinearLeastSquaresFitV2
-   (double z[], 
-	const double &x1, 
-	const double &x2, 
-	double &z0, 
+void
+CalculateLinearLeastSquaresFitV2(
+	double z[],
+	const double &x1,
+	const double &x2,
+	double &z0,
 	double &zn)
 {
-	//| corrected for use with ITWOM
+	// corrected for use with ITWOM
 	double xn, xa, xb, x, a, b, bn;
 	int n, ja, jb;
 
@@ -2431,14 +2431,14 @@ CalculateLinearLeastSquaresFitV2
 //|   completely sorted in descending order. The returned value is CreateQuantile = a(ir)
 //| 
 //| ------------------------------
-double 
-CreateQuantile
-   (const int &nn, 
-	double a[], 
+double
+CreateQuantile(
+	const int &nn,
+	double a[],
 	const int &ir)
 {
-	double q = 0.0, r;	//| q initialization -- KD2BD
-	int m, n, i, j, j1 = 0, i0 = 0, k;	//| more initializations -- KD2BD
+	double q = 0.0, r;					// q initialization -- KD2BD
+	int m, n, i, j, j1 = 0, i0 = 0, k;	// more initializations -- KD2BD
 	bool done = false;
 	bool goto10 = true;
 
@@ -2524,8 +2524,8 @@ CreateQuantile
 //| 
 //| ------------------------------
 double 
-StandardNormalTailDistributionFunction
-   (const double &z)
+StandardNormalTailDistributionFunction(
+	const double &z)
 {
 	double b1 = 0.319381530, b2 = -0.356563782, b3 = 1.781477937;
 	double b4 = -1.821255987, b5 = 1.330274429;
@@ -2566,10 +2566,10 @@ StandardNormalTailDistributionFunction
 //|   Changes suggested by IEEE Broadcast Technology Society Newsletter, Vol. 17, Number 3, Fall 2009
 //| 
 //| ------------------------------
-double 
-CalculateTerrainInterdecileRangeDelta
-   (double pfl[], 
-	const double &x1, 
+double
+CalculateTerrainInterdecileRangeDelta(
+	double pfl[],
+	const double &x1,
 	const double &x2)
 {
 	int np, ka, kb, n, k, j;
@@ -2639,10 +2639,10 @@ CalculateTerrainInterdecileRangeDelta
 //| 
 //| ------------------------------
 double 
-CalculateTerrainInterdecileRangeDeltaV2
-   (double pfl[], 
-	const double &x1, 
-	const double &x2, 
+CalculateTerrainInterdecileRangeDeltaV2(
+	double pfl[],
+	const double &x1,
+	const double &x2,
 	propa_type &propa)
 {
 	int np, ka, kb, n, k, kmx, j;
@@ -2725,13 +2725,13 @@ CalculateTerrainInterdecileRangeDeltaV2
 //|     pfl[np+3] = z[np] the last elevation
 //| 
 //| ------------------------------
-void 
-PrepareForPointToPointModeAnalysis
-   (double pfl[], 
-	int klimx, 
-	int mdvarx, 
-	prop_type &prop, 
-	propa_type &propa, 
+void
+PrepareForPointToPointModeAnalysis(
+	double pfl[],
+	int klimx,
+	int mdvarx,
+	prop_type &prop,
+	propa_type &propa,
 	propv_type &propv)
 {
 	int np, j;
@@ -2762,7 +2762,7 @@ PrepareForPointToPointModeAnalysis
 
 		q = prop.horizonDistance[0] + prop.horizonDistance[1];
 
-		if (q <= prop.distance)	//| if there is a rounded horizon, or two obstructions, in the path
+		if (q <= prop.distance)	// if there is a rounded horizon, or two obstructions, in the path
 		{
 			//q = pow(prop.distance/q, 2.0);
 			temp = prop.distance / q;
@@ -2770,12 +2770,12 @@ PrepareForPointToPointModeAnalysis
 
 			for (j = 0; j < 2; j++)
 			{
-				prop.antennaEffectiveHeight[j] *= q;	//| tx effective height set to be path distance between obstacles
+				prop.antennaEffectiveHeight[j] *= q;	// tx effective height set to be path distance between obstacles
 				prop.horizonDistance[j] = sqrt(2.0*prop.antennaEffectiveHeight[j] / prop.relativeCurvature)*exp(-0.07*sqrt(prop.interdecileElevationRangeBetweenPoints / MaximumDouble(prop.antennaEffectiveHeight[j], 5.0)));
 			}
 		}
 
-		for (j = 0; j < 2; j++)	//| original empirical adjustment? uses delta-h to adjust grazing angles
+		for (j = 0; j < 2; j++)	// original empirical adjustment? uses delta-h to adjust grazing angles
 		{
 			q = sqrt(2.0*prop.antennaEffectiveHeight[j] / prop.relativeCurvature);
 			prop.grazingAngle[j] = (0.65 * prop.interdecileElevationRangeBetweenPoints * (q / prop.horizonDistance[j] - 1.0) - 2.0*prop.antennaEffectiveHeight[j]) / q;
@@ -2817,13 +2817,13 @@ PrepareForPointToPointModeAnalysis
 //| NOTES: 
 //| 
 //| ------------------------------
-void 
-PrepareForPointToPointModeAnalysisV2
-   (double pfl[], 
-	int klimx, 
-	int mdvarx, 
-	prop_type &prop, 
-	propa_type &propa, 
+void
+PrepareForPointToPointModeAnalysisV2(
+	double pfl[],
+	int klimx,
+	int mdvarx,
+	prop_type &prop,
+	propa_type &propa,
 	propv_type &propv)
 {
 	int np, j;
@@ -2846,7 +2846,7 @@ PrepareForPointToPointModeAnalysisV2
 
 	if ((np < 1) || (pfl[1] > 150.0))
 	{
-		//| for TRANSHORIZON; diffraction over a mutual horizon, or for one or more obstructions
+		// for TRANSHORIZON; diffraction over a mutual horizon, or for one or more obstructions
 		if (dlb < (1.5 * prop.distance))
 		{
 			CalculateLinearLeastSquaresFitV2(pfl, xl[0], 0.9*prop.horizonDistance[0], za, q);
@@ -2854,7 +2854,7 @@ PrepareForPointToPointModeAnalysisV2
 			prop.antennaEffectiveHeight[0] = prop.antennaHeightAboveGroundLevel[0] + PositiveDifferenceOrZero(pfl[2], za);
 			prop.antennaEffectiveHeight[1] = prop.antennaHeightAboveGroundLevel[1] + PositiveDifferenceOrZero(pfl[np + 2], zb);
 		}
-		//| for a Line-of-Sight path
+		// for a Line-of-Sight path
 		else
 		{
 			CalculateLinearLeastSquaresFitV2(pfl, xl[0], xl[1], za, zb);
@@ -2866,7 +2866,7 @@ PrepareForPointToPointModeAnalysisV2
 				prop.horizonDistance[j] = sqrt(2.0*prop.antennaEffectiveHeight[j] / prop.relativeCurvature)*exp(-0.07*sqrt(prop.interdecileElevationRangeBetweenPoints / MaximumDouble(prop.antennaEffectiveHeight[j], 5.0)));
 			}
 
-			//| for one or more obstructions only NOTE buried as in ITM FORTRAN and DLL, not functional
+			// for one or more obstructions only NOTE buried as in ITM FORTRAN and DLL, not functional
 			if ((prop.horizonDistance[0] + prop.horizonDistance[1]) <= prop.distance)
 			{
 				//q = pow(prop.distance/(dl[0]+dl[1])), 2.0);
@@ -2880,7 +2880,7 @@ PrepareForPointToPointModeAnalysisV2
 				prop.horizonDistance[j] = sqrt(2.0*prop.antennaEffectiveHeight[j] / prop.relativeCurvature)*exp(-0.07*sqrt(prop.interdecileElevationRangeBetweenPoints / MaximumDouble(prop.antennaEffectiveHeight[j], 5.0)));
 			}
 
-			//| this sets (or resets) prop.grazingAngle, and is not in The Guide FORTRAN QLRPFL
+			// this sets (or resets) prop.grazingAngle, and is not in The Guide FORTRAN QLRPFL
 			for (j = 0; j < 2; j++)
 			{
 				q = sqrt(2.0*prop.antennaEffectiveHeight[j] / prop.relativeCurvature);
@@ -2888,7 +2888,7 @@ PrepareForPointToPointModeAnalysisV2
 			}
 		}
 	}
-	else	//| for ITWOM, computes antennaEffectiveHeight for tx, rcvr, and the receiver approach angles for use in CalculateClutterLoss
+	else	// for ITWOM, computes antennaEffectiveHeight for tx, rcvr, and the receiver approach angles for use in CalculateClutterLoss
 	{
 		prop.antennaEffectiveHeight[0] = prop.antennaHeightAboveGroundLevel[0] + (pfl[2]);
 		prop.antennaEffectiveHeight[1] = prop.antennaHeightAboveGroundLevel[1] + (pfl[np + 2]);
@@ -2974,11 +2974,11 @@ PrepareForPointToPointModeAnalysisV2
 //|             Results are probably invalid.
 //| 
 //| ------------------------------
-void 
-PointToPointCalculationLegacy
-   (double elev[], 
-	double tht_m, 
-	double rht_m, 
+void
+PointToPointCalculationLegacy(
+	double elev[],
+	double tht_m,
+	double rht_m,
 	double dielectricRelativePermittivityConstant,
 	double conductivitySiemensPerMeter,
 	double atmosphericBendingConstant,
@@ -2987,14 +2987,14 @@ PointToPointCalculationLegacy
 	int antennaPolarization,
 	double fractionOfSituations,
 	double fractionOfTime,
-	double &dbloss, 
-	char *strmode, 
-	int strmodeLen, 
+	double &dbloss,
+	char *strmode,
+	int strmodeLen,
 	int &errnum)
 {
-	prop_type   prop;
-	propv_type  propv;
-	propa_type  propa;
+	prop_type prop;
+	propv_type propv;
+	propa_type propa;
 	double zsys = 0;
 	double zc, zr;
 	double eno, enso, q;
@@ -3020,7 +3020,7 @@ PointToPointCalculationLegacy
 
 	if (q <= 0.0)
 	{
-		ja = (long)(3.0 + 0.1*elev[0]);	//| added (long) to correct
+		ja = (long)(3.0 + 0.1*elev[0]);	// added (long) to correct
 		jb = np - ja + 6;
 
 		for (i = ja - 1; i < jb; ++i)
@@ -3113,11 +3113,11 @@ PointToPointCalculationLegacy
 //|               Results are probably invalid.
 //| 
 //| ------------------------------
-void 
-PointToPointCalculation
-   (double elev[], 
-	double tht_m, 
-	double rht_m, 
+void
+PointToPointCalculation(
+	double elev[],
+	double tht_m,
+	double rht_m,
 	double dielectricRelativePermittivityConstant,
 	double conductivitySiemensPerMeter,
 	double atmosphericBendingConstant,
@@ -3126,14 +3126,14 @@ PointToPointCalculation
 	int antennaPolarization,
 	double fractionOfSituations,
 	double fractionOfTime,
-	double &dbloss, 
-	char *strmode, 
-	int strmodeLen, 
+	double &dbloss,
+	char *strmode,
+	int strmodeLen,
 	int &errnum)
 {
-	prop_type   prop;
-	propv_type  propv;
-	propa_type  propa;
+	prop_type prop;
+	propv_type propv;
+	propa_type propa;
 
 	double zsys = 0;
 	double zc, zr;
@@ -3161,14 +3161,14 @@ PointToPointCalculation
 	enso = 0.0;
 	q = enso;
 
-	//| PRESET VALUES for Basic Version w/o additional inputs active
+	// PRESET VALUES for Basic Version w/o additional inputs active
 
-	prop.encc = 1000.0;					//| double enc_ncc_clcref preset
-	prop.canopyClutterHeight = 22.5;	//| double clutter_height preset to ILLR calibration.
-										//| use 25.3 for ITU-P1546-2 calibration
-	prop.clutterDensity = 1.0;			//| double clutter_density preset
-	int mode_var = 1; 					//| int mode_var set to 1 for FCC compatibility;
-										//| normally, SPLAT presets this to 12
+	prop.encc = 1000.0;					// double enc_ncc_clcref preset
+	prop.canopyClutterHeight = 22.5;	// double clutter_height preset to ILLR calibration.
+										// use 25.3 for ITU-P1546-2 calibration
+	prop.clutterDensity = 1.0;			// double clutter_density preset
+	int mode_var = 1; 					// int mode_var set to 1 for FCC compatibility;
+										// normally, SPLAT presets this to 12
 
 	if (q <= 0.0)
 	{
@@ -3258,33 +3258,33 @@ PointToPointCalculation
 //|             Results are probably invalid.
 //| 
 //| ------------------------------
-void 
-PointToPointCalculationMdhTwo
-(double elev[], 
-	double tht_m, 
+void
+PointToPointCalculationMdhTwo(
+	double elev[],
+	double tht_m,
 	double rht_m,
 	double dielectricRelativePermittivityConstant,
 	double conductivitySiemensPerMeter,
 	double atmosphericBendingConstant,
-	double enc_ncc_clcref, 
-	double clutter_height, 
+	double enc_ncc_clcref,
+	double clutter_height,
 	double clutter_density,
-	double delta_h_diff, 
+	double delta_h_diff,
 	double referenceFrequency,
 	int radioClimate,
 	int antennaPolarization,
 	int mode_var,
-	double timepct, 
-	double locpct, 
+	double timepct,
+	double locpct,
 	double confpct,
-	double &dbloss, 
-	int &propmode, 
-	double &deltaH, 
+	double &dbloss,
+	int &propmode,
+	double &deltaH,
 	int &errnum)
 {
-	prop_type   prop;
-	propv_type  propv;
-	propa_type  propa;
+	prop_type prop;
+	propv_type propv;
+	propa_type propa;
 	double zsys = 0;
 	double ztime, zloc, zconf;
 	double eno, enso, q;
@@ -3292,7 +3292,7 @@ PointToPointCalculationMdhTwo
 	//double dkm, xkm;
 	double fs;
 
-	propmode = -1;	//| mode is undefined
+	propmode = -1;	// mode is undefined
 	prop.antennaHeightAboveGroundLevel[0] = tht_m;
 	prop.antennaHeightAboveGroundLevel[1] = rht_m;
 	propv.radioClimate = radioClimate;
@@ -3315,16 +3315,16 @@ PointToPointCalculationMdhTwo
 	enso = 0.0;
 	q = enso;
 
-	//| PRESET VALUES for Basic Version w/o additional inputs active
+	// PRESET VALUES for Basic Version w/o additional inputs active
 
-	prop.encc = 1000.0;					//| double enc_ncc_clcref
-	prop.canopyClutterHeight = 22.5;	//| double clutter_height
-	prop.clutterDensity = 1.0;			//| double clutter_density
-	mode_var = 1;						//| int mode_var set for FCC ILLR
+	prop.encc = 1000.0;					// double enc_ncc_clcref
+	prop.canopyClutterHeight = 22.5;	// double clutter_height
+	prop.clutterDensity = 1.0;			// double clutter_density
+	mode_var = 1;						// int mode_var set for FCC ILLR
 
 	if (q <= 0.0)
 	{
-		ja = (long)(3.0 + 0.1 * elev[0]); //| to match addition of (long)
+		ja = (long)(3.0 + 0.1 * elev[0]); // to match addition of (long)
 		jb = np - ja + 6;
 		for (i = ja - 1; i < jb; ++i)
 		{
@@ -3342,26 +3342,26 @@ PointToPointCalculationMdhTwo
 	q = prop.distance - propa.dla;
 	if (int(q) < 0.0)
 	{
-		propmode = 0;	//| L-of-S 
+		propmode = 0;	// L-of-S 
 	}
 	else
 	{
 		if (int(q) == 0.0)
 		{
-			propmode = 4;	//| 1-Hrzn
+			propmode = 4;	// 1-Hrzn
 		}
 		else if (int(q) > 0.0)
 		{
-			propmode = 8;	//| 2-Hrzn
+			propmode = 8;	// 2-Hrzn
 		}
 
 		if ((prop.distance <= propa.dlsa) || (prop.distance <= propa.dx))
 		{
-			propmode += 1;	//| Diff
+			propmode += 1;	// Diff
 		}
 		else if (prop.distance > propa.dx)
 		{
-			propmode += 2;	//| Tropo
+			propmode += 2;	// Tropo
 		}
 	}
 	dbloss = CalculateLongleyRiceVariability(ztime, zloc, zconf, prop, propv) + fs;	
@@ -3394,33 +3394,33 @@ PointToPointCalculationMdhTwo
 //|             Results are probably invalid.
 //| 
 //| ------------------------------
-void 
-PointToPointCalculationDh
-(double elev[], 
-	double tht_m, 
+void
+PointToPointCalculationDh(
+	double elev[],
+	double tht_m,
 	double rht_m,
 	double dielectricRelativePermittivityConstant,
 	double conductivitySiemensPerMeter,
 	double atmosphericBendingConstant,
-	double enc_ncc_clcref, 
-	double clutter_height, 
+	double enc_ncc_clcref,
+	double clutter_height,
 	double clutter_density,
-	double delta_h_diff, 
+	double delta_h_diff,
 	double referenceFrequency,
 	int radioClimate,
 	int antennaPolarization,
 	double fractionOfSituations,
 	double fractionOfTime,
-	double loc, 
-	double &dbloss, 
+	double loc,
+	double &dbloss,
 	double &deltaH,
 	int &errnum)
 {
 	char strmode[100];
 	int strmodeLen = 100;
-	prop_type   prop;
-	propv_type  propv;
-	propa_type  propa;
+	prop_type prop;
+	propv_type propv;
+	propa_type propa;
 	double zsys = 0;
 	double zc, zr;
 	double eno, enso, q;
@@ -3450,15 +3450,15 @@ PointToPointCalculationDh
 	enso = 0.0;
 	q = enso;
 
-	//| PRESET VALUES for Basic Version w/o additional inputs active
+	// PRESET VALUES for Basic Version w/o additional inputs active
 
-	prop.encc = 1000.00;				//| double enc_ncc_clcref
-	prop.canopyClutterHeight = 22.5;   	//| double clutter_height
-	prop.clutterDensity = 1.00;			//| double clutter_density
+	prop.encc = 1000.00;				// double enc_ncc_clcref
+	prop.canopyClutterHeight = 22.5;   	// double clutter_height
+	prop.clutterDensity = 1.00;			// double clutter_density
 
 	if (q <= 0.0)
 	{
-		ja = (long)(3.0 + 0.1 * elev[0]);	//| to match KD2BD addition of (long)
+		ja = (long)(3.0 + 0.1 * elev[0]);	// to match KD2BD addition of (long)
 		jb = np - ja + 6;
 		for (i = ja - 1; i < jb; ++i)
 		{
@@ -3538,31 +3538,31 @@ PointToPointCalculationDh
 //|   strmode is not used at this time.
 //| 
 //| ------------------------------
-void 
-AreaCalculation
-   (long ModVar, 
-	double deltaH, 
-	double tht_m, 
-	double rht_m, 
-	double dist_km, 
-	int TSiteCriteria, 
-	int RSiteCriteria, 
+void
+AreaCalculation(
+	long ModVar,
+	double deltaH,
+	double tht_m,
+	double rht_m,
+	double dist_km,
+	int TSiteCriteria,
+	int RSiteCriteria,
 	double dielectricRelativePermittivityConstant,
 	double conductivitySiemensPerMeter,
 	double atmosphericBendingConstant,
-	double enc_ncc_clcref, 
-	double clutter_height, 
-	double clutter_density, 
-	double delta_h_diff, 
+	double enc_ncc_clcref,
+	double clutter_height,
+	double clutter_density,
+	double delta_h_diff,
 	double referenceFrequency,
 	int radioClimate,
 	int antennaPolarization,
 	int mode_var,
-	double pctTime, 
-	double pctLoc, 
-	double pctConf, 
-	double &dbloss, 
-	char *strmode, 
+	double pctTime,
+	double pctLoc,
+	double pctConf,
+	double &dbloss,
+	char *strmode,
 	int &errnum)
 {
 	prop_type prop;
@@ -3626,28 +3626,28 @@ AreaCalculation
 //| NOTES: 
 //| 
 //| ------------------------------
-double 
-IrregularTerrainModelAreaCalculationDbLoss
-   (long ModVar, 
-	double deltaH, 
-	double tht_m, 
+double
+IrregularTerrainModelAreaCalculationDbLoss(
+	long ModVar,
+	double deltaH,
+	double tht_m,
 	double rht_m,
-	double dist_km, 
-	int TSiteCriteria, 
+	double dist_km,
+	int TSiteCriteria,
 	int RSiteCriteria,
 	double dielectricRelativePermittivityConstant,
 	double conductivitySiemensPerMeter,
 	double atmosphericBendingConstant,
-	double enc_ncc_clcref, 
-	double clutter_height, 
+	double enc_ncc_clcref,
+	double clutter_height,
 	double clutter_density,
-	double delta_h_diff, 
+	double delta_h_diff,
 	double referenceFrequency,
 	int radioClimate,
 	int antennaPolarization,
-	int mode_var, 
-	double pctTime, 
-	double pctLoc, 
+	int mode_var,
+	double pctTime,
+	double pctLoc,
 	double pctConf)
 {
 	char strmode[200];
