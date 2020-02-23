@@ -25,6 +25,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Usgs2SdfLib", "usgs2sdfLib\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "UnitTests\UnitTests.vcxproj", "{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{AB0E557C-3622-4A3E-A4FA-2B866D7E9A25}"
+	ProjectSection(SolutionItems) = preProject
+		IntegrationTests\IntegrationTestRunner.bat = IntegrationTests\IntegrationTestRunner.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
