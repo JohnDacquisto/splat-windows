@@ -2599,6 +2599,7 @@ ReadLongleyRiceParameterDataForSite(
 	itmParameters->effectiveRadiatedPower = 0.0;
 
 	// Generate .lrp filename from txsite filename.
+	// JAD TODO: Change this approach to accomodate relative file paths.
 
 	for (x = 0; (txsite.filename[x] != '.') && (txsite.filename[x] != 0) && (x < 250); x++)
 	{

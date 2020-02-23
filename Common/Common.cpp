@@ -281,7 +281,7 @@ CommonUnhandledExceptionFilter(
 			if (pDump)
 			{
 				// Found the function address, so save the minidump file.
-				// JAD TODO - Save this to the working folder?
+				// JAD TODO: Save this to the working folder?
 
 				HANDLE hFile = CreateFile("C:\\Temp\\splat.dmp", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 

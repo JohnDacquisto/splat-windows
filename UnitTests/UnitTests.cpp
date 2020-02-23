@@ -886,42 +886,42 @@ TEST(ItwomTests, QlraTests)
 
 TEST(ItwomTests, CalculateLongleyRicePropagationTests)
 {
-	// JAD TODO - Finish unit tests.
+	// JAD TODO: Finish unit tests.
 }
 
 TEST(ItwomTests, CalculateLongleyRicePropagationV2Tests)
 {
-	// JAD TODO - Finish unit tests.
+	// JAD TODO: Finish unit tests.
 }
 
 TEST(ItwomTests, CalculateLongleyRiceVariabilityTests)
 {
-	// JAD TODO - Finish unit tests.
+	// JAD TODO: Finish unit tests.
 }
 
 TEST(ItwomTests, CalculateHorizonDistancesTests)
 {
-	// JAD TODO - Finish unit tests.
+	// JAD TODO: Finish unit tests.
 }
 
 TEST(ItwomTests, CalculateHorizonDistancesV2Tests)
 {
-	// JAD TODO - Finish unit tests.
+	// JAD TODO: Finish unit tests.
 }
 
 TEST(ItwomTests, CalculateTerrainInterdecileRangeDeltaV2Tests)
 {
-	// JAD TODO - Finish unit tests.
+	// JAD TODO: Finish unit tests.
 }
 
 TEST(ItwomTests, PrepareForPointToPointModeAnalysisTests)
 {
-	// JAD TODO - Finish unit tests.
+	// JAD TODO: Finish unit tests.
 }
 
 TEST(ItwomTests, PrepareForPointToPointModeAnalysisV2Tests)
 {
-	// JAD TODO - Finish unit tests.
+	// JAD TODO: Finish unit tests.
 }
 
 
