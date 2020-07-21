@@ -13,7 +13,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Usgs2Sdf", "USGS2SDF\USGS2S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Srtm2Sdf", "SRTM2SDF\SRTM2SDF.vcxproj", "{F0FBFEF6-2DAB-4BEB-8665-E550A515F6CA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{F60693C4-018D-4012-A27F-952245FF6CD5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CommonLib", "Common\Common.vcxproj", "{F60693C4-018D-4012-A27F-952245FF6CD5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SplatLib", "SplatLib\SplatLib.vcxproj", "{BE37FC6E-6287-4D59-A5B5-BFD391FE11CE}"
 EndProject
@@ -28,6 +28,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{AB0E557C-3622-4A3E-A4FA-2B866D7E9A25}"
 	ProjectSection(SolutionItems) = preProject
 		IntegrationTests\IntegrationTestRunner.bat = IntegrationTests\IntegrationTestRunner.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FBBC106F-604B-4BA7-9C08-25C6409C1705}"
+	ProjectSection(SolutionItems) = preProject
+		open_splat_sln.bat = open_splat_sln.bat
+		Common\version.h = Common\version.h
+		Common\version.rc2 = Common\version.rc2
 	EndProjectSection
 EndProject
 Global
