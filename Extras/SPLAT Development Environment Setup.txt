@@ -1,0 +1,11 @@
+Steps to setup SPLAT development environment and run in debug mode on Windows:
+
+(1) Install Visual Studio 2019. Get C++ package. Make sure you have a Git client as well (e.g. TortoiseGit). Also requires Google Test for unit testing framework, as well as WiX install and plugin to generate MSI.
+
+(2) Download and install GnuPlot for Windows, v5.2.2 or later. Also need an image viewer that can open .ppm files (e.g. IrfanView). Additional optional software: Google Earth for overlaying .kml files (can either use the browser version in Google Chrome, or download and install the desktop version Google Earth Pro); Xastir to view .geo files.
+
+(3) Need USGS and SRTM data, converted to SDF files. Need city and cartographic boundary .dat files. Can be sourced from U.S. 2000 Census data, and some various collections of lat/lons of cities/sites.
+
+(4) Use the "start_splat_sln.bin" script to open Visual Studio and splat.sln, to ensure environment variables are set correctly.
+
+(5) If everything builds without error, run the Unit Tests (via UnitTests project) to ensure they all pass. Then, run the integration tests (via IntegrationTestRunner.bat) and review the output to see if there are any deltas with the regression test results.

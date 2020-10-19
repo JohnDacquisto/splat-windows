@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="SPLAT" Version="1.4.2.0" Language="1033" Manufacturer="SPLAT" UpgradeCode="BF1E82CB-51B6-4802-B75B-18B2A93E0AE6">
+    <Package Description="!(wix.ProductDescription)" Comments="Contact: " InstallerVersion="300" Compressed="yes" InstallScope="perMachine" Keywords="Installer,MSI,Database,SPLAT" Languages="1033" Manufacturer="SPLAT" Platform="x64" Id="*" />
+    <Media Id="1" Cabinet="Data1.cab" EmbedCab="yes" VolumeLabel="DISK1" />
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder" Name="PFiles">
+        <Directory Id="INSTALLDIR" Name="SPLAT">
+          <Component Id="BEARING.EXE" DiskId="1" Guid="*" Win64="yes">
+            <File Id="BEARING.EXE" Name="Bearing.exe" Source="!(wix.SourceFolder)Bearing.exe" />
+          </Component>
+          <Component Id="CITYDECODER.EXE" DiskId="1" Guid="*" Win64="yes">
+            <File Id="CITYDECODER.EXE" Name="CityDecoder.exe" Source="!(wix.SourceFolder)CityDecoder.exe" />
+          </Component>
+          <Component Id="SPLAT.EXE" DiskId="1" Guid="*" Win64="yes">
+            <File Id="SPLAT.EXE" Name="Splat.exe" Source="!(wix.SourceFolder)Splat.exe" />
+          </Component>
+          <Component Id="SRTM2SDF.EXE" DiskId="1" Guid="*" Win64="yes">
+            <File Id="SRTM2SDF.EXE" Name="Srtm2Sdf.exe" Source="!(wix.SourceFolder)Srtm2Sdf.exe" />
+          </Component>
+          <Component Id="USGS2SDF.EXE" DiskId="1" Guid="*" Win64="yes">
+            <File Id="USGS2SDF.EXE" Name="Usgs2Sdf.exe" Source="!(wix.SourceFolder)Usgs2Sdf.exe" />
+          </Component>
+          <Component Id="BEARINGLIB.DLL" DiskId="1" Guid="*" Win64="yes">
+            <File Id="BEARINGLIB.DLL" Name="BearingLib.dll" Source="!(wix.SourceFolder)BearingLib.dll" />
+          </Component>
+          <Component Id="COMMONLIB.DLL" DiskId="1" Guid="*" Win64="yes">
+            <File Id="COMMONLIB.DLL" Name="CommonLib.dll" Source="!(wix.SourceFolder)CommonLib.dll" />
+          </Component>
+          <Component Id="SPLATLIB.DLL" DiskId="1" Guid="*" Win64="yes">
+            <File Id="SPLATLIB.DLL" Name="SplatLib.dll" Source="!(wix.SourceFolder)SplatLib.dll" />
+          </Component>
+          <Component Id="SRTM2SDFLIB.DLL" DiskId="1" Guid="*" Win64="yes">
+            <File Id="SRTM2SDFLIB.DLL" Name="Srtm2SdfLib.dll" Source="!(wix.SourceFolder)Srtm2SdfLib.dll" />
+          </Component>
+          <Component Id="USGS2SDFLIB.DLL" DiskId="1" Guid="*" Win64="yes">
+            <File Id="USGS2SDFLIB.DLL" Name="Usgs2SdfLib.dll" Source="!(wix.SourceFolder)Usgs2SdfLib.dll" />
+          </Component>
+          <Component Id="EnvironmentVariables" Guid="2BF99764-333F-4347-B6E9-CA428119AC5F" Win64="yes">
+            <Environment Id="PATH" Name="PATH" Action="set" Permanent="no" System="yes" Part="last" Value="[INSTALLDIR]" />
+            <CreateFolder />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+    <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
+      <ComponentRef Id="BEARING.EXE" />
+      <ComponentRef Id="BEARINGLIB.DLL" />
+      <ComponentRef Id="CITYDECODER.EXE" />
+      <ComponentRef Id="COMMONLIB.DLL" />
+      <ComponentRef Id="SPLAT.EXE" />
+      <ComponentRef Id="SPLATLIB.DLL" />
+      <ComponentRef Id="SRTM2SDF.EXE" />
+      <ComponentRef Id="SRTM2SDFLIB.DLL" />
+      <ComponentRef Id="USGS2SDF.EXE" />
+      <ComponentRef Id="USGS2SDFLIB.DLL" />
+      <ComponentRef Id="EnvironmentVariables" />
+    </Feature>
+    <UI />
+    <MajorUpgrade AllowSameVersionUpgrades="yes" DowngradeErrorMessage="A newer version of this product is already installed." />
+    <Property Id="ARPCOMMENTS" Value="!(wix.ProductDescription)" />
+    <Property Id="ARPNOMODIFY" Value="1" />
+    <Property Id="REBOOT" Value="ReallySuppress" />
+    <WixVariable Id="ProductDescription" Value="SPLAT Applications" />
+    <WixVariable Id="SourceFolder" Value="..\x64\Release\" />
+  </Product>
+</Wix>

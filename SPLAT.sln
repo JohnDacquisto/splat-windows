@@ -37,6 +37,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FBBC10
 		Common\version.rc2 = Common\version.rc2
 	EndProjectSection
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "SplatInstaller", "SplatInstaller\SplatInstaller.wixproj", "{1619DA2A-E12E-4F52-82A7-E4BE1AD10A29}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extras", "Extras", "{647D3900-785B-45D2-BEE9-24DCB4F9B96D}"
+	ProjectSection(SolutionItems) = preProject
+		Extras\SPLAT Development Environment Setup.txt = Extras\SPLAT Development Environment Setup.txt
+		Extras\SPLAT WiX Notes.txt = Extras\SPLAT WiX Notes.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -177,6 +185,14 @@ Global
 		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|x64.ActiveCfg = Release|x64
 		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|x86.ActiveCfg = Release|Win32
 		{7ECFD5A2-BD02-4EDD-9231-62A5771037CE}.Release|x86.Build.0 = Release|Win32
+		{1619DA2A-E12E-4F52-82A7-E4BE1AD10A29}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{1619DA2A-E12E-4F52-82A7-E4BE1AD10A29}.Debug|x64.ActiveCfg = Debug|x86
+		{1619DA2A-E12E-4F52-82A7-E4BE1AD10A29}.Debug|x86.ActiveCfg = Debug|x86
+		{1619DA2A-E12E-4F52-82A7-E4BE1AD10A29}.Debug|x86.Build.0 = Debug|x86
+		{1619DA2A-E12E-4F52-82A7-E4BE1AD10A29}.Release|Any CPU.ActiveCfg = Release|x86
+		{1619DA2A-E12E-4F52-82A7-E4BE1AD10A29}.Release|x64.ActiveCfg = Release|x86
+		{1619DA2A-E12E-4F52-82A7-E4BE1AD10A29}.Release|x86.ActiveCfg = Release|x86
+		{1619DA2A-E12E-4F52-82A7-E4BE1AD10A29}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

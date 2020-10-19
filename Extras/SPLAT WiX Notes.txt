@@ -1,0 +1,20 @@
+Notes for building SPLAT MSI using WiX.
+
+(1) Build all SPLAT projects in Release mode, after updating version numbers and other settings & files appropriately (version.h).
+- Keep a copy of the SPLAT Release build .pdb files, for debugging minidump files.
+
+(2) Open the SplatInstaller.wxs file, update the Product Version number to match the settings in step 1. Make other edits as needed (adding/removing files, shortcuts, environment variables, registry settings, etc.). Once finished, save and close the .wxs file.
+- Make sure to NOT touch the "Upgrade Code", as it must remain the same across all MSIs for a specific application.
+- If adding a new COM DLL/OCX file, need to extract the COM information. WiX has tools to facilitate the extraction.
+
+(3) Build the SplatInstaller project in Release mode to generate the MSI.
+
+(4) Some notes on MSI validation:
+- To install the MSI, start the Command Prompt as Administrator, navigate to the directory with the MSI, and run: "msiexec /i splat.msi addlocal=all allusers=2 /qb"
+"addlocal=all" installs all features in the MSI locally.
+"allusers=2" performs a per-machine installation (rather than per-user).
+"/qb" runs the installer in basic UI mode (only progress bar and Cancel button).
+- If there are any issues with the install, include "/l*v log.txt" as well, to generate a verbose log file.
+- After installing the MSI, ensure the expected files are present in Program Files, and the PATH variable was updated.
+- To uninstall the MSI, start the command prompt as Administrator, navigate to the directory with the MSI, and run: "msiexec /x splat.msi"
+The uninstall removes files from Program Files, and reverts the PATH variable change.
