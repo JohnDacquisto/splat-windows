@@ -7,6 +7,7 @@
 #include <Windows.h>
 #include <dbghelp.h>
 #include "Common.h"
+#include "version.h"
 #include "constants.h"
 
 typedef BOOL(WINAPI *MINIDUMPWRITEDUMP)(
@@ -281,9 +282,9 @@ CommonUnhandledExceptionFilter(
 			if (pDump)
 			{
 				// Found the function address, so save the minidump file.
-				// JAD TODO: Save this to the working folder?
-
-				HANDLE hFile = CreateFile("C:\\Temp\\splat.dmp", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+				// JAD TODO: Create a unique name for the .dmp file, using the current date & time when the exception occurred.
+				
+				HANDLE hFile = CreateFile(MINIDUMP_PATH "splat.dmp", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 				if (hFile != INVALID_HANDLE_VALUE)
 				{

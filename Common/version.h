@@ -1,12 +1,13 @@
 // Edit these defines for SPLAT release.
 
-#define VERSION_NAME					"1.4.2.0"
-#define VERSION_DATE					"JUL-2020"
+#define APP_NAME			"SPLAT"		// OLD NAME: splat_name
+#define VERSION_NAME		"1.4.2.0"	// OLD NAME: splat_version
+#define VERSION_DATE		"JUL-2020"
 
-#define VERSION_MAJOR					1
-#define VERSION_MINOR					4
-#define VERSION_REVISION				2
-#define VERSION_BUILD					0
+#define VERSION_MAJOR		1
+#define VERSION_MINOR		4
+#define VERSION_REVISION	2
+#define VERSION_BUILD		0
 
 
 // Uncomment this define to include the Visual Leak Detector header.
@@ -44,5 +45,5 @@
 #define VER_FILEFLAGS					VER_VER_DEBUG
 #define VER_FILETYPE					VFT_APP
 
-//#define VERSION_HEADER				",v " VERSION_NAME ".0 " VERSION_DATE " "
-//#define MINIDUMP_PATH					"C:\\Temp\\SPLAT_Error_Logs\\" VERSION_NAME "\\"
+#define VERSION_HEADER					VERSION_NAME " (" VERSION_DATE ")"
+#define MINIDUMP_PATH					"C:\\Temp\\SPLAT_Error_Logs\\" VERSION_NAME "\\"

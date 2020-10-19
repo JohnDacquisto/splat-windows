@@ -11,10 +11,6 @@
 
 #define GAMMA 2.5
 
-#define SPLAT_NAME "SPLAT\0"	// OLD NAME: splat_name
-
-#define SPLAT_VERSION "1.4.2\0"	// OLD NAME: splat_version
-
 #define ITWOM_VERSION 3.0		// OLD NAME: ITWOMVersion
 
 #ifndef PI
