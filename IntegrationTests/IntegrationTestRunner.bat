@@ -401,4 +401,12 @@ fc.exe /a "%SPLAT%\IntegrationTests\Test16\39x40x77x78.sdf" "%SPLAT%\Integration
 echo.>> %SPLAT%\IntegrationTests\%TestResults%
 
 
+echo.
+echo.
+echo.
+echo IntegrationTestRunner complete.
+echo.
+
+pause
+
 exit

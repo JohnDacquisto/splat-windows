@@ -1,7 +1,7 @@
 // Edit these defines for SPLAT release.
 
 #define APP_NAME			"SPLAT"		// OLD NAME: splat_name
-#define VERSION_NAME		"1.4.2.0"	// OLD NAME: splat_version
+#define VERSION_NAME		"1.4.2"	// OLD NAME: splat_version
 #define VERSION_DATE		"JUL-2020"
 
 #define VERSION_MAJOR		1
@@ -45,5 +45,5 @@
 #define VER_FILEFLAGS					VER_VER_DEBUG
 #define VER_FILETYPE					VFT_APP
 
-#define VERSION_HEADER					VERSION_NAME " (" VERSION_DATE ")"
+#define VERSION_HEADER					VERSION_NAME
 #define MINIDUMP_PATH					"C:\\Temp\\SPLAT_Error_Logs\\" VERSION_NAME "\\"
