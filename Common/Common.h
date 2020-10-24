@@ -11,6 +11,10 @@
 
 // Export functions
 
+inline double _declspec(dllexport)
+ToDouble(
+	int x);
+
 double _declspec(dllexport)
 ArcCosine(
 	double x,

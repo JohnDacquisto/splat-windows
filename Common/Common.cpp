@@ -19,6 +19,23 @@ typedef BOOL(WINAPI *MINIDUMPWRITEDUMP)(
 
 //| ------------------------------
 //| 
+//| FUNCTION: ToDouble
+//| 
+//| NOTES: 
+//|   Convenience function to cast int to double
+//|   with cleaner syntax.
+//| 
+//| ------------------------------
+double
+ToDouble(
+	int x)
+{
+	return (double)x;
+}
+
+
+//| ------------------------------
+//| 
 //| FUNCTION: ArcCosine
 //| 
 //| OLD NAME: arccos

@@ -63,10 +63,10 @@ LinearInterpolation(
 		return y0;
 	}
 
-	delta_y = (double)(y0 - y1);
-	delta_x = (double)(x0 - x1);
+	delta_y = ToDouble(y0 - y1);
+	delta_x = ToDouble(x0 - x1);
 
-	result = y0 + (int)ceil((delta_y / delta_x)*(n - x0));
+	result = y0 + (int)ceil((delta_y / delta_x) * ToDouble(n - x0));
 
 	return result;
 }
@@ -2420,47 +2420,50 @@ LoadUserDefinedTerrainFile(
 
 		y = 0;
 
-		fscanf_s(fd1, "%ld, %ld, %lf", &xpix, &ypix, &height);
-
-		do
+		if (!err && fd1 != NULL && fd2 != NULL)
 		{
-			x = 0;
-			z = 0;
-
-			fscanf_s(fd2, "%ld, %ld, %lf", &tempxpix, &tempypix, &tempheight);
+			fscanf_s(fd1, "%ld, %ld, %lf", &xpix, &ypix, &height);
 
 			do
 			{
-				if ((x > y) && (xpix == tempxpix) && (ypix == tempypix))
-				{
-					z = 1;  // Dupe
+				x = 0;
+				z = 0;
 
-					if (tempheight > height)
+				fscanf_s(fd2, "%ld, %ld, %lf", &tempxpix, &tempypix, &tempheight);
+
+				do
+				{
+					if ((x > y) && (xpix == tempxpix) && (ypix == tempypix))
 					{
-						height = tempheight;
+						z = 1;  // Dupe
+
+						if (tempheight > height)
+						{
+							height = tempheight;
+						}
 					}
-				}
-				else
+					else
+					{
+						fscanf_s(fd2, "%ld, %ld, %lf", &tempxpix, &tempypix, &tempheight);
+						x++;
+					}
+
+				} while ((feof(fd2) == 0) && (z == 0));
+
+				if (z == 0)  // No duplicate found
 				{
-					fscanf_s(fd2, "%ld, %ld, %lf", &tempxpix, &tempypix, &tempheight);
-					x++;
+					AddUserDefinedTerrainToDigitalElevationModelData(xpix * (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)), ypix * (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)), height, digitalElevationModelWrapper);
 				}
 
-			} while ((feof(fd2) == 0) && (z == 0));
+				fscanf_s(fd1, "%ld, %ld, %lf", &xpix, &ypix, &height);
+				y++;
 
-			if (z == 0)  // No duplicate found
-			{
-				AddUserDefinedTerrainToDigitalElevationModelData(xpix * (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)), ypix * (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)), height, digitalElevationModelWrapper);
-			}
+				rewind(fd2);
+			} while (feof(fd1) == 0);
 
-			fscanf_s(fd1, "%ld, %ld, %lf", &xpix, &ypix, &height);
-			y++;
-
-			rewind(fd2);
-		} while (feof(fd1) == 0);
-
-		fclose(fd1);
-		fclose(fd2);
+			fclose(fd1);
+			fclose(fd2);
+		}
 		_unlink(tempname);
 	}
 	else
@@ -3114,7 +3117,7 @@ AnalyzeAndPlotPathLossBetweenSites(
 			// shortest distance terrain can play a role in
 			// path loss.
 
-			pathElevation[0] = y - 1;  // (number of points - 1)
+			pathElevation[0] = ToDouble(y - 1);  // (number of points - 1)
 
 			// Distance between elevation samples
 
@@ -3355,7 +3358,7 @@ PlotLineOfSightCoverageFromSiteAtAltitude(
 
 	th = ((double)digitalElevationModelWrapper->demPixelsPerDegree) / 64.0;
 
-	z = (int)(th*ConvertToNormalizedAngle(maximumLongitudeWest - minimumLongitudeWest));
+	z = (int)(th * ConvertToNormalizedAngle(ToDouble(maximumLongitudeWest - minimumLongitudeWest)));
 
 	minwest = (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree)) + (double)minimumLongitudeWest;
 	maxnorth = (double)maximumLatitudeNorth - (1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree));
@@ -3395,7 +3398,7 @@ PlotLineOfSightCoverageFromSiteAtAltitude(
 	fprintf(stdout, "\n25%c to  50%c ", 37, 37);
 	fflush(stdout);
 
-	z = (int)(th*(double)(maximumLatitudeNorth - minimumLatitudeNorth));
+	z = (int)(th * ToDouble(maximumLatitudeNorth - minimumLatitudeNorth));
 
 	for (latitude = maxnorth, x = 0, y = 0; latitude >= (double)minimumLatitudeNorth; y++, latitude = maxnorth - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y))
 	{
@@ -3427,7 +3430,7 @@ PlotLineOfSightCoverageFromSiteAtAltitude(
 	fprintf(stdout, "\n50%c to  75%c ", 37, 37);
 	fflush(stdout);
 
-	z = (int)(th*ConvertToNormalizedAngle(maximumLongitudeWest - minimumLongitudeWest));
+	z = (int)(th * ConvertToNormalizedAngle(ToDouble(maximumLongitudeWest - minimumLongitudeWest)));
 
 	for (longitude = minwest, x = 0, y = 0; LongitudeDifference(longitude, (double)maximumLongitudeWest) <= 0.0; y++, longitude = (minwest + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
@@ -3464,7 +3467,7 @@ PlotLineOfSightCoverageFromSiteAtAltitude(
 	fprintf(stdout, "\n75%c to 100%c ", 37, 37);
 	fflush(stdout);
 
-	z = (int)(th*(double)(maximumLatitudeNorth - minimumLatitudeNorth));
+	z = (int)(th * ToDouble(maximumLatitudeNorth - minimumLatitudeNorth));
 
 	for (latitude = (double)minimumLatitudeNorth, x = 0, y = 0; latitude < (double)maximumLatitudeNorth; y++, latitude = ((double)minimumLatitudeNorth + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
@@ -3640,7 +3643,7 @@ PlotAttenuationFromSiteAtAltitude(
 
 	th = ((double)digitalElevationModelWrapper->demPixelsPerDegree) / 64.0;
 
-	z = (int)(th*ConvertToNormalizedAngle(maximumLongitudeWest - minimumLongitudeWest));
+	z = (int)(th * ConvertToNormalizedAngle(ToDouble(maximumLongitudeWest - minimumLongitudeWest)));
 
 	for (longitude = minwest, x = 0, y = 0; LongitudeDifference(longitude, (double)maximumLongitudeWest) <= 0.0; y++, longitude = (minwest + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
@@ -3678,7 +3681,7 @@ PlotAttenuationFromSiteAtAltitude(
 	fprintf(stdout, "\n25%c to  50%c ", 37, 37);
 	fflush(stdout);
 
-	z = (int)(th*(double)(maximumLatitudeNorth - minimumLatitudeNorth));
+	z = (int)(th * ToDouble(maximumLatitudeNorth - minimumLatitudeNorth));
 
 	for (latitude = maxnorth, x = 0, y = 0; latitude >= (double)minimumLatitudeNorth; y++, latitude = (maxnorth - ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
@@ -3711,7 +3714,7 @@ PlotAttenuationFromSiteAtAltitude(
 	fprintf(stdout, "\n50%c to  75%c ", 37, 37);
 	fflush(stdout);
 
-	z = (int)(th*ConvertToNormalizedAngle(maximumLongitudeWest - minimumLongitudeWest));
+	z = (int)(th * ConvertToNormalizedAngle(ToDouble(maximumLongitudeWest - minimumLongitudeWest)));
 
 	for (longitude = minwest, x = 0, y = 0; LongitudeDifference(longitude, (double)maximumLongitudeWest) <= 0.0; y++, longitude = (minwest + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
@@ -3748,7 +3751,7 @@ PlotAttenuationFromSiteAtAltitude(
 	fprintf(stdout, "\n75%c to 100%c ", 37, 37);
 	fflush(stdout);
 
-	z = (int)(th*(double)(maximumLatitudeNorth - minimumLatitudeNorth));
+	z = (int)(th * ToDouble(maximumLatitudeNorth - minimumLatitudeNorth));
 
 	for (latitude = (double)minimumLatitudeNorth, x = 0, y = 0; latitude < (double)maximumLatitudeNorth; y++, latitude = ((double)minimumLatitudeNorth + ((1.0 / ((double)digitalElevationModelWrapper->demPixelsPerDegree))*(double)y)))
 	{
@@ -4397,10 +4400,10 @@ WritePortablePixMapLineOfSightCoverageFile(
 	errno_t err;
 
 	one_over_gamma = 1.0 / GAMMA;
-	conversion = 255.0 / pow((double)(maximumElevation - minimumElevation), one_over_gamma);
+	conversion = 255.0 / pow(ToDouble(maximumElevation - minimumElevation), one_over_gamma);
 
-	width = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(maximumLongitudeWest - minimumLongitudeWest));
-	height = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(maximumLatitudeNorth - minimumLatitudeNorth));
+	width = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(ToDouble(maximumLongitudeWest - minimumLongitudeWest)));
+	height = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(ToDouble(maximumLatitudeNorth - minimumLatitudeNorth)));
 
 	if (filename[0] == 0)
 	{
@@ -4660,7 +4663,7 @@ WritePortablePixMapLineOfSightCoverageFile(
 							else
 							{
 								// Elevation: Greyscale
-								terrain = (unsigned)(0.5 + pow((double)(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
+								terrain = (unsigned)(0.5 + pow(ToDouble(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
 								fprintf(fd, "%c%c%c", terrain, terrain, terrain);
 							}
 						}
@@ -4728,10 +4731,10 @@ WritePortablePixMapAttenuationFile(
 	errno_t err;
 
 	one_over_gamma = 1.0 / GAMMA;
-	conversion = 255.0 / pow((double)(maximumElevation - minimumElevation), one_over_gamma);
+	conversion = 255.0 / pow(ToDouble(maximumElevation - minimumElevation), one_over_gamma);
 
-	width = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(maximumLongitudeWest - minimumLongitudeWest));
-	height = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(maximumLatitudeNorth - minimumLatitudeNorth));
+	width = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(ToDouble(maximumLongitudeWest - minimumLongitudeWest)));
+	height = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(ToDouble(maximumLatitudeNorth - minimumLatitudeNorth)));
 
 	LoadSplatLossColorsForSite(xmtr[0], region);
 
@@ -4947,7 +4950,7 @@ WritePortablePixMapAttenuationFile(
 				red = 0;
 				green = 0;
 				blue = 0;
-
+				
 				if (loss <= region->level[0])
 				{
 					match = 0;
@@ -5020,7 +5023,7 @@ WritePortablePixMapAttenuationFile(
 							}
 							else
 							{
-								terrain = (unsigned)(0.5 + pow((double)(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
+								terrain = (unsigned)(0.5 + pow(ToDouble(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
 								fprintf(fd, "%c%c%c", terrain, terrain, terrain);
 							}
 						}
@@ -5042,7 +5045,7 @@ WritePortablePixMapAttenuationFile(
 							else
 							{
 								// Elevation: Greyscale
-								terrain = (unsigned)(0.5 + pow((double)(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
+								terrain = (unsigned)(0.5 + pow(ToDouble(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
 								fprintf(fd, "%c%c%c", terrain, terrain, terrain);
 							}
 						}
@@ -5148,7 +5151,7 @@ WritePortablePixMapAttenuationFile(
 					red = region->color[indx][0];
 					green = region->color[indx][1];
 					blue = region->color[indx][2];
-
+					
 					fprintf(fd, "%c%c%c", red, green, blue);
 				}
 			}
@@ -5309,10 +5312,10 @@ WritePortablePixMapSignalStrengthFile(
 	errno_t err;
 
 	one_over_gamma = 1.0 / GAMMA;
-	conversion = 255.0 / pow((double)(maximumElevation - minimumElevation), one_over_gamma);
+	conversion = 255.0 / pow(ToDouble(maximumElevation - minimumElevation), one_over_gamma);
 
-	width = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(maximumLongitudeWest - minimumLongitudeWest));
-	height = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(maximumLatitudeNorth - minimumLatitudeNorth));
+	width = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(ToDouble(maximumLongitudeWest - minimumLongitudeWest)));
+	height = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(ToDouble(maximumLatitudeNorth - minimumLatitudeNorth)));
 
 	LoadSplatSignalColorsForSite(xmtr[0], region);
 
@@ -5602,7 +5605,7 @@ WritePortablePixMapSignalStrengthFile(
 							}
 							else
 							{
-								terrain = (unsigned)(0.5 + pow((double)(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
+								terrain = (unsigned)(0.5 + pow(ToDouble(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
 								fprintf(fd, "%c%c%c", terrain, terrain, terrain);
 							}
 						}
@@ -5630,7 +5633,7 @@ WritePortablePixMapSignalStrengthFile(
 								else
 								{
 									// Elevation: Greyscale
-									terrain = (unsigned)(0.5 + pow((double)(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
+									terrain = (unsigned)(0.5 + pow(ToDouble(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
 									fprintf(fd, "%c%c%c", terrain, terrain, terrain);
 								}
 							}
@@ -5962,10 +5965,10 @@ WritePortablePixMapPowerLevelFile(
 	errno_t err;
 
 	one_over_gamma = 1.0 / GAMMA;
-	conversion = 255.0 / pow((double)(maximumElevation - minimumElevation), one_over_gamma);
+	conversion = 255.0 / pow(ToDouble(maximumElevation - minimumElevation), one_over_gamma);
 
-	width = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(maximumLongitudeWest - minimumLongitudeWest));
-	height = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(maximumLatitudeNorth - minimumLatitudeNorth));
+	width = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(ToDouble(maximumLongitudeWest - minimumLongitudeWest)));
+	height = (unsigned)(digitalElevationModelWrapper->demPixelsPerDegree * ConvertToNormalizedAngle(ToDouble(maximumLatitudeNorth - minimumLatitudeNorth)));
 
 	LoadSplatPowerColorsForSite(xmtr[0], region);
 
@@ -6255,7 +6258,7 @@ WritePortablePixMapPowerLevelFile(
 							}
 							else
 							{
-								terrain = (unsigned)(0.5 + pow((double)(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
+								terrain = (unsigned)(0.5 + pow(ToDouble(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
 								fprintf(fd, "%c%c%c", terrain, terrain, terrain);
 							}
 						}
@@ -6283,7 +6286,7 @@ WritePortablePixMapPowerLevelFile(
 								else
 								{
 									// Elevation: Greyscale
-									terrain = (unsigned)(0.5 + pow((double)(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
+									terrain = (unsigned)(0.5 + pow(ToDouble(digitalElevationModelWrapper->digitalElevationModel[indx].data[x0][y0] - minimumElevation), one_over_gamma)*conversion);
 									fprintf(fd, "%c%c%c", terrain, terrain, terrain);
 								}
 							}
@@ -6814,42 +6817,46 @@ GenerateGnuPlotTerrainProfileBetweenSites(
 	}
 
 	err = fopen_s(&fd, plotNameAndPath, "w");
-	fprintf(fd, "set grid\n");
-	fprintf(fd, "set yrange [%2.3f to %2.3f]\n", (useMetricUnits ? minheight * METERS_PER_FOOT : minheight), (useMetricUnits ? maxheight * METERS_PER_FOOT : maxheight));
-	fprintf(fd, "set encoding iso_8859_1\n");
-	fprintf(fd, "set term %s\n", term);
-	fprintf(fd, "set title \"%s Terrain Profile Between %s and %s (%.2f%c Azimuth)\"\n", APP_NAME, destination.name, source.name, AzimuthAngleBetweenSites(destination, source), 176);
 
-	if (useMetricUnits)
+	if (!err && fd != NULL)
 	{
-		fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f kilometers)\"\n", destination.name, source.name, KM_PER_MILE * GreatCircleDistanceBetweenSiteLocations(source, destination));
-		fprintf(fd, "set ylabel \"Ground Elevation Above Sea Level (meters)\"\n");
-	}
-	else
-	{
-		fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f miles)\"\n", destination.name, source.name, GreatCircleDistanceBetweenSiteLocations(source, destination));
-		fprintf(fd, "set ylabel \"Ground Elevation Above Sea Level (feet)\"\n");
-	}
+		fprintf(fd, "set grid\n");
+		fprintf(fd, "set yrange [%2.3f to %2.3f]\n", (useMetricUnits ? minheight * METERS_PER_FOOT : minheight), (useMetricUnits ? maxheight * METERS_PER_FOOT : maxheight));
+		fprintf(fd, "set encoding iso_8859_1\n");
+		fprintf(fd, "set term %s\n", term);
+		fprintf(fd, "set title \"%s Terrain Profile Between %s and %s (%.2f%c Azimuth)\"\n", APP_NAME, destination.name, source.name, AzimuthAngleBetweenSites(destination, source), 176);
 
-	fprintf(fd, "set output \"%s.%s\"\n", basename, ext);
-
-	if (groundClutterHeight > 0.0)
-	{
 		if (useMetricUnits)
 		{
-			fprintf(fd, "plot \"%s\" title \"Terrain Profile\" with lines, \"%s\" title \"Clutter Profile (%.2f meters)\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight*METERS_PER_FOOT);
+			fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f kilometers)\"\n", destination.name, source.name, KM_PER_MILE * GreatCircleDistanceBetweenSiteLocations(source, destination));
+			fprintf(fd, "set ylabel \"Ground Elevation Above Sea Level (meters)\"\n");
 		}
 		else
 		{
-			fprintf(fd, "plot \"%s\" title \"Terrain Profile\" with lines, \"%s\" title \"Clutter Profile (%.2f feet)\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight);
+			fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f miles)\"\n", destination.name, source.name, GreatCircleDistanceBetweenSiteLocations(source, destination));
+			fprintf(fd, "set ylabel \"Ground Elevation Above Sea Level (feet)\"\n");
 		}
-	}
-	else
-	{
-		fprintf(fd, "plot \"%s\" title \"\" with lines\n", profileNameAndPath);
-	}
 
-	fclose(fd);
+		fprintf(fd, "set output \"%s.%s\"\n", basename, ext);
+
+		if (groundClutterHeight > 0.0)
+		{
+			if (useMetricUnits)
+			{
+				fprintf(fd, "plot \"%s\" title \"Terrain Profile\" with lines, \"%s\" title \"Clutter Profile (%.2f meters)\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight * METERS_PER_FOOT);
+			}
+			else
+			{
+				fprintf(fd, "plot \"%s\" title \"Terrain Profile\" with lines, \"%s\" title \"Clutter Profile (%.2f feet)\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight);
+			}
+		}
+		else
+		{
+			fprintf(fd, "plot \"%s\" title \"\" with lines\n", profileNameAndPath);
+		}
+
+		fclose(fd);
+	}
 
 	char gnuPlotAndSplat[335];
 	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
@@ -7088,50 +7095,53 @@ GenerateGnuPlotElevationProfileBetweenSites(
 
 	err = fopen_s(&fd, plotNameAndPath, "w");
 
-	fprintf(fd, "set grid\n");
-
-	if (distance > 2.0)
+	if (!err && fd != NULL)
 	{
-		fprintf(fd, "set yrange [%2.3f to %2.3f]\n", (-fabs(refangle) - 0.25), maxangle + 0.25);
-	}
-	else
-	{
-		fprintf(fd, "set yrange [%2.3f to %2.3f]\n", minangle, refangle + (-minangle / 8.0));
-	}
+		fprintf(fd, "set grid\n");
 
-	fprintf(fd, "set encoding iso_8859_1\n");
-	fprintf(fd, "set term %s\n", term);
-	fprintf(fd, "set title \"%s Elevation Profile Between %s and %s (%.2f%c azimuth)\"\n", APP_NAME, destination.name, source.name, AzimuthAngleBetweenSites(destination, source), 176);
-
-	if (useMetricUnits)
-	{
-		fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f kilometers)\"\n", destination.name, source.name, KM_PER_MILE*distance);
-	}
-	else
-	{
-		fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f miles)\"\n", destination.name, source.name, distance);
-	}
-
-	fprintf(fd, "set ylabel \"Elevation Angle Along LOS Path Between\\n%s and %s (degrees)\"\n", destination.name, source.name);
-	fprintf(fd, "set output \"%s.%s\"\n", basename, ext);
-
-	if (groundClutterHeight > 0.0)
-	{
-		if (useMetricUnits)
+		if (distance > 2.0)
 		{
-			fprintf(fd, "plot \"%s\" title \"Real Earth Profile\" with lines, \"%s\" title \"Clutter Profile (%.2f meters)\" with lines, \"%s\" title \"Line of Sight Path (%.2f%c elevation)\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight*METERS_PER_FOOT, referenceNameAndPath, refangle, 176);
+			fprintf(fd, "set yrange [%2.3f to %2.3f]\n", (-fabs(refangle) - 0.25), maxangle + 0.25);
 		}
 		else
 		{
-			fprintf(fd, "plot \"%s\" title \"Real Earth Profile\" with lines, \"%s\" title \"Clutter Profile (%.2f feet)\" with lines, \"%s\" title \"Line of Sight Path (%.2f%c elevation)\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight, referenceNameAndPath, refangle, 176);
+			fprintf(fd, "set yrange [%2.3f to %2.3f]\n", minangle, refangle + (-minangle / 8.0));
 		}
-	}
-	else
-	{
-		fprintf(fd, "plot \"%s\" title \"Real Earth Profile\" with lines, \"%s\" title \"Line of Sight Path (%.2f%c elevation)\" with lines\n", profileNameAndPath, referenceNameAndPath, refangle, 176);
-	}
 
-	fclose(fd);
+		fprintf(fd, "set encoding iso_8859_1\n");
+		fprintf(fd, "set term %s\n", term);
+		fprintf(fd, "set title \"%s Elevation Profile Between %s and %s (%.2f%c azimuth)\"\n", APP_NAME, destination.name, source.name, AzimuthAngleBetweenSites(destination, source), 176);
+
+		if (useMetricUnits)
+		{
+			fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f kilometers)\"\n", destination.name, source.name, KM_PER_MILE * distance);
+		}
+		else
+		{
+			fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f miles)\"\n", destination.name, source.name, distance);
+		}
+
+		fprintf(fd, "set ylabel \"Elevation Angle Along LOS Path Between\\n%s and %s (degrees)\"\n", destination.name, source.name);
+		fprintf(fd, "set output \"%s.%s\"\n", basename, ext);
+
+		if (groundClutterHeight > 0.0)
+		{
+			if (useMetricUnits)
+			{
+				fprintf(fd, "plot \"%s\" title \"Real Earth Profile\" with lines, \"%s\" title \"Clutter Profile (%.2f meters)\" with lines, \"%s\" title \"Line of Sight Path (%.2f%c elevation)\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight * METERS_PER_FOOT, referenceNameAndPath, refangle, 176);
+			}
+			else
+			{
+				fprintf(fd, "plot \"%s\" title \"Real Earth Profile\" with lines, \"%s\" title \"Clutter Profile (%.2f feet)\" with lines, \"%s\" title \"Line of Sight Path (%.2f%c elevation)\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight, referenceNameAndPath, refangle, 176);
+			}
+		}
+		else
+		{
+			fprintf(fd, "plot \"%s\" title \"Real Earth Profile\" with lines, \"%s\" title \"Line of Sight Path (%.2f%c elevation)\" with lines\n", profileNameAndPath, referenceNameAndPath, refangle, 176);
+		}
+
+		fclose(fd);
+	}
 
 	char gnuPlotAndSplat[335];
 	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
@@ -7514,8 +7524,6 @@ GenerateGnuPlotHeightProfileBetweenSites(
 		err = strncpy_s(term, _countof(term), "postscript enhanced color\0", 26);
 	}
 
-	err = fopen_s(&fd, plotNameAndPath, "w");
-
 	dheight = maxheight - minheight;
 	miny = minheight - 0.15*dheight;
 	maxy = maxheight + 0.05*dheight;
@@ -7536,94 +7544,99 @@ GenerateGnuPlotHeightProfileBetweenSites(
 
 	max2y = min2y + maxy - miny;
 
-	fprintf(fd, "set grid\n");
-	fprintf(fd, "set yrange [%2.3f to %2.3f]\n", (useMetricUnits ? miny * METERS_PER_FOOT : miny), (useMetricUnits ? maxy * METERS_PER_FOOT : maxy));
-	fprintf(fd, "set y2range [%2.3f to %2.3f]\n", (useMetricUnits ? min2y * METERS_PER_FOOT : min2y), (useMetricUnits ? max2y * METERS_PER_FOOT : max2y));
-	fprintf(fd, "set xrange [-0.5 to %2.3f]\n", (useMetricUnits ? KM_PER_MILE * rint(distance + 0.5) : rint(distance + 0.5)));
-	fprintf(fd, "set encoding iso_8859_1\n");
-	fprintf(fd, "set term %s\n", term);
+	err = fopen_s(&fd, plotNameAndPath, "w");
 
-	if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
+	if (!err && fd != NULL)
 	{
-		fprintf(fd, "set title \"%s Path Profile Between %s and %s (%.2f%c azimuth)\\nWith First Fresnel Zone\"\n", APP_NAME, destination.name, source.name, azimuth, 176);
-	}
-	else
-	{
-		fprintf(fd, "set title \"%s Height Profile Between %s and %s (%.2f%c azimuth)\"\n", APP_NAME, destination.name, source.name, azimuth, 176);
-	}
+		fprintf(fd, "set grid\n");
+		fprintf(fd, "set yrange [%2.3f to %2.3f]\n", (useMetricUnits ? miny * METERS_PER_FOOT : miny), (useMetricUnits ? maxy * METERS_PER_FOOT : maxy));
+		fprintf(fd, "set y2range [%2.3f to %2.3f]\n", (useMetricUnits ? min2y * METERS_PER_FOOT : min2y), (useMetricUnits ? max2y * METERS_PER_FOOT : max2y));
+		fprintf(fd, "set xrange [-0.5 to %2.3f]\n", (useMetricUnits ? KM_PER_MILE * rint(distance + 0.5) : rint(distance + 0.5)));
+		fprintf(fd, "set encoding iso_8859_1\n");
+		fprintf(fd, "set term %s\n", term);
 
-	if (useMetricUnits)
-	{
-		fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f kilometers)\"\n", destination.name, source.name, KM_PER_MILE * GreatCircleDistanceBetweenSiteLocations(source, destination));
-	}
-	else
-	{
-		fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f miles)\"\n", destination.name, source.name, GreatCircleDistanceBetweenSiteLocations(source, destination));
-	}
-
-	if (normalized)
-	{
-		if (useMetricUnits)
+		if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
 		{
-			fprintf(fd, "set ylabel \"Normalized Height Referenced To LOS Path Between\\n%s and %s (meters)\"\n", destination.name, source.name);
+			fprintf(fd, "set title \"%s Path Profile Between %s and %s (%.2f%c azimuth)\\nWith First Fresnel Zone\"\n", APP_NAME, destination.name, source.name, azimuth, 176);
 		}
 		else
 		{
-			fprintf(fd, "set ylabel \"Normalized Height Referenced To LOS Path Between\\n%s and %s (feet)\"\n", destination.name, source.name);
+			fprintf(fd, "set title \"%s Height Profile Between %s and %s (%.2f%c azimuth)\"\n", APP_NAME, destination.name, source.name, azimuth, 176);
 		}
-	}
-	else
-	{
+
 		if (useMetricUnits)
 		{
-			fprintf(fd, "set ylabel \"Height Referenced To LOS Path Between\\n%s and %s (meters)\"\n", destination.name, source.name);
+			fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f kilometers)\"\n", destination.name, source.name, KM_PER_MILE * GreatCircleDistanceBetweenSiteLocations(source, destination));
 		}
 		else
 		{
-			fprintf(fd, "set ylabel \"Height Referenced To LOS Path Between\\n%s and %s (feet)\"\n", destination.name, source.name);
+			fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f miles)\"\n", destination.name, source.name, GreatCircleDistanceBetweenSiteLocations(source, destination));
 		}
-	}
 
-	fprintf(fd, "set output \"%s.%s\"\n", basename, ext);
-
-	if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
-	{
-		if (groundClutterHeight > 0.0)
+		if (normalized)
 		{
 			if (useMetricUnits)
 			{
-				fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f meters)\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight*METERS_PER_FOOT, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->referenceFrequency, fresnelPtNameAndPath, fresnelZoneClearanceRatio*100.0);
+				fprintf(fd, "set ylabel \"Normalized Height Referenced To LOS Path Between\\n%s and %s (meters)\"\n", destination.name, source.name);
 			}
 			else
 			{
-				fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f feet)\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->referenceFrequency, fresnelPtNameAndPath, fresnelZoneClearanceRatio*100.0);
+				fprintf(fd, "set ylabel \"Normalized Height Referenced To LOS Path Between\\n%s and %s (feet)\"\n", destination.name, source.name);
 			}
 		}
 		else
-		{
-			fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->referenceFrequency, fresnelPtNameAndPath, fresnelZoneClearanceRatio*100.0);
-		}
-	}
-	else
-	{
-		if (groundClutterHeight > 0.0)
 		{
 			if (useMetricUnits)
 			{
-				fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f meters)\" with lines, \"%s\" title \"Line Of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight*METERS_PER_FOOT, referenceNameAndPath, curvatureNameAndPath);
+				fprintf(fd, "set ylabel \"Height Referenced To LOS Path Between\\n%s and %s (meters)\"\n", destination.name, source.name);
 			}
 			else
 			{
-				fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f feet)\" with lines, \"%s\" title \"Line Of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight, referenceNameAndPath, curvatureNameAndPath);
+				fprintf(fd, "set ylabel \"Height Referenced To LOS Path Between\\n%s and %s (feet)\"\n", destination.name, source.name);
+			}
+		}
+
+		fprintf(fd, "set output \"%s.%s\"\n", basename, ext);
+
+		if ((itmParameters->referenceFrequency >= MINIMUM_FREQUENCY) && (itmParameters->referenceFrequency <= MAXIMUM_FREQUENCY) && fresnel_plot)
+		{
+			if (groundClutterHeight > 0.0)
+			{
+				if (useMetricUnits)
+				{
+					fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f meters)\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight * METERS_PER_FOOT, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->referenceFrequency, fresnelPtNameAndPath, fresnelZoneClearanceRatio * 100.0);
+				}
+				else
+				{
+					fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f feet)\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->referenceFrequency, fresnelPtNameAndPath, fresnelZoneClearanceRatio * 100.0);
+				}
+			}
+			else
+			{
+				fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Line of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines, \"%s\" axes x1y1 title \"First Fresnel Zone (%.3f MHz)\" with lines, \"%s\" title \"%.0f%% of First Fresnel Zone\" with lines\n", profileNameAndPath, referenceNameAndPath, curvatureNameAndPath, fresnelNameAndPath, itmParameters->referenceFrequency, fresnelPtNameAndPath, fresnelZoneClearanceRatio * 100.0);
 			}
 		}
 		else
 		{
-			fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Line Of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines\n", profileNameAndPath, referenceNameAndPath, curvatureNameAndPath);
+			if (groundClutterHeight > 0.0)
+			{
+				if (useMetricUnits)
+				{
+					fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f meters)\" with lines, \"%s\" title \"Line Of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight * METERS_PER_FOOT, referenceNameAndPath, curvatureNameAndPath);
+				}
+				else
+				{
+					fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Ground Clutter (%.2f feet)\" with lines, \"%s\" title \"Line Of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines\n", profileNameAndPath, clutterNameAndPath, groundClutterHeight, referenceNameAndPath, curvatureNameAndPath);
+				}
+			}
+			else
+			{
+				fprintf(fd, "plot \"%s\" title \"Point-to-Point Profile\" with lines, \"%s\" title \"Line Of Sight Path\" with lines, \"%s\" axes x1y2 title \"Earth's Curvature Contour\" with lines\n", profileNameAndPath, referenceNameAndPath, curvatureNameAndPath);
+			}
 		}
-	}
 
-	fclose(fd);
+		fclose(fd);
+	}
 
 	char gnuPlotAndSplat[335];
 	sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
@@ -8367,7 +8380,7 @@ WriteSplatPathReport(
 			// shortest distance terrain can play a role in
 			// path loss.
 
-			pathElevation[0] = y - 1;	// (number of points - 1)
+			pathElevation[0] = ToDouble(y - 1);	// (number of points - 1)
 
 			// Distance between elevation samples
 
@@ -8640,41 +8653,44 @@ WriteSplatPathReport(
 
 		err = fopen_s(&fd, plotNameAndPath, "w");
 
-		fprintf(fd, "set grid\n");
-		fprintf(fd, "set yrange [%2.3f to %2.3f]\n", minloss, maxloss);
-		fprintf(fd, "set encoding iso_8859_1\n");
-		fprintf(fd, "set term %s\n", term);
-		fprintf(fd, "set title \"%s Loss Profile Along Path Between %s and %s (%.2f%c azimuth)\"\n", APP_NAME, destination.name, source.name, AzimuthAngleBetweenSites(destination, source), 176);
+		if (!err && fd != NULL)
+		{
+			fprintf(fd, "set grid\n");
+			fprintf(fd, "set yrange [%2.3f to %2.3f]\n", minloss, maxloss);
+			fprintf(fd, "set encoding iso_8859_1\n");
+			fprintf(fd, "set term %s\n", term);
+			fprintf(fd, "set title \"%s Loss Profile Along Path Between %s and %s (%.2f%c azimuth)\"\n", APP_NAME, destination.name, source.name, AzimuthAngleBetweenSites(destination, source), 176);
 
-		if (useMetricUnits)
-		{
-			fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f kilometers)\"\n", destination.name, source.name, KM_PER_MILE * GreatCircleDistanceBetweenSiteLocations(destination, source));
-		}
-		else
-		{
-			fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f miles)\"\n", destination.name, source.name, GreatCircleDistanceBetweenSiteLocations(destination, source));
-		}
-
-		if (gotAntennaAzimuthAnglePattern || gotAntennaElevationAnglePattern)
-		{
-			fprintf(fd, "set ylabel \"Total Path Loss (including TX antenna pattern) (dB)");
-		}
-		else
-		{
-			if (useOldLongleyRiceModel)
+			if (useMetricUnits)
 			{
-				fprintf(fd, "set ylabel \"Longley-Rice Path Loss (dB)");
+				fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f kilometers)\"\n", destination.name, source.name, KM_PER_MILE * GreatCircleDistanceBetweenSiteLocations(destination, source));
 			}
 			else
 			{
-				fprintf(fd, "set ylabel \"ITWOM Version %.1f Path Loss (dB)", ITWOM_VERSION);
+				fprintf(fd, "set xlabel \"Distance Between %s and %s (%.2f miles)\"\n", destination.name, source.name, GreatCircleDistanceBetweenSiteLocations(destination, source));
 			}
+
+			if (gotAntennaAzimuthAnglePattern || gotAntennaElevationAnglePattern)
+			{
+				fprintf(fd, "set ylabel \"Total Path Loss (including TX antenna pattern) (dB)");
+			}
+			else
+			{
+				if (useOldLongleyRiceModel)
+				{
+					fprintf(fd, "set ylabel \"Longley-Rice Path Loss (dB)");
+				}
+				else
+				{
+					fprintf(fd, "set ylabel \"ITWOM Version %.1f Path Loss (dB)", ITWOM_VERSION);
+				}
+			}
+
+			fprintf(fd, "\"\nset output \"%s.%s\"\n", basename, ext);
+			fprintf(fd, "plot \"%s\" title \"Path Loss\" with lines\n", profileNameAndPath);
+
+			fclose(fd);
 		}
-
-		fprintf(fd, "\"\nset output \"%s.%s\"\n", basename, ext);
-		fprintf(fd, "plot \"%s\" title \"Path Loss\" with lines\n", profileNameAndPath);
-
-		fclose(fd);
 
 		char gnuPlotAndSplat[335];
 		sprintf_s(gnuPlotAndSplat, _countof(gnuPlotAndSplat), "gnuplot \"%s\"", plotNameAndPath);
@@ -8767,79 +8783,83 @@ WriteSplatSiteReport(
 
 	err = fopen_s(&fd, reportNameAndPath, "w");
 
-	fprintf(fd, "\n\t--==[ %s v%s Site Analysis Report For: %s ]==--\n\n", APP_NAME, VERSION_HEADER, xmtr.name);
-
-	fprintf(fd, "%s\n\n", lineOfDashes);
-
-	if (xmtr.latitude >= 0.0)
+	if (!err && fd != NULL)
 	{
-		ConvertDecimalToDegreesMinutesSeconds(xmtr.latitude, dmsString);
-		fprintf(fd, "Site location: %.4f North / %.4f West", xmtr.latitude, xmtr.longitude);
-		fprintf(fd, " (%s N / ", dmsString);
-	}
-	else
-	{
-		ConvertDecimalToDegreesMinutesSeconds(xmtr.latitude, dmsString);
-		fprintf(fd, "Site location: %.4f South / %.4f West", -xmtr.latitude, xmtr.longitude);
-		fprintf(fd, " (%s S / ", dmsString);
-	}
+		fprintf(fd, "\n\t--==[ %s v%s Site Analysis Report For: %s ]==--\n\n", APP_NAME, VERSION_HEADER, xmtr.name);
 
-	ConvertDecimalToDegreesMinutesSeconds(xmtr.longitude, dmsString);
-	fprintf(fd, "%s W)\n", dmsString);
+		fprintf(fd, "%s\n\n", lineOfDashes);
 
-	if (useMetricUnits)
-	{
-		fprintf(fd, "Ground elevation: %.2f meters AMSL\n", METERS_PER_FOOT * GetSiteLocationElevation(xmtr, digitalElevationModelWrapper));
-		fprintf(fd, "Antenna height: %.2f meters AGL / %.2f meters AMSL\n", METERS_PER_FOOT * xmtr.altitude, METERS_PER_FOOT * (xmtr.altitude + GetSiteLocationElevation(xmtr, digitalElevationModelWrapper)));
-	}
-	else
-	{
-		fprintf(fd, "Ground elevation: %.2f feet AMSL\n", GetSiteLocationElevation(xmtr, digitalElevationModelWrapper));
-		fprintf(fd, "Antenna height: %.2f feet AGL / %.2f feet AMSL\n", xmtr.altitude, xmtr.altitude + GetSiteLocationElevation(xmtr, digitalElevationModelWrapper));
-	}
-
-	terrain = AntennaHeightAboveAverageTerrain(xmtr, digitalElevationModelWrapper, path, groundClutterHeight);
-
-	if (terrain > (LOCATION_NOT_IN_MEMORY + 1))
-	{
-		if (useMetricUnits)
+		if (xmtr.latitude >= 0.0)
 		{
-			fprintf(fd, "Antenna height above average terrain: %.2f meters\n\n", METERS_PER_FOOT * terrain);
+			ConvertDecimalToDegreesMinutesSeconds(xmtr.latitude, dmsString);
+			fprintf(fd, "Site location: %.4f North / %.4f West", xmtr.latitude, xmtr.longitude);
+			fprintf(fd, " (%s N / ", dmsString);
 		}
 		else
 		{
-			fprintf(fd, "Antenna height above average terrain: %.2f feet\n\n", terrain);
+			ConvertDecimalToDegreesMinutesSeconds(xmtr.latitude, dmsString);
+			fprintf(fd, "Site location: %.4f South / %.4f West", -xmtr.latitude, xmtr.longitude);
+			fprintf(fd, " (%s S / ", dmsString);
 		}
 
-		// Display the average terrain between AVERAGE_TERRAIN_MIN_DISTANCE and AVERAGE_TERRAIN_MAX_DISTANCE 
-		// from the transmitter site at azimuths of 0, 45, 90,
-		// 135, 180, 225, 270, and 315 degrees.
+		ConvertDecimalToDegreesMinutesSeconds(xmtr.longitude, dmsString);
+		fprintf(fd, "%s W)\n", dmsString);
 
-		for (azi = 0; azi <= 315; azi += 45)
+		if (useMetricUnits)
 		{
-			fprintf(fd, "Average terrain at %3d degrees azimuth: ", azi);
-			terrain = AverageTerrainOverDistanceAtAzimuthFromSite(xmtr, (double)azi, AVERAGE_TERRAIN_MIN_DISTANCE, AVERAGE_TERRAIN_MAX_DISTANCE, digitalElevationModelWrapper, path, groundClutterHeight);
+			fprintf(fd, "Ground elevation: %.2f meters AMSL\n", METERS_PER_FOOT * GetSiteLocationElevation(xmtr, digitalElevationModelWrapper));
+			fprintf(fd, "Antenna height: %.2f meters AGL / %.2f meters AMSL\n", METERS_PER_FOOT * xmtr.altitude, METERS_PER_FOOT * (xmtr.altitude + GetSiteLocationElevation(xmtr, digitalElevationModelWrapper)));
+		}
+		else
+		{
+			fprintf(fd, "Ground elevation: %.2f feet AMSL\n", GetSiteLocationElevation(xmtr, digitalElevationModelWrapper));
+			fprintf(fd, "Antenna height: %.2f feet AGL / %.2f feet AMSL\n", xmtr.altitude, xmtr.altitude + GetSiteLocationElevation(xmtr, digitalElevationModelWrapper));
+		}
 
-			if (terrain > (LOCATION_NOT_IN_MEMORY + 1))
+		terrain = AntennaHeightAboveAverageTerrain(xmtr, digitalElevationModelWrapper, path, groundClutterHeight);
+
+		if (terrain > (LOCATION_NOT_IN_MEMORY + 1))
+		{
+			if (useMetricUnits)
 			{
-				if (useMetricUnits)
-				{
-					fprintf(fd, "%.2f meters AMSL\n", METERS_PER_FOOT * terrain);
-				}
-				else
-				{
-					fprintf(fd, "%.2f feet AMSL\n", terrain);
-				}
+				fprintf(fd, "Antenna height above average terrain: %.2f meters\n\n", METERS_PER_FOOT * terrain);
 			}
 			else
 			{
-				fprintf(fd, "No terrain\n");
+				fprintf(fd, "Antenna height above average terrain: %.2f feet\n\n", terrain);
+			}
+
+			// Display the average terrain between AVERAGE_TERRAIN_MIN_DISTANCE and AVERAGE_TERRAIN_MAX_DISTANCE 
+			// from the transmitter site at azimuths of 0, 45, 90,
+			// 135, 180, 225, 270, and 315 degrees.
+
+			for (azi = 0; azi <= 315; azi += 45)
+			{
+				fprintf(fd, "Average terrain at %3d degrees azimuth: ", azi);
+				terrain = AverageTerrainOverDistanceAtAzimuthFromSite(xmtr, (double)azi, AVERAGE_TERRAIN_MIN_DISTANCE, AVERAGE_TERRAIN_MAX_DISTANCE, digitalElevationModelWrapper, path, groundClutterHeight);
+
+				if (terrain > (LOCATION_NOT_IN_MEMORY + 1))
+				{
+					if (useMetricUnits)
+					{
+						fprintf(fd, "%.2f meters AMSL\n", METERS_PER_FOOT * terrain);
+					}
+					else
+					{
+						fprintf(fd, "%.2f feet AMSL\n", terrain);
+					}
+				}
+				else
+				{
+					fprintf(fd, "No terrain\n");
+				}
 			}
 		}
+
+		fprintf(fd, "\n%s\n\n", lineOfDashes);
+		fclose(fd);
 	}
 
-	fprintf(fd, "\n%s\n\n", lineOfDashes);
-	fclose(fd);
 	fprintf(stdout, "\nSite analysis report written to: \"%s\"\n", reportNameAndPath);
 }
 
@@ -8873,9 +8893,9 @@ LoadSplatDataFilesForRegion(
 	int x, y, width, ymin, ymax;
 	char nameString[255];	// OLD NAME: string
 
-	width = ConvertToNormalizedAngle(max_lon - min_lon);
+	width = ConvertToNormalizedAngle(ToDouble(max_lon - min_lon));
 
-	if ((max_lon - min_lon) <= 180.0)
+	if ((max_lon - min_lon) <= 180)
 	{
 		for (y = 0; y <= width; y++)
 		{
