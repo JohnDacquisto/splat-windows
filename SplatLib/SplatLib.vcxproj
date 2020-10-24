@@ -128,10 +128,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="itwom.area.cpp" />
     <ClCompile Include="itwom.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="itwom.longleyrice.cpp" />
+    <ClCompile Include="itwom.math.cpp" />
+    <ClCompile Include="itwom.p2p.cpp" />
     <ClCompile Include="Path.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
@@ -139,10 +143,18 @@
     <ClCompile Include="propa_type.cpp" />
     <ClCompile Include="propv_type.cpp" />
     <ClCompile Include="prop_type.cpp" />
+    <ClCompile Include="SplatLib.Analysis.cpp" />
+    <ClCompile Include="SplatLib.Colors.cpp" />
     <ClCompile Include="SplatLib.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SplatLib.Files.cpp" />
+    <ClCompile Include="SplatLib.GnuPlot.cpp" />
+    <ClCompile Include="SplatLib.KeyholeMarkupLanguage.cpp" />
+    <ClCompile Include="SplatLib.Math.cpp" />
+    <ClCompile Include="SplatLib.PortablePixMap.cpp" />
+    <ClCompile Include="SplatLib.Reports.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
