@@ -18,6 +18,13 @@ set TestResults=IntegrationTestResults.txt
 if exist %SPLAT%\IntegrationTests\%TestResults% del %SPLAT%\IntegrationTests\%TestResults%
 
 
+echo IntegrationTestRunner.
+echo.
+echo To run the integration tests, click any button. To not run the tests, exit out of the command prompt.
+echo.
+pause
+
+
 REM - Test 01.
 
 splat.exe -t "%SPLAT%\IntegrationTests\Test01\wnju-dt.qth" -L 20 -o "%SPLAT%\IntegrationTests\Test01\map.ppm" -d "%SPLAT%\IntegrationTests\Test01\DEM\\" -rsp "%SPLAT%\IntegrationTests\Test01\\" -ano "%SPLAT%\IntegrationTests\Test01\test_1_trace.txt" -time "%SPLAT%\IntegrationTests\Test01\test_1_time.txt" -metric -hd 0 -mxpg 4
@@ -406,7 +413,6 @@ echo.
 echo.
 echo IntegrationTestRunner complete.
 echo.
-
 pause
 
 exit
