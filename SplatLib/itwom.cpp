@@ -1350,7 +1350,7 @@ CalculateTerrainInterdecileRangeDelta(
 	ka = MinimumInteger(MaximumInteger(4, ka), 25);
 	n = 10 * ka - 5;
 	kb = n - ka + 1;
-	sn = n - 1;
+	sn = ToDouble(n - 1);
 	assert((s = new double[n + 2]) != 0);
 	s[0] = sn;
 	s[1] = 1.0;
