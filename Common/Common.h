@@ -34,6 +34,11 @@ GreatCircleDistanceBetweenSiteLocations(
 	Site site1,
 	Site site2);
 
+void _declspec(dllexport)
+ReplaceBackslashWithDoubleBackslash(
+	char* inputStr,
+	char* outputStr);
+
 long _declspec(dllexport) WINAPI
 CommonUnhandledExceptionFilter(
 	struct _EXCEPTION_POINTERS *ExceptionInfo);

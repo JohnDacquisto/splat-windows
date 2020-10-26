@@ -79,10 +79,10 @@ WriteSplatPathReport(
 	sprintf_s(plotNameAndPath, _countof(plotNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "splat.gp");
 
 	char profileNameAndPath[335];
-	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
+	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
 
 	char referenceNameAndPath[335];
-	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
+	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
 
 	four_thirds_earth = FOUR_THIRDS * EARTH_RADIUS_FEET;
 

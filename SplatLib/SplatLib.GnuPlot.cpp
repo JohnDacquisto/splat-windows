@@ -57,10 +57,10 @@ GenerateGnuPlotTerrainProfileBetweenSites(
 	sprintf_s(plotNameAndPath, _countof(plotNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "splat.gp");
 
 	char profileNameAndPath[335];
-	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
+	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
 
 	char clutterNameAndPath[335];
-	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
+	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
 
 	err = fopen_s(&fd, profileNameAndPath, "wb");
 
@@ -295,13 +295,13 @@ GenerateGnuPlotElevationProfileBetweenSites(
 	sprintf_s(plotNameAndPath, _countof(plotNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "splat.gp");
 
 	char profileNameAndPath[335];
-	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
+	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
 
 	char clutterNameAndPath[335];
-	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
+	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
 
 	char referenceNameAndPath[335];
-	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
+	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
 
 	err = fopen_s(&fd, profileNameAndPath, "wb");
 
@@ -613,22 +613,22 @@ GenerateGnuPlotHeightProfileBetweenSites(
 	sprintf_s(plotNameAndPath, _countof(plotNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "splat.gp");
 
 	char profileNameAndPath[335];
-	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
+	sprintf_s(profileNameAndPath, _countof(profileNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "profile.gp");
 
 	char clutterNameAndPath[335];
-	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
+	sprintf_s(clutterNameAndPath, _countof(clutterNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "clutter.gp");
 
 	char referenceNameAndPath[335];
-	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
+	sprintf_s(referenceNameAndPath, _countof(referenceNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "reference.gp");
 
 	char curvatureNameAndPath[335];
-	sprintf_s(curvatureNameAndPath, _countof(curvatureNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "curvature.gp");
+	sprintf_s(curvatureNameAndPath, _countof(curvatureNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "curvature.gp");
 
 	char fresnelNameAndPath[335];
-	sprintf_s(fresnelNameAndPath, _countof(fresnelNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "fresnel.gp");
+	sprintf_s(fresnelNameAndPath, _countof(fresnelNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "fresnel.gp");
 
 	char fresnelPtNameAndPath[335];
-	sprintf_s(fresnelPtNameAndPath, _countof(fresnelPtNameAndPath), "%s\\%s", (reportSavePath[0] ? reportSavePath : ""), "fresnel_pt_6.gp");
+	sprintf_s(fresnelPtNameAndPath, _countof(fresnelPtNameAndPath), "%s%s", (reportSavePath[0] ? reportSavePath : ""), "fresnel_pt_6.gp");
 
 	err = fopen_s(&fd, profileNameAndPath, "wb");
 

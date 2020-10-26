@@ -255,6 +255,41 @@ GreatCircleDistanceBetweenSiteLocations(
 
 //| ------------------------------
 //| 
+//| FUNCTION: ReplaceBackslashWithDoubleBackslash
+//| 
+//| NOTES: 
+//|   This function takes the characters in inputStr and
+//|   places them in outputStr, with the exception of replacing
+//|   '\\' with '\\\\'.
+//| 
+//| ------------------------------
+void
+ReplaceBackslashWithDoubleBackslash(
+	char* inputStr,
+	char* outputStr)
+{
+	int inputStrLen = (int)strlen(inputStr);
+
+	int outputStrIndex = 0;
+
+	for (int inputStrIndex = 0; inputStrIndex < inputStrLen; inputStrIndex++)
+	{
+		outputStr[outputStrIndex] = inputStr[inputStrIndex];
+		outputStrIndex++;
+
+		if (inputStr[inputStrIndex] == '\\')
+		{
+			outputStr[outputStrIndex] = '\\';
+			outputStrIndex++;
+		}
+	}
+
+	outputStr[outputStrIndex] = 0;
+}
+
+
+//| ------------------------------
+//| 
 //| FUNCTION: CommonUnhandledExceptionFilter
 //| 
 //| INFLOWS: 
