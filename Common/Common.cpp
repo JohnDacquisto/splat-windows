@@ -4,11 +4,15 @@
 
 #include "stdafx.h"
 #include <math.h>
+#include <string>
+#include <time.h>
 #include <Windows.h>
 #include <dbghelp.h>
 #include "Common.h"
 #include "version.h"
 #include "constants.h"
+
+using namespace std;
 
 typedef BOOL(WINAPI *MINIDUMPWRITEDUMP)(
 	HANDLE hProcess, DWORD dwPid, HANDLE hFile, MINIDUMP_TYPE DumpType,
@@ -290,6 +294,35 @@ ReplaceBackslashWithDoubleBackslash(
 
 //| ------------------------------
 //| 
+//| FUNCTION: ReturnCurrentDateAndTime
+//| 
+//| NOTES: 
+//|   Return string of the current date and time.
+//| 
+//| ------------------------------
+const string
+ReturnCurrentDateAndTime()
+{
+	char buf[80];
+	time_t now = time(0);
+	struct tm tstruct;
+
+	errno_t err = localtime_s(&tstruct, &now);
+	strftime(buf, sizeof(buf), "%Y-%m-%d %X", &tstruct);
+
+	// Look through the string, replace ':' with '-'
+	for (int i = 0; i < strlen(buf); i++) {
+		if (buf[i] == ':') {
+			buf[i] = '-';
+		}
+	}
+
+	return buf;
+}
+
+
+//| ------------------------------
+//| 
 //| FUNCTION: CommonUnhandledExceptionFilter
 //| 
 //| INFLOWS: 
@@ -334,9 +367,21 @@ CommonUnhandledExceptionFilter(
 			if (pDump)
 			{
 				// Found the function address, so save the minidump file.
-				// JAD TODO: Create a unique name for the .dmp file, using the current date & time when the exception occurred.
+				// Create a unique name for the .dmp file, using the current date & time when the exception occurred.
+
+				string minidumpFileName = MINIDUMP_PATH;
 				
-				HANDLE hFile = CreateFile(MINIDUMP_PATH "splat.dmp", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+				WIN32_FIND_DATA FindFileData;
+				HANDLE hFind = FindFirstFile(minidumpFileName.c_str(), &FindFileData);
+				if (hFind == INVALID_HANDLE_VALUE) {
+					CreateDirectory(minidumpFileName.c_str(), NULL);
+				}
+
+				minidumpFileName += "splat ";
+				minidumpFileName += ReturnCurrentDateAndTime();
+				minidumpFileName += ".dmp";
+
+				HANDLE hFile = CreateFile(minidumpFileName.c_str(), GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 				if (hFile != INVALID_HANDLE_VALUE)
 				{

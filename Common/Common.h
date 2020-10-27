@@ -6,6 +6,7 @@
 
 #include "stdafx.h"
 #include <windows.h>
+#include <string>
 #include "Site.h"
 
 
@@ -38,6 +39,9 @@ void _declspec(dllexport)
 ReplaceBackslashWithDoubleBackslash(
 	char* inputStr,
 	char* outputStr);
+
+const std::string _declspec(dllexport)
+ReturnCurrentDateAndTime();
 
 long _declspec(dllexport) WINAPI
 CommonUnhandledExceptionFilter(
