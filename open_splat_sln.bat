@@ -1,4 +1,4 @@
-echo off
+@echo off
 
 REM Solution environment variables can be specified in this file
 
